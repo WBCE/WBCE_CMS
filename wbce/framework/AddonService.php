@@ -210,11 +210,21 @@ class AddonService
             // copied into var/addons/ — staging still lets an admin review
             // it, so a blocked ZIP must never even reach that stage.
             $findings = CodeVet::scanDirectory($tempUnzip, CodeVetProfile::Addon);
-            if ($findings !== []) {
+            if (CodeVet::hasBlocking($findings)) {
                 CodeVet::logEvent('addon_zip_blocked', CodeVetProfile::Addon, $findings, ['zip' => basename($zipPath)]);
-                $first = $findings[0];
+                $first = current(array_filter($findings, static fn ($f) => $f->severity === 'block')) ?: $findings[0];
                 $where = $first->file !== '' ? "{$first->file}: " : '';
                 return $this->addSignal('ADDON_SECURITY_BLOCKED', $where . $first->message);
+            }
+            $warnings = CodeVet::onlyWarnings($findings);
+            if ($warnings !== []) {
+                // Not a hard block — staged/installed anyway, admin is informed.
+                // Staging never executes the code, so this is safe to proceed with.
+                CodeVet::logEvent('addon_zip_warned', CodeVetProfile::Addon, $warnings, ['zip' => basename($zipPath)]);
+                $first = $warnings[0];
+                $where = $first->file !== '' ? "{$first->file}: " : '';
+                $suffix = count($warnings) > 1 ? ' (+' . (count($warnings) - 1) . ' more)' : '';
+                $this->addSignal('ADDON_SECURITY_WARNING', $where . $first->message . $suffix);
             }
 
             $type     = $info['_type'];
@@ -822,7 +832,7 @@ class AddonService
             'ADDON_REMOVED_OK', 'ADDON_RELOAD_OK', 'ADDON_FETCH_OK',
             'ADDON_UP_TO_DATE', 'ADDON_ALREADY_CURRENT', 'ADDON_SCRIPT_NOT_FOUND',
             'ADDON_STAGED', 'ADDON_UNSTAGED', 'ADDON_DELETED',
-            'ADDON_ACTIVATED', 'ADDON_DEACTIVATED',
+            'ADDON_ACTIVATED', 'ADDON_DEACTIVATED', 'ADDON_SECURITY_WARNING',
         ], true);
     }
 

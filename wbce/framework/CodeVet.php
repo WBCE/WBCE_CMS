@@ -31,11 +31,16 @@ enum CodeVetProfile: string
 
 final class CodeVetFinding
 {
+    /**
+     * @param string $severity 'block' (never persisted/staged) or 'warn'
+     *                         (admin is informed but the action proceeds).
+     */
     public function __construct(
         public readonly string $rule,
         public readonly string $message,
         public readonly int    $line = -1,
         public readonly string $file = '',
+        public readonly string $severity = 'block',
     ) {
     }
 }
@@ -60,6 +65,16 @@ final class CodeVet
         'exec', 'system', 'shell_exec', 'passthru', 'popen', 'proc_open',
         'pcntl_exec', 'assert', 'create_function',
     ];
+    // Subset of SYSTEM_FUNCTIONS with genuinely no legitimate use in an addon
+    // (arbitrary shell/process execution). create_function() is excluded here —
+    // it's PHP's userland eval() equivalent (deprecated, removed in PHP 8) and
+    // still shows up in older-but-legitimate libraries, so for addons it's a
+    // warn, not a hard block. It stays hard-blocked for Droplet/Outputfilter/
+    // Code2 (own render-time code) via SYSTEM_FUNCTIONS above.
+    private const HARD_SYSTEM_FUNCTIONS = [
+        'exec', 'system', 'shell_exec', 'passthru', 'popen', 'proc_open',
+        'pcntl_exec', 'assert',
+    ];
     private const OBFUSCATION_FUNCTIONS = [
         'base64_decode', 'gzinflate', 'gzuncompress', 'gzdecode', 'str_rot13', 'hex2bin',
     ];
@@ -75,9 +90,10 @@ final class CodeVet
 
     /**
      * @return array{
-     *     blockEval: bool, blockBackticks: bool, blockIncludeRequire: bool,
-     *     blockDynamicCalls: bool, blockVariableFunctionCalls: bool,
-     *     blockSuperglobals: string[], blockFunctions: string[], dangerousExtensions: string[]
+     *     evalSeverity: string|false, blockBackticks: bool, blockIncludeRequire: bool,
+     *     dynamicCallSeverity: string|false, blockVariableFunctionCalls: bool,
+     *     blockSuperglobals: string[], blockFunctions: string[], warnFunctions: string[],
+     *     dangerousExtensions: string[], dangerousExtensionSeverity: string
      * }
      */
     private static function rules(CodeVetProfile $profile): array
@@ -86,50 +102,63 @@ final class CodeVet
             self::$profiles = [
                 // Runs unattended on every page view via eval() — tightest profile.
                 'droplet' => [
-                    'blockEval'                  => true,
-                    'blockBackticks'             => true,
-                    'blockIncludeRequire'        => true,
-                    'blockDynamicCalls'          => true,
-                    'blockVariableFunctionCalls' => true,
-                    'blockSuperglobals'          => self::SUPERGLOBALS,
-                    'blockFunctions'             => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS, self::FILE_FUNCTIONS),
-                    'dangerousExtensions'        => [],
+                    'evalSeverity'                => 'block',
+                    'blockBackticks'              => true,
+                    'blockIncludeRequire'         => true,
+                    'dynamicCallSeverity'         => 'block',
+                    'blockVariableFunctionCalls'  => true,
+                    'blockSuperglobals'           => self::SUPERGLOBALS,
+                    'blockFunctions'              => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS, self::FILE_FUNCTIONS),
+                    'warnFunctions'               => [],
+                    'dangerousExtensions'         => [],
+                    'dangerousExtensionSeverity'  => 'block',
                 ],
                 // Runs on every page render too (defines the filter function via eval()).
                 'outputfilter' => [
-                    'blockEval'                  => true,
-                    'blockBackticks'             => true,
-                    'blockIncludeRequire'        => true,
-                    'blockDynamicCalls'          => true,
-                    'blockVariableFunctionCalls' => true,
-                    'blockSuperglobals'          => self::SUPERGLOBALS,
-                    'blockFunctions'             => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS, self::FILE_FUNCTIONS),
-                    'dangerousExtensions'        => [],
+                    'evalSeverity'                => 'block',
+                    'blockBackticks'              => true,
+                    'blockIncludeRequire'         => true,
+                    'dynamicCallSeverity'         => 'block',
+                    'blockVariableFunctionCalls'  => true,
+                    'blockSuperglobals'           => self::SUPERGLOBALS,
+                    'blockFunctions'              => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS, self::FILE_FUNCTIONS),
+                    'warnFunctions'               => [],
+                    'dangerousExtensions'         => [],
+                    'dangerousExtensionSeverity'  => 'block',
                 ],
                 // Whole PHP page-section written by an admin — legitimately needs
                 // request data and file/include access, so only the constructs with
                 // no legitimate reason to ever appear stay blocked.
                 'code2' => [
-                    'blockEval'                  => true,
-                    'blockBackticks'             => true,
-                    'blockIncludeRequire'        => false,
-                    'blockDynamicCalls'          => true,
-                    'blockVariableFunctionCalls' => false,
-                    'blockSuperglobals'          => [],
-                    'blockFunctions'             => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS),
-                    'dangerousExtensions'        => [],
+                    'evalSeverity'                => 'block',
+                    'blockBackticks'              => true,
+                    'blockIncludeRequire'         => false,
+                    'dynamicCallSeverity'         => 'block',
+                    'blockVariableFunctionCalls'  => false,
+                    'blockSuperglobals'           => [],
+                    'blockFunctions'              => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS),
+                    'warnFunctions'               => [],
+                    'dangerousExtensions'         => [],
+                    'dangerousExtensionSeverity'  => 'block',
                 ],
                 // Real, distributed module/template code — needs file ops, includes,
-                // superglobals. Only the "no legitimate addon ever needs this" set.
+                // superglobals. Only arbitrary shell/process execution has no
+                // legitimate reason to ever appear and stays hard-blocked; eval(),
+                // dynamic calls, deprecated/obfuscation-flavoured functions and
+                // risky extensions are common in real-world third-party code
+                // (syntax-check tricks, PEAR-era libraries, packed assets) and
+                // only warn — the admin is informed and can still install.
                 'addon' => [
-                    'blockEval'                  => true,
-                    'blockBackticks'             => true,
-                    'blockIncludeRequire'        => false,
-                    'blockDynamicCalls'          => true,
-                    'blockVariableFunctionCalls' => false,
-                    'blockSuperglobals'          => [],
-                    'blockFunctions'             => array_merge(self::SYSTEM_FUNCTIONS, self::OBFUSCATION_FUNCTIONS),
-                    'dangerousExtensions'        => ['phtml', 'pht', 'php3', 'php4', 'php5', 'php7', 'phar', 'inc.php~'],
+                    'evalSeverity'                => 'warn',
+                    'blockBackticks'              => true,
+                    'blockIncludeRequire'         => false,
+                    'dynamicCallSeverity'         => 'warn',
+                    'blockVariableFunctionCalls'  => false,
+                    'blockSuperglobals'           => [],
+                    'blockFunctions'              => self::HARD_SYSTEM_FUNCTIONS,
+                    'warnFunctions'               => array_merge(['create_function'], self::OBFUSCATION_FUNCTIONS),
+                    'dangerousExtensions'         => ['phtml', 'pht', 'php3', 'php4', 'php5', 'php7', 'phar', 'inc.php~'],
+                    'dangerousExtensionSeverity'  => 'warn',
                 ],
             ];
         }
@@ -183,8 +212,8 @@ final class CodeVet
                 continue;
             }
 
-            if ($id === T_EVAL && $rules['blockEval']) {
-                $findings[] = new CodeVetFinding('eval', 'eval() is forbidden', $line);
+            if ($id === T_EVAL && $rules['evalSeverity'] !== false) {
+                $findings[] = new CodeVetFinding('eval', 'eval() is forbidden', $line, '', $rules['evalSeverity']);
                 continue;
             }
 
@@ -215,13 +244,18 @@ final class CodeVet
                     continue;
                 }
 
-                if ($rules['blockDynamicCalls'] && in_array($lower, ['call_user_func', 'call_user_func_array'], true)) {
-                    $findings[] = new CodeVetFinding('dynamic_call', "Dynamic function call is forbidden: {$content}()", $line);
+                if ($rules['dynamicCallSeverity'] !== false && in_array($lower, ['call_user_func', 'call_user_func_array'], true)) {
+                    $findings[] = new CodeVetFinding('dynamic_call', "Dynamic function call is forbidden: {$content}()", $line, '', $rules['dynamicCallSeverity']);
                     continue;
                 }
 
                 if (in_array($lower, $rules['blockFunctions'], true)) {
-                    $findings[] = new CodeVetFinding('blocked_function', "Function call is forbidden: {$content}()", $line);
+                    $findings[] = new CodeVetFinding('blocked_function', "Function call is forbidden: {$content}()", $line, '', 'block');
+                    continue;
+                }
+
+                if (in_array($lower, $rules['warnFunctions'], true)) {
+                    $findings[] = new CodeVetFinding('blocked_function', "Function call is forbidden: {$content}()", $line, '', 'warn');
                     continue;
                 }
             }
@@ -232,7 +266,29 @@ final class CodeVet
 
     public static function isSafe(string $code, CodeVetProfile $profile): bool
     {
-        return self::checkSyntax($code) === null && self::scan($code, $profile) === [];
+        return self::checkSyntax($code) === null && self::hasBlocking(self::scan($code, $profile)) === false;
+    }
+
+    /**
+     * @param CodeVetFinding[] $findings
+     */
+    public static function hasBlocking(array $findings): bool
+    {
+        foreach ($findings as $finding) {
+            if ($finding->severity === 'block') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param CodeVetFinding[] $findings
+     * @return CodeVetFinding[]
+     */
+    public static function onlyWarnings(array $findings): array
+    {
+        return array_values(array_filter($findings, static fn (CodeVetFinding $f) => $f->severity === 'warn'));
     }
 
     // ── Directory / ZIP scan ─────────────────────────────────────────────────
@@ -265,7 +321,7 @@ final class CodeVet
             $ext      = strtolower($fileInfo->getExtension());
 
             if (in_array($ext, $rules['dangerousExtensions'], true)) {
-                $findings[] = new CodeVetFinding('dangerous_extension', "Disallowed file extension: .{$ext}", -1, $relative);
+                $findings[] = new CodeVetFinding('dangerous_extension', "Disallowed file extension: .{$ext}", -1, $relative, $rules['dangerousExtensionSeverity']);
                 continue;
             }
             if ($ext !== 'php') {
@@ -277,7 +333,7 @@ final class CodeVet
                 continue;
             }
             foreach (self::scan($code, $profile) as $finding) {
-                $findings[] = new CodeVetFinding($finding->rule, $finding->message, $finding->line, $relative);
+                $findings[] = new CodeVetFinding($finding->rule, $finding->message, $finding->line, $relative, $finding->severity);
             }
         }
 
@@ -294,7 +350,11 @@ final class CodeVet
         if (!defined('WB_PATH')) {
             return;
         }
-        $logDir = rtrim(WB_PATH, '/\\') . '/temp';
+        $logDir = rtrim(WB_PATH, '/\\') . '/var/code_vet';
+        if (!is_dir($logDir)) {
+            @mkdir($logDir, 0755, true);
+            @file_put_contents($logDir . '/index.php', '<?php header("Location: ../../index.php", true, 301);' . PHP_EOL);
+        }
         if (!is_dir($logDir) || !is_writable($logDir)) {
             return;
         }
