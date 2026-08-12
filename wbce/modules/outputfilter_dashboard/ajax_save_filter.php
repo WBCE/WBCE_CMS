@@ -45,11 +45,11 @@ $label = (class_exists('Lang') && Lang::has('L', 'TXT_INVALIDCODE'))
     ? Lang::get('L', 'TXT_INVALIDCODE')
     : 'Invalid PHP code';
 
-$syntaxError = CodeVet::checkSyntax($code);
+$syntaxError = CodeVet::checkSyntax($code, $syntaxLine);
 if ($syntaxError !== null) {
     http_response_code(422);
     (new Alerts(false))->toast($label . ': ' . $syntaxError, 'error');
-    exit(json_encode(['ok' => false, 'syntax_error' => $syntaxError]));
+    exit(json_encode(['ok' => false, 'syntax_error' => $syntaxError, 'line' => $syntaxLine]));
 }
 
 $findings = CodeVet::scan($code, CodeVetProfile::Outputfilter);
@@ -57,7 +57,7 @@ if ($findings !== []) {
     CodeVet::logEvent('outputfilter_save_blocked', CodeVetProfile::Outputfilter, $findings, ['filter_id' => $filter_id]);
     http_response_code(422);
     (new Alerts(false))->toast($label . ': ' . $findings[0]->message, 'error');
-    exit(json_encode(['ok' => false, 'syntax_error' => $findings[0]->message]));
+    exit(json_encode(['ok' => false, 'syntax_error' => $findings[0]->message, 'line' => $findings[0]->line]));
 }
 
 // ── Save to database ──────────────────────────────────────────────────────────

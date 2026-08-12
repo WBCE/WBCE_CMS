@@ -43,13 +43,13 @@ $code = str_replace($tags, '', $rawCode);
 // ── PHP syntax + security check — block save if broken or unsafe ──────────────
 //
 // We check BEFORE writing so broken/blocked code is never persisted.
-$syntaxError = CodeVet::checkSyntax($code);
+$syntaxError = CodeVet::checkSyntax($code, $syntaxLine);
 if ($syntaxError !== null) {
     http_response_code(422);
     // Prepend the translated "invalid code" label to the PHP error message.
     $msg = (function_exists('L_') ? L_('DR_TEXT:INVALIDCODE') : 'Invalid PHP code') . ': ' . $syntaxError;
     (new Alerts(false))->toast($msg, 'error');
-    exit(json_encode(['ok' => false, 'syntax_error' => $syntaxError]));
+    exit(json_encode(['ok' => false, 'syntax_error' => $syntaxError, 'line' => $syntaxLine]));
 }
 
 $findings = CodeVet::scan($code, CodeVetProfile::Droplet);
@@ -58,7 +58,7 @@ if ($findings !== []) {
     http_response_code(422);
     $msg = (function_exists('L_') ? L_('DR_TEXT:INVALIDCODE') : 'Invalid PHP code') . ': ' . $findings[0]->message;
     (new Alerts(false))->toast($msg, 'error');
-    exit(json_encode(['ok' => false, 'syntax_error' => $findings[0]->message]));
+    exit(json_encode(['ok' => false, 'syntax_error' => $findings[0]->message, 'line' => $findings[0]->line]));
 }
 
 // ── Save to database ──────────────────────────────────────────────────────────

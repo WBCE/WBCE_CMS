@@ -42,6 +42,13 @@
     box-sizing: border-box;
 }
 
+/* ── CodeVet error line ─────────────────────────────────────────────────── */
+/* Marks the line a blocked save was flagged on (see jumpToErrorLine() in
+   CodeEditorToolbar.jquery.js) so the admin can fix it without guessing. */
+.cet-error-line {
+    background: rgba(220, 53, 69, 0.18) !important;
+}
+
 /* ── Icons ───────────────────────────────────────────────────────────────── */
 i.ico-search,
 i.ico-plus,

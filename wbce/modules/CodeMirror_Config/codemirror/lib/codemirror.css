@@ -233,7 +233,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   background: transparent;
   font-family: inherit;
   font-size: inherit;
-  margin: 0 0 0 6px;
+  margin: 0;
   white-space: pre;
   word-wrap: normal;
   line-height: inherit;
@@ -290,7 +290,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   position: absolute;
   border-right: none;
   width: 0;
-  margin-left: 6px; /* matches .CodeMirror pre { margin: 0 0 0 6px } */
 }
 
 div.CodeMirror-cursors {

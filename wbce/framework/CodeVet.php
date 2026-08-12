@@ -172,14 +172,21 @@ final class CodeVet
     // ── Syntax check ─────────────────────────────────────────────────────────
 
     /**
-     * @param string $code Raw PHP body, without surrounding <?php ?> tags.
+     * @param string   $code  Raw PHP body, without surrounding <?php ?> tags.
+     * @param int|null &$line Set to the offending line in $code (1-based), or
+     *                        -1 if the code is valid. The code is wrapped in
+     *                        `if(0){\n...\n}` before eval() — line 1 of that
+     *                        wrapper is the injected `if(0){`, so the reported
+     *                        line is offset by -1 to map back to $code.
      * @return string|null The ParseError message, or null if the code is valid.
      */
-    public static function checkSyntax(string $code): ?string
+    public static function checkSyntax(string $code, ?int &$line = null): ?string
     {
+        $line = -1;
         try {
             @eval("if(0){\n{$code}\n}");
         } catch (\ParseError $e) {
+            $line = max(1, $e->getLine() - 1);
             return $e->getMessage();
         }
         return null;
