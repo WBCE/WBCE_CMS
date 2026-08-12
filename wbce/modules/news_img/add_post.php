@@ -42,7 +42,7 @@ if ($database->is_error()) {
 	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 } else {
     // Get the id
-    $post_id = $database->get_one("SELECT LAST_INSERT_ID()");
+    $post_id = $database->lastInsertId();
     $post_id_key = $admin->getIDKEY($post_id);
     if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
        $post_id_key = $post_id;
