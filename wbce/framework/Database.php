@@ -169,7 +169,12 @@ class Database
             if (str_starts_with($dsn, 'sqlite')) {
                 $this->pdo    = new PDO($dsn, null, null, $options);
                 $this->driver = 'sqlite';
-                $this->pdo->exec('PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;');
+                // busy_timeout matters more than usual here: WbceDbSession writes
+                // on every request, so any concurrent request (a thumbnail, an
+                // AJAX call) racing the same connection would otherwise hit
+                // SQLITE_BUSY immediately instead of waiting a moment for the
+                // lock to clear.
+                $this->pdo->exec('PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');
                 $this->registerSQLiteCompatFunctions();
             } elseif (str_starts_with($dsn, 'mysql')) {
                 $this->pdo    = new PDO($dsn, DB_USER, DB_PASS, $options);
@@ -314,6 +319,10 @@ class Database
         $sql = $this->prep($sql);
         if ($this->driver === 'sqlite') {
             $sql = $this->translateInsertSet($sql);
+            if ($this->isLastInsertIdQuery($sql)) {
+                $this->error = '';
+                return DatabaseResult::fromSingleValue($this->pdo->lastInsertId());
+            }
         }
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -385,6 +394,24 @@ class Database
     }
 
     /**
+     * Matches the MySQL-only `SELECT LAST_INSERT_ID()` idiom — SQLite has no
+     * such function ("no such function: LAST_INSERT_ID"). Used by query()
+     * and fetchValue() (get_one()'s target) to answer it directly from
+     * PDO::lastInsertId() instead of running it as SQL.
+     *
+     * Deliberately narrow — matches only the bare call, optionally aliased —
+     * so anything unexpected (a join, a WHERE clause) falls through to run
+     * as real SQL and fail loudly rather than being silently misread.
+     */
+    private function isLastInsertIdQuery(string $sql): bool
+    {
+        return (bool) preg_match(
+            '/^\s*SELECT\s+LAST_INSERT_ID\s*\(\s*\)\s*(?:AS\s+[`"]?\w+[`"]?)?\s*;?\s*$/i',
+            $sql
+        );
+    }
+
+    /**
      * Splits a `col=val, col2=val2` assignment list on commas, respecting
      * single-quoted string values so a literal comma inside a quoted value
      * isn't mistaken for an assignment separator. Returns null if the
@@ -425,6 +452,9 @@ class Database
     {
         $this->error = '';
         $sql = $this->prep($sql);
+        if ($this->driver === 'sqlite' && $this->isLastInsertIdQuery($sql)) {
+            return $this->pdo->lastInsertId();
+        }
         try {
             $stmt = $this->pdo->prepare($sql);
             $this->bindParams($stmt, $params);
@@ -1538,6 +1568,19 @@ class DatabaseResult
         if ($stmt !== null) {
             $this->rows = $stmt->fetchAll(PDO::FETCH_BOTH);
         }
+    }
+
+    /**
+     * Builds a one-row, one-column result without a real PDOStatement —
+     * used by query()'s SQLite LAST_INSERT_ID() shim to answer in the same
+     * shape a real `SELECT LAST_INSERT_ID()` would have (row[0] and
+     * row['LAST_INSERT_ID()'] both set, matching PDO::FETCH_BOTH).
+     */
+    public static function fromSingleValue(mixed $value): self
+    {
+        $result = new self(null);
+        $result->rows = [[0 => $value, 'LAST_INSERT_ID()' => $value]];
+        return $result;
     }
 
     public function fetchRow(int $type = MYSQLI_BOTH): array|false
