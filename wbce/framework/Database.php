@@ -24,8 +24,9 @@
  *
  *   query()            fetchValue()     fetchAll()
  *   insertRow()        upsertRow()      deleteRow()
- *   fieldExists()      addField()       modifyField()     removeField()
- *   lastInsertId()     hasError()       getError()        setError()
+ *   modifyField()      removeField()    addField()
+ *   fieldExists()      tableExists()    lastInsertId()
+ *   hasError()         getError()       setError()
  *   getDriver()        getPDO()         importSql()
  *
  * JSON column helpers (driver-transparent MySQL/MariaDB + SQLite so every module 
@@ -347,11 +348,7 @@ class Database
      *
      * Applied transparently inside query() (SQLite only) so modules that
      * still write this pattern at *runtime* — not just at install time —
-     * keep working without a code change. This isn't hypothetical: both
-     * opf_register_filter() and jsadmin's original default-row seeding did
-     * exactly this, and both broke the same way on SQLite before being
-     * fixed by hand. This safety net catches the same pattern in modules
-     * nobody has audited yet.
+     * keep working without a code change. 
      *
      * Deliberately conservative: bails out (returns $sql unchanged) on
      * anything it isn't confident about — ON DUPLICATE KEY UPDATE, no
@@ -398,10 +395,6 @@ class Database
      * such function ("no such function: LAST_INSERT_ID"). Used by query()
      * and fetchValue() (get_one()'s target) to answer it directly from
      * PDO::lastInsertId() instead of running it as SQL.
-     *
-     * Deliberately narrow — matches only the bare call, optionally aliased —
-     * so anything unexpected (a join, a WHERE clause) falls through to run
-     * as real SQL and fail loudly rather than being silently misread.
      */
     private function isLastInsertIdQuery(string $sql): bool
     {
@@ -715,6 +708,34 @@ class Database
                 $stmt->execute([$field]);
                 return $stmt->rowCount() > 0;
             }
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    /**
+     * Portable replacement for MySQL's `SHOW TABLES LIKE '...'` — that
+     * statement has no SQLite equivalent at all (not a DDL/DML pattern
+     * normalizeSql()/importSql() can rewrite, since it's not part of a
+     * CREATE/INSERT statement).
+     *
+     * @param  string $table  Table name (supports {TP}/custom prefixes)
+     * @return bool
+     */
+    public function tableExists(string $table): bool
+    {
+        $table = $this->prep($table);
+        try {
+            if ($this->driver === 'sqlite') {
+                $stmt = $this->pdo->prepare(
+                    "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?"
+                );
+                $stmt->execute([$table]);
+                return (bool) $stmt->fetchColumn();
+            }
+            $stmt = $this->pdo->prepare('SHOW TABLES LIKE ?');
+            $stmt->execute([$table]);
+            return $stmt->rowCount() > 0;
         } catch (PDOException) {
             return false;
         }
