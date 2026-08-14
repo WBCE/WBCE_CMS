@@ -43,4 +43,16 @@ class NewsImgLinkResolver extends LinkResolver
 
         return $link !== '' ? page_link((string) $link) : null;
     }
+
+    /**
+     * news_img's generated detail-page files (see functions.inc.php's
+     * mod_nwi_generate_static_file()) define POST_ID before bootstrapping —
+     * the same constant view.php reads to switch between "single post" and
+     * "post list" rendering. $sectionId/$pageId are unused: POST_ID alone
+     * already disambiguates, there's only ever one active post per request.
+     */
+    public function currentItemId(int $sectionId, int $pageId): ?int
+    {
+        return defined('POST_ID') ? (int) POST_ID : null;
+    }
 }

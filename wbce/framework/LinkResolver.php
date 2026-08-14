@@ -149,4 +149,20 @@ class LinkResolver
     {
         return null;
     }
+
+    /**
+     * Which item, if any, is the module currently rendering as a single
+     * "detail" view on this request — as opposed to a list/overview.
+     * 
+     * Some modules use a POST_ID, others may use an ITEM_ID or still
+     * something else entirely.
+     * 
+     * Returns null when no single item is active on this request (e.g. a
+     * list/overview page) — callers should treat that as "no target here",
+     * not fall back to guessing.
+     */
+    public function currentItemId(int $sectionId, int $pageId): ?int
+    {
+        return null;
+    }
 }
