@@ -52,7 +52,7 @@ require_once __DIR__ . "/functions.php";
 $ftan = $admin->getFTAN(); // set Form TransAction Number
 
 // remove all "filters" with no name
-$database->query("DELETE FROM `{TP_OPFD}` WHERE `name` = ''");
+$database->deleteRow('{TP_OPFD}', 'name', '');
 
 $aCssFiles = [
     get_url_from_path($admin->correct_theme_source('../css/ACPI_backend.css')),

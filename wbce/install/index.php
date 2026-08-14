@@ -365,13 +365,23 @@ if (isset($_SESSION['world_writeable']) and $_SESSION['world_writeable'] == "tru
  * DB Stuff
  *****************************/
 
+// SQLite is a staged, hidden feature — only offered when sql/ALLOW_SQLITE
+// exists and contains "1"/"true". Keeps SQLite support out of the community's
+// eye until it's actually ready to be announced.
+$allowSqlite = allow_sqlite();
+
 // for shorter Templating
+$sDatabaseType = 'mysql';
 $sDatabaseHost = 'localhost';
 $sDatabaseName = 'DatabaseName';
 $sTablePrefix = 'wbce_';
 $sDatabaseUsername = '';
 $sDatabasePassword = '';
+$sDatabasePath = 'var/database/wbce.sqlite';
 
+if ($allowSqlite && isset($_SESSION['database_type']) && $_SESSION['database_type'] === 'sqlite') {
+    $sDatabaseType = 'sqlite';
+}
 if (isset($_SESSION['database_host'])) {
     $sDatabaseHost = $_SESSION['database_host'];
 }
@@ -386,6 +396,9 @@ if (isset($_SESSION['database_username'])) {
 }
 if (isset($_SESSION['database_password'])) {
     $sDatabasePassword = $_SESSION['database_password'];
+}
+if ($allowSqlite && isset($_SESSION['database_path']) && $_SESSION['database_path'] !== '') {
+    $sDatabasePath = $_SESSION['database_path'];
 }
 
 // @todo reactivate the install Tables settings / better overwrite existing tables

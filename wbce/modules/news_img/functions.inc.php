@@ -702,7 +702,7 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
         	$database->query(sprintf($sql,TABLE_PREFIX));
 
             // get new postID
-        	$post_id = $database->get_one("SELECT LAST_INSERT_ID()");
+        	$post_id = $database->lastInsertId();
 
         	$mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
         	$mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
@@ -1679,15 +1679,39 @@ function mod_nwi_sections()
  function mod_nwi_settings_get($section_id)
 {
     global $database;
-    $query_content = $database->query(sprintf(
-        "SELECT * FROM `%smod_news_img_settings` WHERE `section_id`=%d",
-        TABLE_PREFIX,
-        $section_id
-    ));
-    if(!empty($query_content)) {
-        return $query_content->fetchRow();
+    $row = $database->fetchRow(
+        "SELECT * FROM `{TP}mod_news_img_settings` WHERE `section_id` = ?",
+        [$section_id]
+    );
+
+    // A section with no settings row yet (add.php's INSERT never ran, or the
+    // row was lost some other way) used to make this return false, which
+    // callers then indexed into directly (mod_nwi_get_order(), mod_nwi_get_sizes(),
+    // mod_nwi_posts_getall()) — "Trying to access array offset on false" and,
+    // for the *size fields, a null passed into substr_count(). Same defaults
+    // add.php seeds for a freshly added section, so behavior matches what a
+    // normal install would have produced.
+    if ($row === false) {
+        return [
+            'section_id'      => $section_id,
+            'view_order'      => 0,
+            'posts_per_page'  => 0,
+            'resize_preview'  => '125x125',
+            'imgthumbsize'    => '100x100',
+            'imgmaxwidth'     => '900',
+            'imgmaxheight'    => '900',
+            'imgmaxsize'      => 0,
+            'gallery'         => 'fotorama',
+            'view'            => 'default',
+            'mode'            => 'default',
+            'use_second_block'=> 'N',
+            'show_settings_only_admins' => 'N',
+            'header' => '', 'post_loop' => '', 'footer' => '', 'block2' => '',
+            'post_header' => '', 'post_content' => '', 'image_loop' => '', 'post_footer' => '',
+        ];
     }
-    return array();
+
+    return $row;
 }   // end function mod_nwi_settings_get()
 
 /**

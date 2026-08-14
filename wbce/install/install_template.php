@@ -264,34 +264,68 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                         </div>
                         <div class="card-body">
 
+    <?php if ($allowSqlite): ?>
                             <div class="field-row">
-                                <label for="database_host"><?= $TXT['lbl_db_host'] ?></label>
-                                <input <?= field_error('database_host') ?> type="text" id="database_host"
-                                                                          tabindex="7" name="database_host"
-                                                                          value="<?= $sDatabaseHost ?>" required>
+                                <label for="database_type"><?= $TXT['lbl_db_type'] ?></label>
+                                <div class="db-type-toggle">
+                                    <label>
+                                        <input type="radio" name="database_type" id="database_type_mysql"
+                                               value="mysql" <?= $sDatabaseType === 'mysql' ? 'checked' : '' ?>>
+    <?= $TXT['lbl_db_type_mysql'] ?>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="database_type" id="database_type_sqlite"
+                                               value="sqlite" <?= $sDatabaseType === 'sqlite' ? 'checked' : '' ?>>
+    <?= $TXT['lbl_db_type_sqlite'] ?>
+                                    </label>
+                                </div>
+                            </div>
+    <?php else: ?>
+                            <input type="hidden" name="database_type" id="database_type" value="mysql">
+    <?php endif ?>
+
+                            <div id="mysql-fields">
+                                <div class="field-row">
+                                    <label for="database_host"><?= $TXT['lbl_db_host'] ?></label>
+                                    <input <?= field_error('database_host') ?> type="text" id="database_host"
+                                                                              tabindex="7" name="database_host"
+                                                                              value="<?= $sDatabaseHost ?>" <?= $sDatabaseType === 'mysql' ? 'required' : '' ?>>
+                                </div>
+
+                                <div class="field-row">
+                                    <label for="database_name"><?= $TXT['lbl_db_name'] ?></label>
+                                    <input <?= field_error('database_name') ?> type="text" id="database_name"
+                                                                              tabindex="8" name="database_name"
+                                                                              pattern="[-a-zA-Z0-9_]+" value="<?= $sDatabaseName ?>" <?= $sDatabaseType === 'mysql' ? 'required' : '' ?>>
+                                    <span class="field-hint">[a-zA-Z0-9_-]</span>
+                                </div>
+
+                                <div class="field-row">
+                                    <label for="database_username"><?= $TXT['lbl_db_user'] ?></label>
+                                    <input <?= field_error('database_username') ?> type="text" id="database_username"
+                                                                                  tabindex="9" name="database_username"
+                                                                                  value="<?= $sDatabaseUsername ?>" <?= $sDatabaseType === 'mysql' ? 'required' : '' ?>>
+                                </div>
+
+                                <div class="field-row">
+                                    <label for="database_password"><?= $TXT['lbl_db_pass'] ?></label>
+                                    <input type="password" id="database_password"
+                                           tabindex="10" name="database_password"
+                                           value="<?= $sDatabasePassword ?>">
+                                </div>
                             </div>
 
-                            <div class="field-row">
-                                <label for="database_name"><?= $TXT['lbl_db_name'] ?></label>
-                                <input <?= field_error('database_name') ?> type="text" id="database_name"
-                                                                          tabindex="8" name="database_name"
-                                                                          pattern="[-a-zA-Z0-9_]+" value="<?= $sDatabaseName ?>" required>
-                                <span class="field-hint">[a-zA-Z0-9_-]</span>
+    <?php if ($allowSqlite): ?>
+                            <div id="sqlite-fields" style="display:none">
+                                <div class="field-row">
+                                    <label for="database_path"><?= $TXT['lbl_db_path'] ?></label>
+                                    <input <?= field_error('database_path') ?> type="text" id="database_path"
+                                                                              tabindex="7" name="database_path"
+                                                                              value="<?= _h($sDatabasePath) ?>">
+                                    <span class="field-hint"><?= $TXT['db_path_hint'] ?></span>
+                                </div>
                             </div>
-
-                            <div class="field-row">
-                                <label for="database_username"><?= $TXT['lbl_db_user'] ?></label>
-                                <input <?= field_error('database_username') ?> type="text" id="database_username"
-                                                                              tabindex="9" name="database_username"
-                                                                              value="<?= $sDatabaseUsername ?>" required>
-                            </div>
-
-                            <div class="field-row">
-                                <label for="database_password"><?= $TXT['lbl_db_pass'] ?></label>
-                                <input type="password" id="database_password"
-                                       tabindex="10" name="database_password"
-                                       value="<?= $sDatabasePassword ?>">
-                            </div>
+    <?php endif ?>
 
                             <div class="field-row">
                                 <label for="table_prefix"><?= $TXT['lbl_db_prefix'] ?></label>
@@ -441,6 +475,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
         <!-- ── i18n strings for JS ────────────────────────────────── -->
         <script>
             const I18N = {
+                allowSqlite: <?= json_encode($allowSqlite) ?>,
                 currLang: <?= json_encode($urlLang) ?>, // for db_conn_check.php
                 required: <?= json_encode($MSG['val_required']) ?>,
                 url: <?= json_encode($MSG['val_url']) ?>,

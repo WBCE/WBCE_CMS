@@ -1,0 +1,119 @@
+<script>
+function checkFile(fieldObj) {
+    var FileSize = fieldObj.files[0].size;
+    var FileSizeMB = (FileSize/1048576).toFixed(2);
+    if (FileSizeMB>{UPLOAD_LIMIT}) {
+		var error = "Filesize: " + FileSizeMB + " Mb \n\n";
+		error += "The maximum upload size is {UPLOAD_LIMIT} Mb.\n\n";
+		alert(error);
+		return false;
+    }
+}
+</script>
+<div class="miniform">
+	<div class="{MESSAGE_CLASS}">{STATUSMESSAGE}</div>
+	<div class="{FORM_CLASS}">
+		<h2>Demo company - Job Application Form</h2>
+		<small>Items marked with <span><span>*</span></span> are required</small>
+		<form name="form_{SECTION_ID}" id="form_{SECTION_ID}" method="post" action="{URL}" enctype="multipart/form-data">
+			<input name="miniform" type="hidden" value="{SECTION_ID}"/>
+			<input name="header" type="hidden" value="Job application"/>
+			<input name="mf_timestamp" type="hidden" value="{DATE} {TIME}"/>
+			{ASPFIELDS}
+			
+			<div style="margin-top: 20px; padding: 20px; border: 1px solid #aaa; border-radius: 5px;">
+				<h3>Position</h3>
+				<div class="full">
+					<label for="position"><span>Position you are applying for <span>*</span></span>
+						<input class=" {POSITION_ERROR}" type="text" id="position" name="mf_r_position" value="{POSITION}" />
+					</label>
+				</div>
+			</div>
+			<div style="margin-top: 20px; padding: 20px; border: 1px solid #aaa; border-radius: 5px;">
+				<h3>Personal information</h3>
+				<div class="onethird">
+					<label for="firstname"><span>Firstname <span>*</span></span>
+						<input class="{FIRSTNAME_ERROR}" type="text" id="firstname" name="mf_r_firstname" value="{FIRSTNAME}" />
+					</label>
+				</div>
+				
+				<div class="twothird pullright">
+					<label for="lastname"><span>Lastname <span>*</span></span>
+						<input class="{LASTNAME_ERROR}" type="text" id="lastname" name="mf_r_lastname" value="{LASTNAME}" />
+					</label>
+				</div>
+
+				<div class="full">
+					<label for="address"><span>Address <span>*</span></span>
+						<input class=" {ADDRESS_ERROR}" type="text" id="address" name="mf_r_address" value="{ADDRESS}" />
+					</label>
+				</div>
+
+				<div class="onethird">
+					<label for="zipcode"><span>Zipcode <span>*</span></span>
+						<input class="{ZIPCODE_ERROR}" type="text" id="zipcode" name="mf_r_zipcode" value="{ZIPCODE}" />
+					</label>
+				</div>
+
+				<div class="twothird pullright ">
+					<label for="city"><span>City <span>*</span></span>
+						<input class="{CITY_ERROR}" type="text" id="city" name="mf_r_city" value="{CITY}" />
+					</label>
+				</div>
+
+				<div class="half">
+					<label for="phone"><span>Phone <span>*</span></span>
+						<input type="tel" class="{PHONE_ERROR}" id="phone" name="mf_r_phone" value="{PHONE}" />
+					</label>
+				</div>
+
+				<div class="half pullright">
+					<label for="mobile"><span>Mobile</span>
+					<input type="tel" class="{MOBILE_ERROR}" id="mobile" name="mf_mobile" value="{MOBILE}" />
+					</label>
+				</div>
+				
+				<div class="full">
+					<label for="email"><span>E-mail <span>*</span></span>
+						<input class="{EMAIL_ERROR}" type="email" id="email" name="mf_r_email" value="{EMAIL}" />
+					</label>
+				</div>
+			</div>
+			<div style="margin-top: 20px; padding: 20px; border: 1px solid #aaa; border-radius: 5px;">
+				<h3>Resume upload</h3>{WHITELIST doc,docx,odt,pdf,rtf,txt}
+				<em><small>(allowed file types: {UPLOAD_WHITELIST} - max filesize: {UPLOAD_LIMIT}Mb)</small></em><br/>
+				
+				<div class="half">
+					
+					<label for="resume"><span>Resume<span>*</span></span> <br/>
+						<input class="{RESUME_ERROR}" type="file" id="resume" name="mf_r_resume" value="{RESUME}"  onchange="checkFile(this)"/>
+					</label>
+				</div>
+				<div class="half">
+					<label for="cover_letter"><span>Cover letter</span><br/>
+						<input class="{COVER_LETTER_ERROR}" type="file" id="cover_letter" name="mf_cover_letter" value="{COVER_LETTER}"  onchange="checkFile(this)" />
+					</label>
+				</div>
+
+				<div class="full" style="padding-top:20px;">
+					<label style="width:100%" for="message"><span>Extra information</span>
+						<textarea class="{MESSAGE_ERROR}" cols="80" rows="10" id="message" name="mf_message">{MESSAGE}</textarea>
+					</label>
+				</div>
+			</div>
+			<div style="margin-top: 20px; padding: 20px; border: 1px solid #aaa; border-radius: 5px;">
+				<div class="{CAPTCHA_CLASS} full">
+					<label for="captcha"><span>Please show us you are human</span>
+						<div class="grouping {CAPTCHA_ERROR}">
+							{CAPTCHA}
+						</div>
+					</label>
+				</div>
+
+				<div class="full">
+					<button class="submit" name="Submit" type="submit">Send</button>
+				</div> 
+			</div> 
+		</form>
+	</div>
+</div>

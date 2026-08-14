@@ -1,37 +1,32 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        modules
- * @package         wrapper
- * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version      	$Id: upgrade.php 1538 2011-12-10 15:06:15Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/wrapper/upgrade.php $
- * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
-// Must include code to stop this file being access directly
-/* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
-/* -------------------------------------------------------- */
+defined('WB_PATH') or die('Cannot access this file directly');
 
+// MyISAM enforcement is MySQL-only — `ALTER TABLE ... ENGINE = 'MyISAM'` is
+// invalid on SQLite, and SQLite has no storage engines to begin with
+// (getTableEngine() already returns a fixed 'SQLite' sentinel there). Skip
+// entirely for that driver instead of letting the ALTER fail.
 $msg = '';
-$sTable = TABLE_PREFIX.'mod_wrapper';
-if(($sOldType = $database->getTableEngine($sTable))) {
-	if(('myisam' != strtolower($sOldType))) {
-		if(!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
-			$msg = $database->get_error();
-		}
-	}
-} else {
-	$msg = $database->get_error();
+if ($database->getDriver() !== 'sqlite') {
+    $sTable = TABLE_PREFIX.'mod_wrapper';
+    if(($sOldType = $database->getTableEngine($sTable))) {
+        if(('myisam' != strtolower($sOldType))) {
+            $database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ');
+            if ($database->hasError()) {
+                $msg = $database->getError();
+            }
+        }
+    } else {
+        $msg = $database->getError();
+    }
 }
 // ------------------------------------

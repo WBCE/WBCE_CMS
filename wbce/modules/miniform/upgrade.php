@@ -19,26 +19,22 @@ if(!defined('WB_PATH')) die(header('Location: index.php'));
 
 function _db_add_field($field, $table, $desc) {
 	global $database;
-	$table = TABLE_PREFIX.$table;
-	$query = $database->query("DESCRIBE $table $field");
-	if(!$query || $query->numRows() == 0) { // add field
-		$query = $database->query("ALTER TABLE $table ADD $field $desc");
-	}
+	$database->addField('{TP}'.$table, $field, $desc);
 }
-_db_add_field("`use_ajax`"   	  ,"mod_miniform", "INT NOT NULL default '1'");
-_db_add_field("`use_recaptcha`"   ,"mod_miniform", "INT NOT NULL default '0'");
-_db_add_field("`recaptcha_key`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`recaptcha_secret`","mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`remote_id`"		  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`remote_name`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`emailfrom`"	  	  ,"mod_miniform", "VARCHAR(128) NOT NULL DEFAULT ''");
-_db_add_field("`confirm_user`"	  ,"mod_miniform", "INT NOT NULL default '0'");
-_db_add_field("`confirm_subject`" ,"mod_miniform", "VARCHAR(255) NOT NULL DEFAULT ''");
-_db_add_field("`disable_tls`"	  ,"mod_miniform", "INT NOT NULL default '0'");
-_db_add_field("`no_store`"	  	  ,"mod_miniform", "INT NOT NULL default '0'");
-_db_add_field("`user_id`"		  ,"mod_miniform_data", "INT NOT NULL default '0'");
-_db_add_field("`guid`"	  		  ,"mod_miniform_data", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`session_data`"	  ,"mod_miniform_data", "MEDIUMTEXT NOT NULL");
+_db_add_field("use_ajax"          ,"mod_miniform", "INT NOT NULL default '1'");
+_db_add_field("use_recaptcha"     ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("recaptcha_key"     ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("recaptcha_secret"  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("remote_id"         ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("remote_name"       ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("emailfrom"         ,"mod_miniform", "VARCHAR(128) NOT NULL DEFAULT ''");
+_db_add_field("confirm_user"      ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("confirm_subject"   ,"mod_miniform", "VARCHAR(255) NOT NULL DEFAULT ''");
+_db_add_field("disable_tls"       ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("no_store"          ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("user_id"           ,"mod_miniform_data", "INT NOT NULL default '0'");
+_db_add_field("guid"              ,"mod_miniform_data", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("session_data"      ,"mod_miniform_data", "MEDIUMTEXT NOT NULL");
 
 $path = WB_PATH.'/modules/miniform/';
 if(file_exists($path.'new_frontend.css')) {

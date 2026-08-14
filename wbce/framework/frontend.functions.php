@@ -44,21 +44,12 @@ foreach ($snippets as $rec) {
     }
 }
 
-// Frontend functions
-if (!function_exists('page_link')) {
-
-    /**
-     * @brief   Generate full page_link based on the
-     *          `link` content from the `{TP}pages` table
-     *
-     * @param unspec $uLinkId
-     * @return  string
-     */
-    function page_link($uLinkId = null)
-    {
-        return $GLOBALS['wb']->page_link($link);
-    }
-}
+// page_link() lived here too, but was buggy (referenced an undefined $link
+// instead of its own $uLinkId parameter) and never actually ran anyway —
+// framework/functions.php's own page_link() always loads first (via
+// framework/initialize.php, before this file), so its function_exists()
+// guard always skipped this one. Removed; framework/functions.php is now
+// the single definition, robust across backend/frontend/FEE contexts.
 
 if (!function_exists('get_page_link')) {
     /**
@@ -486,8 +477,7 @@ if (!function_exists('page_content')) {
                 $sRetVal .= ob_get_clean();
             }
         }
-        // FEE (FrontEnd Edit) hook — lets the fee module wrap the whole block for
-        // editors (e.g. an "add section here" affordance). Pass-through otherwise.
+        // FEE (FrontEnd Edit) hook
         if (function_exists('fee_wrap_block')) {
             $sRetVal = fee_wrap_block($sRetVal, $iBlockID);
         }
@@ -498,6 +488,67 @@ if (!function_exists('page_content')) {
         } else {
             return $sRetVal;
         }
+    }
+}
+
+if (!function_exists('block_section_count')) {
+    /**
+     * @brief   Cheap existence check for a template layout block — a single
+     *          COUNT(*) query, no section rendering.
+     *
+     *          block_contents()/page_content() are the only existing way to
+     *          find out whether a block has anything in it, and both pay the
+     *          full render cost (every assigned section's view.php runs,
+     *          including module DB queries) just to answer that yes/no
+     *          question. This lets a template decide layout structure (e.g.
+     *          whether to open a two-column wrapper at all) without paying
+     *          that cost purely to check.
+     *
+     *          Mirrors block_contents()'s own publication-window gating, so
+     *          a section outside its publ_start/publ_end range doesn't count
+     *          as "present" here either — same rule, cheap query instead of
+     *          a full render.
+     *
+     *          Does NOT guarantee a rendered section will yield non-empty
+     *          output (a module's view.php can still legitimately return '')
+     *          — for that, page_content($block, 0) remains the source of
+     *          truth. This answers "is anything assigned to this block",
+     *          not "will this block render visible content".
+     *
+     * @param unspec $uBlock Block ID or Block name
+     * @param int|null $pageId Defaults to the current page ($wb->page_id)
+     * @return int
+     */
+    function block_section_count($uBlock = 1, ?int $pageId = null): int
+    {
+        global $database, $wb;
+
+        $blockId = get_block_id($uBlock);
+        $pageId ??= $wb->page_id ?? 0;
+        $now = time();
+
+        $sql = 'SELECT COUNT(*) FROM `{TP}sections`
+                WHERE `page_id` = ? AND `block` = ?
+                AND (`publ_start` = 0 OR `publ_start` <= ?)
+                AND (`publ_end` = 0 OR `publ_end` >= ?)';
+
+        return (int) $database->fetchValue($sql, [$pageId, $blockId, $now, $now]);
+    }
+}
+
+if (!function_exists('block_has_sections')) {
+    /**
+     * @brief   Convenience wrapper around block_section_count() — "does this
+     *          block have anything assigned" as a boolean, for template
+     *          `if` conditions.
+     *
+     * @param unspec $uBlock Block ID or Block name
+     * @param int|null $pageId Defaults to the current page ($wb->page_id)
+     * @return bool
+     */
+    function block_has_sections($uBlock = 1, ?int $pageId = null): bool
+    {
+        return block_section_count($uBlock, $pageId) > 0;
     }
 }
 

@@ -590,15 +590,29 @@ function media_filename($sStr)
 }
 
 /**
- * @brief   Function to work out a page link
+ * @brief   Global page_link() — works in any context (backend, frontend,
+ *          FEE) by trying whichever context object is actually set, instead
+ *          of assuming $admin (backend-only — broke on the frontend/FEE,
+ *          where only $wb or $fee exist). All three ($wb, $admin, $fee)
+ *          inherit Wbce::pageLink(), so whichever is present just works.
+ *          This is now the ONLY page_link() definition in core — the old
+ *          duplicate in frontend.functions.php (which also had a real bug:
+ *          it referenced an undefined $link instead of its own parameter)
+ *          has been removed.
  *
- * @param string $sStr
- * @return  string
+ * @param  int|string|null $linkId  Page ID or link string
+ * @return string                   Full URL to the page, or '' if no
+ *                                  context object is available at all.
  */
 if (!function_exists('page_link')) {
-    function page_link($sLink)
+    function page_link($linkId = null): string
     {
-        return $GLOBALS['admin']->page_link($sLink);
+        foreach (['wb', 'admin', 'fee'] as $g) {
+            if (isset($GLOBALS[$g]) && method_exists($GLOBALS[$g], 'pageLink')) {
+                return $GLOBALS[$g]->pageLink($linkId);
+            }
+        }
+        return '';
     }
 }
 
@@ -1212,6 +1226,68 @@ function wbceSafePath(
 
     return $realPath;
 }
+
+/**
+ * wbceSafeRelativePath
+ * @brief Resolves a user-supplied relative path against a trusted base
+ *        directory, rejecting directory traversal.
+ *
+ * Unlike naive `str_replace(['../', '..\\'], '', $x)` stripping — which is
+ * bypassable via overlapping sequences such as "....//" collapsing back into
+ * "../" after a single pass — every "/"-separated segment of $relative is
+ * checked individually and the whole path is rejected outright if any
+ * segment equals "..". The resolved path is additionally verified to still
+ * be inside $baseDir using a separator-terminated prefix comparison, which
+ * avoids the classic sibling-directory bug (e.g. "/media" matching
+ * "/media-private").
+ *
+ * Use this whenever a relative path/filename comes from a request, a stored
+ * DB value, or an archive entry name, and is about to be joined onto a
+ * trusted base directory (uploads, template includes, ZIP extraction, ...).
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * @author    Christian M. Stefan  (https://www.wbEasy.de)
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @param string $baseDir    Trusted base directory; must already exist
+ * @param string $relative   User-supplied relative path/filename
+ * @param bool   $mustExist  true  = the resolved path must already exist (reads)
+ *                           false = only the containing directory must exist (writes)
+ *
+ * @return string|null       Canonical absolute path, or null if unsafe/invalid
+ */
+function wbceSafeRelativePath(string $baseDir, string $relative, bool $mustExist = true): ?string
+{
+    $relative = str_replace("\0", '', $relative);
+
+    $parts = [];
+    foreach (explode('/', str_replace('\\', '/', $relative)) as $segment) {
+        if ($segment === '' || $segment === '.') continue;
+        if ($segment === '..') return null;
+        $parts[] = $segment;
+    }
+    if (!$parts) return null;
+
+    $base = realpath($baseDir);
+    if ($base === false) return null;
+
+    $candidate = $base . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $parts);
+
+    if ($mustExist) {
+        $full = realpath($candidate);
+        if ($full === false) return null;
+    } else {
+        $dir = realpath(dirname($candidate));
+        if ($dir === false) return null;
+        $full = $dir . DIRECTORY_SEPARATOR . basename($candidate);
+    }
+
+    if (strncmp($full . DIRECTORY_SEPARATOR, $base . DIRECTORY_SEPARATOR, strlen($base) + 1) !== 0) {
+        return null;
+    }
+
+    return $full;
+}
+
 /**
  * Recursively removes a file or a non-empty directory.
  *
@@ -1406,6 +1482,18 @@ function sanitizeCssColor(?string $color): string
     // #rgb | #rgba | #rrggbb | #rrggbbaa
     if (preg_match('/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color)) {
         return strtolower($color);
+    }
+
+    // ── CSS custom property reference ──────────────────────────────────────
+    // var(--name) or var(--name, fallback) — WBCE VES's whole design-token
+    // system is built on custom properties (e.g. var(--c-accent)); admin-
+    // authored CSS (base.css, VES's per-preset Custom-CSS field) legitimately
+    // references them directly, not just through a resolved hex/keyword.
+    // Fallback content is restricted to a paren-free character set — blocks
+    // a nested function call from smuggling something this allowlist
+    // wouldn't otherwise pass.
+    if (preg_match('/^var\(--[a-zA-Z][a-zA-Z0-9-]*(?:\s*,\s*[^()]*)?\)$/', $color)) {
+        return $color;
     }
 
     // ── Functional color notation ─────────────────────────────────────────────

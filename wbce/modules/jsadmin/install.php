@@ -27,31 +27,22 @@ if(defined('WB_PATH') == false)
 // add new rows to table "settings"
 
 $msg = array ();
-$table = TABLE_PREFIX ."mod_jsadmin";
 $jsadminDefault = array (
 	array ( 'id' => '1','name' => 'mod_jsadmin_persist_order','value' => '1' ),
 	array ( 'id' => '2','name' => 'mod_jsadmin_ajax_order_pages','value' => '1' ),
 	array ( 'id' => '3','name' => 'mod_jsadmin_ajax_order_sections','value' => '1' ),
 );
 
-$database->query("DROP TABLE IF EXISTS `$table`");
-$sql = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_jsadmin` ('
-	. ' `id` INT(11) NOT NULL DEFAULT \'0\','
-	. ' `name` VARCHAR(255) NOT NULL DEFAULT \'0\','
-	. ' `value` INT(11) NOT NULL DEFAULT \'0\','
-	. ' PRIMARY KEY ( `id` )'
-	. ' ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
+// DDL lives in install_struct.sql and goes through importSql() rather than a raw query()
+$hasError = false;
+foreach ($database->importSql(__DIR__ . '/install_struct.sql', null, false) as $r) {
+	if (!$r['ok']) { $msg[] = $r['msg']; $hasError = true; }
+}
 
-if($database->query($sql) ) {
-
-	for($x=0;$x<sizeof($jsadminDefault); $x++) {
-		$sql  = 'INSERT INTO '.$table.' SET ';
-		$sql .= '`id`=\''.$jsadminDefault[$x]['id'].'\', ';
-		$sql .= '`name`=\''.$jsadminDefault[$x]['name'].'\', ';
-		$sql .= '`value`=\''.$jsadminDefault[$x]['value'].'\' ';
-		if(!$database->query($sql) ) { $msg[] = $database->get_error();}
+if (!$hasError) {
+	foreach ($jsadminDefault as $row) {
+		$result = $database->insertRow(TABLE_PREFIX . 'mod_jsadmin', $row);
+		if ($database->hasError()) { $msg[] = $database->getError(); }
 	}
-} else {
-	$msg[] = $database->get_error();
 }
 

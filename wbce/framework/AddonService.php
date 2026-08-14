@@ -205,6 +205,28 @@ class AddonService
                 return $this->addSignal('ADDON_INFO_INVALID', basename($zipPath));
             }
 
+            // Scan every extracted .php file (and reject dangerous double
+            // extensions such as .phtml) before anything from this ZIP is
+            // copied into var/addons/ — staging still lets an admin review
+            // it, so a blocked ZIP must never even reach that stage.
+            $findings = CodeVet::scanDirectory($tempUnzip, CodeVetProfile::Addon);
+            if (CodeVet::hasBlocking($findings)) {
+                CodeVet::logEvent('addon_zip_blocked', CodeVetProfile::Addon, $findings, ['zip' => basename($zipPath)]);
+                $first = current(array_filter($findings, static fn ($f) => $f->severity === 'block')) ?: $findings[0];
+                $where = $first->file !== '' ? "{$first->file}: " : '';
+                return $this->addSignal('ADDON_SECURITY_BLOCKED', $where . $first->message);
+            }
+            $warnings = CodeVet::onlyWarnings($findings);
+            if ($warnings !== []) {
+                // Not a hard block — staged/installed anyway, admin is informed.
+                // Staging never executes the code, so this is safe to proceed with.
+                CodeVet::logEvent('addon_zip_warned', CodeVetProfile::Addon, $warnings, ['zip' => basename($zipPath)]);
+                $first = $warnings[0];
+                $where = $first->file !== '' ? "{$first->file}: " : '';
+                $suffix = count($warnings) > 1 ? ' (+' . (count($warnings) - 1) . ' more)' : '';
+                $this->addSignal('ADDON_SECURITY_WARNING', $where . $first->message . $suffix);
+            }
+
             $type     = $info['_type'];
             $dir      = $info['_directory'];
             $stageDir = $this->getStagedDir($type, $dir);
@@ -754,7 +776,21 @@ class AddonService
                 continue;
             }
             if ($name === '' || str_ends_with($name, '/')) continue;
-            $safe = ltrim(str_replace(['../', '..\\', "\0"], '', $name), '/');
+
+            // Zip-slip guard: reject any entry containing a literal ".." path
+            // segment. A single-pass str_replace('../', '') is bypassable via
+            // overlapping sequences (e.g. "....//" -> "../"), so segments are
+            // checked individually instead of stripped.
+            $safe = null;
+            $parts = [];
+            foreach (explode('/', str_replace(['\\', "\0"], ['/', ''], $name)) as $segment) {
+                if ($segment === '' || $segment === '.') continue;
+                if ($segment === '..') { $parts = null; break; }
+                $parts[] = $segment;
+            }
+            if ($parts) $safe = implode('/', $parts);
+            if ($safe === null) continue;
+
             $dest = $target . '/' . $safe;
             @mkdir(dirname($dest), 0755, true);
             file_put_contents($dest, $zip->getFromIndex($i));
@@ -796,7 +832,7 @@ class AddonService
             'ADDON_REMOVED_OK', 'ADDON_RELOAD_OK', 'ADDON_FETCH_OK',
             'ADDON_UP_TO_DATE', 'ADDON_ALREADY_CURRENT', 'ADDON_SCRIPT_NOT_FOUND',
             'ADDON_STAGED', 'ADDON_UNSTAGED', 'ADDON_DELETED',
-            'ADDON_ACTIVATED', 'ADDON_DEACTIVATED',
+            'ADDON_ACTIVATED', 'ADDON_DEACTIVATED', 'ADDON_SECURITY_WARNING',
         ], true);
     }
 

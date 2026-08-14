@@ -158,15 +158,38 @@ if(isset($_GET['do']))
             $droplet_id        = intval($_GET['droplet_id']);
 
             // Get header and footer
-            $data = $database->get_array(sprintf(
-                "SELECT * FROM `{TP}mod_droplets` WHERE `id` = '%d'", $droplet_id
-            ))[0];
+            $data = $database->fetchRow(
+                "SELECT * FROM `{TP}mod_droplets` WHERE `id` = ?", [$droplet_id]
+            );
+
+            // A blocked save (CodeVet or syntax error) stashes the unsaved
+            // edit here instead of discarding it — one-shot read, cleared
+            // immediately so it never leaks into a later, unrelated visit.
+            $errorLine  = 0;
+            $draftKey   = 'droplet_' . $droplet_id;
+            if (isset($_SESSION['codevet_draft'][$draftKey])) {
+                $draft = $_SESSION['codevet_draft'][$draftKey];
+                unset($_SESSION['codevet_draft'][$draftKey]);
+                $data = array_merge($data ?: [], [
+                    'name'        => $draft['name'],
+                    'description' => $draft['description'],
+                    'active'      => $draft['active'],
+                    'admin_edit'  => $draft['admin_edit'],
+                    'admin_view'  => $draft['admin_view'],
+                    'code'        => $draft['code'],
+                    'comments'    => $draft['comments'],
+                ]);
+                // Message itself already arrives as a session toast (set by
+                // save_droplet.php before the redirect that landed us here).
+                $errorLine = max(0, (int) $draft['line']);
+            }
 
             $aToTwig['content'] = wbce_twig_display(
                 [
-                    'data'     => $data,
-                    'idKey'    => $admin->getIDKEY($droplet_id),
-                    'ajax_url' => WB_URL . '/modules/droplets/ajax_save_droplet.php',
+                    'data'       => $data,
+                    'idKey'      => $admin->getIDKEY($droplet_id),
+                    'ajax_url'   => WB_URL . '/modules/droplets/ajax_save_droplet.php',
+                    'error_line' => $errorLine,
                 ],
                 'modify',
                 true
@@ -175,7 +198,7 @@ if(isset($_GET['do']))
 
         // ----- create full backup -----
         case 'backup_droplets':
-            $list = $database->get_array("SELECT * FROM `{TP}mod_droplets`");
+            $list = $database->fetchAll("SELECT * FROM `{TP}mod_droplets`");
             // backup
             $aToTwig['content'] = wbce_backup_droplets($list);
             $aToTwig['more_header_links'] = $DR_TEXT['BACKUP'];

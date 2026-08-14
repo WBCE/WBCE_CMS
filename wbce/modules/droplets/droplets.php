@@ -84,9 +84,14 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                 }
 
                 // request the droplet code from database
-                $sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` LIKE "'.$droplet_name.'" AND `active` = 1';
-                $codedata = $GLOBALS['database']->get_one($sql);
-                if (!is_null($codedata))
+                $codedata = $GLOBALS['database']->fetchValue(
+                    "SELECT `code` FROM `{TP}mod_droplets` WHERE `name` = ? AND `active` = 1", [$droplet_name]
+                );
+                // fetchValue() returns '' for "no row found" (see Database.php),
+                // same as it would for a row whose code column happens to be
+                // empty — either way do_eval('') is a harmless no-op that falls
+                // through to the "no valid returnvalue" branch below.
+                if ($codedata !== '')
                 {
                     $newvalue = do_eval($codedata, $varlist, $wb_page_data);
 // check returnvalue (must be a string of 1 char at least or (bool)true

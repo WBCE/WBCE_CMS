@@ -1,9 +1,4 @@
 <?php
-
-/*
-install.php
-*/
-
 /**
  *
  * @category        tool
@@ -39,17 +34,17 @@ install.php
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 
 // obtain module directory
-$mod_dir = basename(dirname(__FILE__));
-require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
+$mod_dir = basename(__DIR__);
+require WB_PATH.'/modules/'.$mod_dir.'/info.php';
 
 // include module.functions.php
-include_once(WB_PATH . '/framework/module.functions.php');
+include_once WB_PATH . '/framework/module.functions.php';
 
 // include the module language file depending on the backend language of the current user
 if (!include(get_module_language_file($mod_dir))) return;
 
 // load outputfilter-functions
-require_once(dirname(__FILE__).'/functions.php');
+require_once __DIR__.'/functions.php';
 
 // create media-dir
 if(is_dir(WB_PATH.'/temp')){
@@ -57,39 +52,18 @@ if(is_dir(WB_PATH.'/temp')){
 } else {
     opf_io_mkdir(WB_PATH.MEDIA_DIRECTORY.'/opf_plugins');
 }
-opf_db_run_query("DROP TABLE IF EXISTS `{TP}mod_outputfilter_dashboard`");
-opf_db_run_query("CREATE TABLE {TP}mod_outputfilter_dashboard (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `userfunc` TINYINT NOT NULL DEFAULT '0',
-    `position` INT NOT NULL DEFAULT '0',
-    `active` TINYINT NOT NULL DEFAULT '1',
-    `allowedit` TINYINT NOT NULL DEFAULT '0',
-    `allowedittarget` TINYINT NOT NULL DEFAULT '0',
-    `name` VARCHAR(249) NOT NULL,
-    `func` TEXT NOT NULL,
-    `type` VARCHAR(255) NOT NULL,
-    `file` VARCHAR(255) NOT NULL,
-    `csspath` VARCHAR(255) NOT NULL,
-    `funcname` VARCHAR(255) NOT NULL,
-    `configurl` VARCHAR( 255 ) NOT NULL,
-    `plugin` VARCHAR( 255 ) NOT NULL,
-    `helppath` TEXT NOT NULL,
-    `modules` TEXT NOT NULL,
-    `desc` LONGTEXT NOT NULL,
-    `pages` TEXT NOT NULL,
-    `pages_parent` TEXT NOT NULL,
-    `additional_values` LONGTEXT NOT NULL,
-    `additional_fields` TEXT NOT NULL,
-    `additional_fields_languages` TEXT NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE (`name`),
-    INDEX (`type`)
-) ENGINE = InnoDB");
+// DDL lives in install_struct.sql and goes through importSql() 
+global $database;
+foreach ($database->importSql(__DIR__ . '/install_struct.sql', null, false) as $r) {
+    if (!$r['ok'] && OPF_VERBOSE) {
+        trigger_error('db error (install DDL): ' . $r['msg'], E_USER_WARNING);
+    }
+}
 
-opf_io_rmdir(dirname(__FILE__).'/naturaldocs_txt');
+opf_io_rmdir(__DIR__.'/naturaldocs_txt');
 
 // run install scripts of plugin filters  - they should start upgrade if already installed
-foreach( preg_grep('/\/plugin_install.php/', opf_io_filelist(dirname(__FILE__).'/plugins/')) as $installer){
+foreach( preg_grep('/\/plugin_install.php/', opf_io_filelist(__DIR__.'/plugins/')) as $installer){
     require($installer);
 }
 
@@ -110,7 +84,7 @@ if(!defined('WB_INSTALLER')){
 //frontend
 Settings::set('opf_droplets',1, false);
 Settings::set('opf_replace_stuff',1, false);
-Settings::set('opf_wblink',1, false);
+Settings::set('opf_pagelink',1, false);
 Settings::set('opf_short_url',0, false);
 Settings::set('opf_sys_rel',0, false);
 Settings::set('opf_remove_system_ph', 1, false);

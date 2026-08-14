@@ -1,30 +1,76 @@
 <?php
 /**
- * WebsiteBaker CMS AdminTool: wbSeoTool
- *
- * This file defines the obligatory variables required for WebsiteBaker CMS
+ * WBCE CMS AdminTool: wbSeoTool
  *
  *
- * @platform    CMS WebsiteBaker 2.8.x
- * @package     wbSeoTool
- * @author      Christian M. Stefan (Stefek)
- * @copyright   Christian M. Stefan
- * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @platform       WBCE CMS 1.7.0
+ * @package        wbSeoTool
+ * @author         Christian M. Stefan (https://www.wbEasy.de/)
+ * @contributions  Colinax, Bianka Martinovic ("WebBird"), BerndJM
+ * @copyright      Christian M. Stefan
+ * @license        http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 $module_directory   = 'wbSeoTool';
-$module_name        = 'SEO Tool';
+$module_name        = 'SEO Meta Tree';
 $module_function    = 'tool';
-$module_version     = '0.7.1';
+$module_version     = '1.3.0';
 $module_status      = 'Stable';
-$module_platform    = '2.8.3';
-$module_author      = 'Christian M. Stefan <stefek@designthings.de>';
+$module_platform    = '1.7.0';
+$module_author      = 'Christian M. Stefan, Colinax, Bianka Martinovic ("WebBird"), BerndJM';
 $module_license     = 'GNU General Public License v.2';
 $module_description = 'This Admin-Tool provides some SEO handling help.';
-$module_icon        = 'fa fa-tasks';
+$module_icon        = '<svg width="100%" height="100%" viewBox="0 0 512 493" version="1.1" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g><path d="M31.292,0l449.375,0c8.542,0 16.375,3.542 22.042,9.208l0.125,0.125c5.667,5.708 9.167,13.5 9.167,22.042l0,430.333c0,8.625 -3.542,16.458 -9.208,22.125c-5.667,5.667 -13.5,9.208 -22.125,9.208l-449.375,0c-8.542,0 -16.375,-3.5 -22.083,-9.208l-0.125,-0.125c-5.667,-5.708 -9.167,-13.5 -9.167,-22.042l0,-430.375c0,-8.625 3.5,-16.458 9.167,-22.125c0.333,-0.333 0.667,-0.667 1.042,-0.958c5.667,-5.083 13.083,-8.208 21.167,-8.208Zm452.417,116.375c-0.958,0.167 -2,0.25 -3,0.25l-449.375,0c-1.042,0 -2.042,-0.083 -3,-0.25l0,345.25c0,0.833 0.333,1.583 0.833,2.125l0.042,0.042c0.542,0.542 1.292,0.833 2.125,0.833l449.375,0c0.792,0 1.542,-0.333 2.125,-0.917c0.542,-0.542 0.917,-1.292 0.917,-2.125l-0.042,-345.208Zm-274.875,-75.958c11.25,0 20.333,9.125 20.333,20.333c0,11.25 -9.125,20.333 -20.333,20.333c-11.25,0 -20.333,-9.125 -20.333,-20.333c0,-11.208 9.125,-20.333 20.333,-20.333Zm-71.125,0c11.25,0 20.333,9.125 20.333,20.333c0,11.25 -9.125,20.333 -20.333,20.333c-11.25,0 -20.333,-9.125 -20.333,-20.333c0,-11.208 9.125,-20.333 20.333,-20.333Zm-71.083,0c11.25,0 20.333,9.125 20.333,20.333c0,11.25 -9.125,20.333 -20.333,20.333c-11.25,0 -20.333,-9.125 -20.333,-20.333c-0,-11.208 9.083,-20.333 20.333,-20.333Z"/><path d="M56.529,245.787l37.918,-2.084c0.791,5.398 2.495,9.513 5.052,12.292c4.139,4.596 9.982,6.894 17.651,6.894c5.66,0 10.103,-1.176 13.147,-3.527c3.104,-2.351 4.626,-5.077 4.626,-8.177c0,-2.939 -1.461,-5.558 -4.382,-7.91c-2.921,-2.351 -9.738,-4.489 -20.389,-6.573c-17.529,-3.42 -29.945,-8.016 -37.431,-13.788c-7.547,-5.718 -11.26,-12.987 -11.26,-21.858c0,-5.825 1.948,-11.33 5.782,-16.514c3.834,-5.184 9.616,-9.299 17.346,-12.238c7.73,-2.939 18.32,-4.436 31.771,-4.436c16.494,0 29.093,2.672 37.736,8.123c8.643,5.398 13.816,14.002 15.459,25.76l-37.553,1.977c-0.974,-5.131 -3.104,-8.925 -6.269,-11.223c-3.226,-2.351 -7.669,-3.527 -13.268,-3.527c-4.626,0 -8.156,0.855 -10.529,2.565c-2.374,1.71 -3.53,3.848 -3.53,6.306c0,1.817 0.974,3.42 2.861,4.863c1.826,1.496 6.269,2.886 13.329,4.169c17.468,3.313 29.945,6.68 37.492,10.047c7.547,3.367 13.086,7.535 16.494,12.559c3.408,4.97 5.173,10.582 5.173,16.781c0,7.268 -2.313,14.002 -6.878,20.148c-4.626,6.146 -10.955,10.795 -19.233,14.002c-8.217,3.153 -18.563,4.756 -31.101,4.756c-21.972,0 -37.188,-3.741 -45.648,-11.17c-8.46,-7.375 -13.268,-16.781 -14.364,-28.218Zm137.552,-75.996l106.877,0l0,24.263l-66.768,0l0,18.064l61.899,0l0,23.141l-61.899,0l0,22.339l68.776,0l0,25.706l-108.885,0l0,-113.513Zm125.684,56.863c0,-18.545 5.843,-32.974 17.651,-43.235c11.747,-10.315 28.119,-15.498 49.117,-15.498c21.485,0 38.101,5.077 49.726,15.178c11.625,10.154 17.468,24.37 17.468,42.594c0,13.254 -2.556,24.103 -7.608,32.6c-5.113,8.497 -12.477,15.071 -22.033,19.827c-9.616,4.703 -21.607,7.054 -35.971,7.054c-14.546,0 -26.658,-2.031 -36.214,-6.093c-9.556,-4.115 -17.285,-10.528 -23.25,-19.346c-5.904,-8.765 -8.886,-19.827 -8.886,-33.081Zm39.927,0.053c0,11.437 2.435,19.667 7.304,24.691c4.869,4.97 11.503,7.482 19.842,7.482c8.582,0 15.277,-2.458 19.963,-7.322c4.747,-4.917 7.06,-13.681 7.06,-26.401c0,-10.689 -2.495,-18.491 -7.365,-23.408c-4.93,-4.917 -11.564,-7.375 -20.024,-7.375c-8.034,0 -14.546,2.512 -19.416,7.482c-4.93,5.024 -7.365,13.307 -7.365,24.851Zm-321.13,-75.996l434.593,0l0,147.77l-434.593,0l0,-147.77Z"/><g><path d="M139.013,364.077l-17.157,29.097c-1.464,2.425 -3.02,4.149 -4.667,5.172c-1.647,1.023 -3.615,1.534 -5.902,1.534c-2.928,0 -5.399,-0.852 -7.412,-2.557c-2.013,-1.705 -4.621,-4.793 -7.824,-9.263l-15.922,-23.983l0,32.166c0,3.258 -0.892,5.645 -2.677,7.161c-1.784,1.515 -4.461,2.273 -8.03,2.273c-4.026,0 -6.954,-0.739 -8.785,-2.216c-1.83,-1.478 -2.745,-4.376 -2.745,-8.695l0,-49.556c0,-5.835 1.601,-10.23 4.804,-13.185c3.203,-2.955 8.602,-4.433 16.197,-4.433c2.837,0 5.307,0.398 7.412,1.193c2.105,0.796 3.683,1.705 4.735,2.728c1.052,1.023 2.082,2.292 3.088,3.808l18.393,33.303l19.444,-32.735c3.379,-5.456 9.449,-8.184 18.213,-8.184c4.108,0 7.622,0.587 10.543,1.762c2.922,1.175 5.228,3.069 6.917,5.683c1.689,2.614 2.533,5.891 2.533,9.832l0,49.443c0,7.502 -5.698,11.252 -17.095,11.252c-4.136,0 -7.514,-0.928 -10.134,-2.785c-2.619,-1.856 -3.929,-4.869 -3.929,-9.036l0,-29.779Z" style="fill-rule:nonzero;"/><path d="M243.742,359.531c4.85,0 8.258,0.644 10.226,1.932c1.967,1.288 2.951,3.486 2.951,6.592c0,2.576 -1.167,4.414 -3.5,5.513c-2.333,1.099 -5.971,1.648 -10.912,1.648l-22.236,0l0,12.162l29.785,0c5.124,0 8.807,0.625 11.049,1.875c2.242,1.25 3.363,3.467 3.363,6.649c0,3.637 -1.304,6.176 -3.912,7.615c-2.608,1.44 -6.566,2.16 -11.873,2.16l-44.472,0c-5.399,0 -9.357,-1.193 -11.873,-3.58c-2.516,-2.387 -3.775,-6.611 -3.775,-12.673l0,-47.965c0,-9.093 5.216,-13.639 15.648,-13.639l44.472,0c5.307,0 9.265,0.682 11.873,2.046c2.608,1.364 3.912,3.827 3.912,7.388c0,3.334 -1.121,5.664 -3.363,6.99c-2.242,1.326 -5.925,1.989 -11.049,1.989l-29.923,0l0,13.298l23.609,0Z" style="fill-rule:nonzero;"/><path d="M338.863,388.628c0,4.319 -0.646,7.748 -1.939,10.286c-1.293,2.538 -3.07,4.3 -5.332,5.285c-2.26,0.985 -5.237,1.478 -8.928,1.478c-5.446,0 -9.392,-1.193 -11.839,-3.58c-2.446,-2.387 -3.67,-6.611 -3.67,-12.673l0,-41.941l-11.723,0c-5.792,0 -10.136,-0.758 -13.033,-2.273c-2.895,-1.515 -4.343,-4.205 -4.343,-8.07c0,-2.349 0.572,-4.205 1.716,-5.569c1.144,-1.364 2.86,-2.33 5.147,-2.898c2.288,-0.568 5.353,-0.852 9.196,-0.852l58.747,0c5.124,0 8.83,0.758 11.118,2.273c2.288,1.515 3.431,4.13 3.431,7.843c0,2.501 -0.663,4.452 -1.99,5.854c-1.327,1.402 -3.088,2.368 -5.284,2.898c-2.196,0.53 -5.033,0.796 -8.51,0.796l-12.765,0l0,41.145Z" style="fill-rule:nonzero;"/><path d="M413.395,346.346c-3.935,0 -6.84,0.947 -8.716,2.842c-1.876,1.894 -2.814,5.266 -2.814,10.116l0,13.412l22.785,0l0,-13.639c0,-3.183 -0.458,-5.74 -1.373,-7.672c-0.915,-1.932 -2.173,-3.258 -3.775,-3.978c-1.601,-0.72 -3.637,-1.08 -6.108,-1.08Zm11.255,42.055l-22.785,0l0,6.024c0,3.864 -1.235,6.706 -3.706,8.525c-2.471,1.819 -6.726,2.728 -12.765,2.728c-2.562,0 -4.667,-0.303 -6.314,-0.909c-1.647,-0.606 -3.088,-1.629 -4.324,-3.069c-1.235,-1.44 -2.15,-3.542 -2.745,-6.308c-0.595,-2.766 -1.052,-6.1 -1.373,-10.002c-0.32,-3.902 -0.48,-8.847 -0.48,-14.833c0,-5.228 0.663,-10.021 1.99,-14.378c1.327,-4.357 3.111,-8.051 5.353,-11.082c2.242,-3.031 4.781,-5.702 7.618,-8.013c2.837,-2.311 5.925,-4.111 9.265,-5.399c3.34,-1.288 6.588,-2.254 9.745,-2.898c3.157,-0.644 6.337,-0.966 9.54,-0.966c3.843,0 7.641,0.436 11.393,1.307c3.752,0.871 7.549,2.368 11.393,4.49c3.843,2.122 7.206,4.755 10.089,7.899c2.882,3.145 5.239,7.218 7.069,12.219c1.83,5.001 2.745,10.608 2.745,16.822c0,10.002 -0.435,17.409 -1.304,22.221c-0.869,4.812 -2.333,8.165 -4.392,10.059c-2.059,1.894 -5.239,2.842 -9.54,2.842c-6.039,0 -10.294,-0.909 -12.765,-2.728c-2.471,-1.819 -3.706,-4.66 -3.706,-8.525l0,-6.024Z" style="fill-rule:nonzero;"/></g></g></svg>';
 
 /**
- * Version history
+ * Version History
+ *
+ * 1.3.1 - Christian M. Stefan
+ *       - added a custom SVG icon for the AdminTools overview
+ *       - make use of 1.7.0 Lang Klass consistently  
+ *       - remove WebsiteBaker branding as this tool won't work 
+ *         with WebsiteBaker any longer
+ * 
+ * 1.3.0 - Christian M. Stefan
+ *       - Added a "maximum" length threshold alongside minimum/optimum
+ *         (Title Counter / Description Counter settings)
+ *       - Status dots (empty / too short / optimal / too long) for
+ *         page_title/description, visible even while a tree node is
+ *         collapsed
+ *       - Tree-wide duplicate warning for page_title/description — flags
+ *         every page sharing the same text, updates live while typing
+ *       - Added ROADMAP.md
+ *
+ * 1.2.0 - Christian M. Stefan
+ *       - Consolidated CSS/JS/icons into /assets, renamed /skel to /twig
+ *         (matches the current module-scaffolding convention)
+ *       - All PNG/GIF action + visibility icons replaced by inline Tabler
+ *         SVGs (currentColor-aware); /icons directory removed
+ *       - upgrade.php removes /css, /skel, /icons and CHANGLOG.txt
+ *
+ * 1.1.0 - Christian M. Stefan 
+ *       - Dropped the module-owned {TP}mod_page_seo_tool table; settings now
+ *         live in the shared {TP}settings table via the Settings class
+ *         (same mechanism as modules/CodeMirror_Config)
+ *       - upgrade.php migrates any existing settings_json row into
+ *         Settings::set('seo_cfg', ...) and drops the old table
+ *       - Added an optional "Menu Title" field, editable in the tree via
+ *         double-click (same interaction as catalogue_hub's image slug editor)
+ *
+ * 1.0.0 - Christian M. Stefan
+ *       - Rebuilt on top of the shared PageTree class (framework/PageTree.php)
+ *         instead of a hand-rolled tree/permission query — fixes pages with
+ *         zero sections silently vanishing from the tree
+ *       - All DB access now goes through the PDO Database wrapper with
+ *         parameterized queries (was: string-concatenated SQL)
+ *       - ajax/save.php now authorizes writes per-page via PageTree's own
+ *         one-time pageIDKEY instead of a blanket pages_modify check
+ *       - Inline editing rebuilt on HTMX; dropped vendored jEditable/
+ *         jquery.cookie in favour of vanilla JS + localStorage
+ *       - Tree view uses native <details>/<summary> instead of a JS/cookie
+ *         driven expand-collapse implementation
+ * 
+ * FROM HERE ON UP COMES THE wBCE 1.7.0 Refactor
  *
  * 0.7.1 - colinax
  *       - fix versioning bug
@@ -32,10 +78,12 @@ $module_icon        = 'fa fa-tasks';
  * 0.7.0 - Bianka Martinovic ("WebBird")
  *       - fix issues with changed twig version and PHP 8
  *
- * 0.6.2 - Bernd
+ * 0.6.2 - BerndJM
  *       - MYSQL_ASSOC -> MYSQLI_ASSOC
  *
  * 0.6.1 - colinax
  *       - Add Admintool Icon
+ * 
+ * 0.1.0 - Christian M. Stefan, original version
  *
  **/

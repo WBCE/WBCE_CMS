@@ -104,28 +104,50 @@ if ($operating_system === 'windows') {
     $dir_mode  = default_dir_mode('../temp');
 }
 
-if (!isset($_POST['database_host']) || empty($_POST['database_host'])) {
-    set_error(d('e7: ') . 'Please enter a database host name', 'database_host');
-    $_isError = true;
-} else { $database_host = $_POST['database_host']; }
+// SQLite is a hidden, staged feature — never trust the client. Even if the
+// browser posts database_type=sqlite (tampered form or stale page), fall
+// back to mysql unless the server-side flag file says otherwise.
+$database_type = (($_POST['database_type'] ?? 'mysql') === 'sqlite' && allow_sqlite()) ? 'sqlite' : 'mysql';
 
-if (!isset($_POST['database_username']) || $_POST['database_username'] === '') {
-    set_error(d('e8: ') . 'Please enter a database username', 'database_username');
-    $_isError = true;
-} else { $database_username = $_POST['database_username']; }
+$database_host = '';
+$database_username = '';
+$database_password = '';
+$database_name = '';
+$database_path = '';
 
-if (!isset($_POST['database_password'])) {
-    set_error(d('e9: ') . 'Please enter a database password', 'database_password');
-    $_isError = true;
-} else { $database_password = $_POST['database_password']; }
+if ($database_type === 'sqlite') {
+    $database_path = trim($_POST['database_path'] ?? '');
+    if ($database_path === '') {
+        $database_path = 'var/database/wbce.sqlite';
+    }
+    if (preg_match('/\.\.[\\\\\/]/', $database_path) || preg_match('#^[\\\\/]|^[a-zA-Z]:#', $database_path)) {
+        set_error(d('e7: ') . 'Please enter a valid relative database file path', 'database_path');
+        $_isError = true;
+    }
+} else {
+    if (!isset($_POST['database_host']) || empty($_POST['database_host'])) {
+        set_error(d('e7: ') . 'Please enter a database host name', 'database_host');
+        $_isError = true;
+    } else { $database_host = $_POST['database_host']; }
 
-if (!isset($_POST['database_name']) || $_POST['database_name'] === '') {
-    set_error(d('e10: ') . 'Please enter a database name', 'database_name');
-    $_isError = true;
-} elseif (preg_match('/[^a-z0-9_-]+/i', $_POST['database_name'])) {
-    set_error(d('e11: ') . 'Only a-z, A-Z, 0-9, - and _ allowed in database name.', 'database_name');
-    $_isError = true;
-} else { $database_name = $_POST['database_name']; }
+    if (!isset($_POST['database_username']) || $_POST['database_username'] === '') {
+        set_error(d('e8: ') . 'Please enter a database username', 'database_username');
+        $_isError = true;
+    } else { $database_username = $_POST['database_username']; }
+
+    if (!isset($_POST['database_password'])) {
+        set_error(d('e9: ') . 'Please enter a database password', 'database_password');
+        $_isError = true;
+    } else { $database_password = $_POST['database_password']; }
+
+    if (!isset($_POST['database_name']) || $_POST['database_name'] === '') {
+        set_error(d('e10: ') . 'Please enter a database name', 'database_name');
+        $_isError = true;
+    } elseif (preg_match('/[^a-z0-9_-]+/i', $_POST['database_name'])) {
+        set_error(d('e11: ') . 'Only a-z, A-Z, 0-9, - and _ allowed in database name.', 'database_name');
+        $_isError = true;
+    } else { $database_name = $_POST['database_name']; }
+}
 
 if (preg_match('/[^a-z0-9_]+/', $_POST['table_prefix'] ?? '')) {
     set_error(d('e12: ') . 'Only a-z, 0-9 and _ allowed in table prefix.', 'table_prefix');
@@ -174,32 +196,61 @@ if ($_isError) {
     exit;
 }
 
-// Parse optional host:port
+// Parse optional host:port (mysql only)
 $database_port = null;
-if (str_contains($database_host, ':')) {
+if ($database_type === 'mysql' && str_contains($database_host, ':')) {
     [$database_host, $portStr] = explode(':', $database_host, 2);
     $database_port = is_numeric($portStr) ? (int)$portStr : null;
 }
 $database_charset = 'utf8mb4';
 
+// Resolve + validate the sqlite target directory (mirrors db_conn_check.php's
+// sqlite branch — this is the authoritative, non-AJAX check before install).
+$sqlite_full_path = '';
+if ($database_type === 'sqlite') {
+    $wbPathForDb = dirname(__DIR__);
+    $sqlite_full_path = $wbPathForDb . '/' . ltrim(str_replace('\\', '/', $database_path), '/');
+    $sqliteDir = dirname($sqlite_full_path);
+    if (!is_dir($sqliteDir) && !@mkdir($sqliteDir, 0755, true)) {
+        set_error(d('e29: ') . "Cannot create SQLite directory: $sqliteDir", '', true);
+        exit;
+    }
+    $realWbPath = realpath($wbPathForDb);
+    $realDir    = realpath($sqliteDir);
+    if ($realWbPath === false || $realDir === false || !str_starts_with($realDir, $realWbPath)) {
+        set_error(d('e29: ') . 'SQLite database path must resolve inside the WBCE root.', 'database_path', true);
+        exit;
+    }
+    if (!is_writable($realDir)) {
+        set_error(d('e29: ') . "SQLite directory is not writable: $realDir", 'database_path', true);
+        exit;
+    }
+}
+
 // ── Quick DB connectivity check ───────────────────────────────────────────────
 try {
-    $dsn = "mysql:host={$database_host};dbname={$database_name};charset=utf8mb4";
-    if ($database_port !== null) $dsn .= ";port={$database_port}";
-    $dbtest = new PDO($dsn, $database_username, $database_password, [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
+    if ($database_type === 'sqlite') {
+        $dbtest = new PDO('sqlite:' . $sqlite_full_path, null, null, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        ]);
+    } else {
+        $dsn = "mysql:host={$database_host};dbname={$database_name};charset=utf8mb4";
+        if ($database_port !== null) $dsn .= ";port={$database_port}";
+        $dbtest = new PDO($dsn, $database_username, $database_password, [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+    }
     $dbtest->query("SELECT 1");
     unset($dbtest);
 } catch (PDOException $e) {
     $msg = $e->getMessage();
-   
+
     if (str_contains($msg, 'Access denied'))          $sMsg = 'Access denied — check username and password.';
     elseif (str_contains($msg, 'Unknown database'))   $sMsg = 'Database does not exist.';
     elseif (str_contains($msg, 'Connection refused')) $sMsg = 'Connection refused — check hostname and port.';
     else                                              $sMsg = 'DB error: ' . _h($msg);
-    
+
     set_error(d('e29: ') . 'Cannot connect to database. ' . $sMsg, '', true);
     exit;
 }
@@ -250,17 +301,18 @@ if (!is_readable($config_template)) {
 $config_content = '<?php' . PHP_EOL . strtr(
     file_get_contents($config_template),
     [
-        '{DATETIMESTRING}'  => $install_date,
-        '{DB_TYPE}'         => 'mysql',
-        '{DB_HOST}'         => addslashes($database_host)
-                               . ($database_port !== null ? ':' . $database_port : ''),
-        '{DB_NAME}'         => addslashes($database_name),
-        '{DB_USERNAME}'     => addslashes($database_username),
-        '{DB_PASSWORD}'     => addslashes($database_password),
-        '{DB_CHARSET}'      => $database_charset,
-        '{TABLE_PREFIX}'    => addslashes($table_prefix),
-        '{WB_URL}'          => addslashes($wb_url),
-        '{ADMIN_DIRECTORY}' => addslashes($admin_dir),
+        '{DATETIMESTRING}'   => $install_date,
+        '{DB_TYPE}'          => $database_type,
+        '{DB_HOST}'          => addslashes($database_host)
+                                . ($database_port !== null ? ':' . $database_port : ''),
+        '{DB_NAME}'          => addslashes($database_name),
+        '{DB_USERNAME}'      => addslashes($database_username),
+        '{DB_PASSWORD}'      => addslashes($database_password),
+        '{DB_CHARSET}'       => $database_charset,
+        '{SQLITE_DB_PATH}'   => addslashes($sqlite_full_path),
+        '{TABLE_PREFIX}'     => addslashes($table_prefix),
+        '{WB_URL}'           => addslashes($wb_url),
+        '{ADMIN_DIRECTORY}'  => addslashes($admin_dir),
     ]
 );
 
@@ -287,7 +339,7 @@ defined('WB_URL')         or define('WB_URL',         $wb_url);
 defined('ADMIN_DIRECTORY')or define('ADMIN_DIRECTORY',$admin_dir);
 defined('ADMIN_PATH')     or define('ADMIN_PATH',     WB_PATH . '/' . ADMIN_DIRECTORY);
 defined('ADMIN_URL')      or define('ADMIN_URL',      WB_URL  . '/' . ADMIN_DIRECTORY);
-defined('DB_TYPE')        or define('DB_TYPE',        'mysql');
+defined('DB_TYPE')        or define('DB_TYPE',        $database_type);
 defined('DB_CHARSET')     or define('DB_CHARSET',     $database_charset);
 defined('DB_HOST')        or define('DB_HOST',        $database_host);
 defined('DB_NAME')        or define('DB_NAME',        $database_name);
@@ -295,6 +347,13 @@ defined('DB_USERNAME')    or define('DB_USERNAME',    $database_username);
 defined('DB_PASSWORD')    or define('DB_PASSWORD',    $database_password);
 if ($database_port !== null) {
     defined('DB_PORT')    or define('DB_PORT',        (string)$database_port);
+}
+if ($database_type === 'sqlite') {
+    // wbceSafePath() (used by Database.php's DSN builder) resolves this via
+    // realpath() as-is and requires it inside WB_PATH — it does NOT prefix
+    // WB_PATH itself, so this must be an absolute path, not the relative
+    // $database_path the user typed / db_conn_check.php received.
+    defined('SQLITE_DB_PATH') or define('SQLITE_DB_PATH', $sqlite_full_path);
 }
 
 require_once WB_PATH . '/framework/class.autoload.php';
@@ -439,6 +498,7 @@ $database->insertRow('{TP}users', [
     'language'           => $default_language,
     'timezone'           => $default_timezone,
     'display_name'       => 'Administrator',
+    'home_folder'        => '',
     'signup_checksum'    => date('Y-m-d H:i:s'),
     'signup_timestamp'   => time(),
     'signup_confirmcode' => 'install-script',

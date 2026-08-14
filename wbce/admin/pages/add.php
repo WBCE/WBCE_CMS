@@ -110,10 +110,16 @@ $parentRow = $parent > 0
 $template = $parentRow['template'] ?? '';
 $language = $parentRow['language'] ?? DEFAULT_LANGUAGE;
 
-// 1. Insert page (link + derived fields resolved in second pass)
+// 1. Insert page (link + derived fields resolved in second pass).
+// link/page_trail are TEXT NOT NULL with no column default — MySQL's
+// non-strict mode silently accepts the missing value as '', SQLite (and
+// strict MySQL) reject it, so both need an explicit placeholder here even
+// though the real values are written by the upsertRow() pass below.
 $database->insertRow('{TP}pages', [
     'parent'            => $parent,
     'slug'              => null,
+    'link'              => '',
+    'page_trail'        => '',
     'description'       => '',
     'keywords'          => '',
     'admin_users'       => '',

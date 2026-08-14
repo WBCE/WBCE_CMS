@@ -13,7 +13,7 @@
 $module_directory   = 'jsadmin';
 $module_name        = 'Javascript Admin';
 $module_function    = 'tool';
-$module_version     = '2.0.0';
+$module_version     = '2.0.1';
 $module_platform    = '1.7.0';
 $module_author      = 'Stepan Riha, Swen Uth, BerndJM, Christian M. Stefan';
 $module_license     = 'BSD License';
@@ -24,7 +24,10 @@ $module_level       = 'core';
 /**
  * Version history
  *
- * 2.0.0 - complete rework. 
+ * 2.0.1 - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *         experimental SQLite readiness
+ *
+ * 2.0.0 - complete rework.
  *         [c] from YahooUI to jQuery Sortable
  *          This version saves approximately 1 MB of the WBCE package.
  * 

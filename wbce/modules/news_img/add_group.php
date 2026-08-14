@@ -53,7 +53,7 @@ $database->query(sprintf(
 ));
 
 // Get the id
-$group_id = $database->get_one("SELECT LAST_INSERT_ID()");
+$group_id = $database->lastInsertId();
 
 $forward_url = WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id);
 if($request=='POST') {

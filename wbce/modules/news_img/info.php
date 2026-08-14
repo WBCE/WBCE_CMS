@@ -16,13 +16,22 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.31';
+$module_version     = '5.0.32';
 $module_platform    = '1.4';
-$module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
+$module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic, Slugger';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page module is designed for making a news page with images and lightbox effect.';
 
 /**
+ * v5.0.32 - 2026/08/10
+ *         - Christian M. Stefan
+ *         * multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *           experimental SQLite readiness: all eight table DDL blocks
+ *           (including the FOREIGN KEY / UNIQUE KEY constraints on
+ *           mod_news_img_posts_img) moved to install_struct.sql, routed
+ *           through Database::importSql() instead of raw query(sprintf(...))
+ *           so they get normalized for the active driver
+ *
  * v5.0.31 - 2026/03/23
  *         - slugger
  *         ! PHP 8.5 fixes

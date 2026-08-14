@@ -19,32 +19,8 @@ $raw = $database->fetchValue(
 
 $content = htmlspecialchars(str_replace('{SYSVAR:MEDIA_REL}', $sMediaUrl, $raw));
 
-if (!isset($wysiwyg_editor_loaded)) {
-    $wysiwyg_editor_loaded = true;
-
-    if (!defined('WYSIWYG_EDITOR') || WYSIWYG_EDITOR === 'none'
-        || !file_exists(WB_PATH . '/modules/' . WYSIWYG_EDITOR . '/include.php')) {
-
-        function show_wysiwyg_editor($name, $id, $content, $width, $height) {
-            include_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
-            echo registerEditArea($name, 'html', true, 'both', true, true, 600, 450, 'default');
-            echo '<textarea name="' . $name . '" id="' . $id
-               . '" style="width:' . $width . ';height:' . $height . ';">'
-               . $content . '</textarea>';
-        }
-
-    } else {
-        $id_list = $database->fetchAll(
-            "SELECT `section_id`
-                FROM `{TP}sections`
-             WHERE `page_id` = ? AND `module` = 'wysiwyg'",
-            [(int) $page_id]
-        );
-        $id_list = array_map(fn($r) => 'content' . $r['section_id'], $id_list);
-
-        require WB_PATH . '/modules/' . WYSIWYG_EDITOR . '/include.php';
-    }
-}
+// Editor loading, editor selection and the textarea fallback are all handled by
+// the WysiwygEditor dispatcher (framework/WysiwygEditor.php) at render time below.
 
 // Ensure window.showToast() is available for AJAX toast feedback
 Alerts::ensureToastAssets();
@@ -60,7 +36,20 @@ I::insertJsFile(WB_URL . '/modules/wysiwyg/ajax_save.js', 'BODY BTM-');
     <input type="hidden" name="section_id" value="<?= $section_id ?>">
     <?= $admin->getFTAN() ?>
     <input type="hidden" name="idKey" value="<?= $admin->getIDKEY($section_id) ?>">
-    <?php show_wysiwyg_editor('content' . $section_id, 'content' . $section_id, $content, '100%', '350') ?>
+    <?php
+    // No 'height' override here on purpose: an explicit value always wins over
+    // the preset's own configured height (tinymce_wbce_render_editor() does
+    // `$height ?: $preset['height']`), so a hardcoded value would silently
+    // ignore whatever height an admin sets in the configurator ("Standardhöhe").
+    WysiwygEditor::init('content' . $section_id, $content);
+    ?>
+    <?php // Version history (tinymce_wbce): declare a stable, URL-independent key
+          // for this field so the wbce_history dialog shows the versions recorded
+          // server-side on real save (save.php / ajax_save.php), and the client
+          // suppresses its own autosave for it. Harmless if the plugin is absent. ?>
+    <script>
+    (window.WBCE_TINYMCE_HISTORY_KEYS = window.WBCE_TINYMCE_HISTORY_KEYS || {})['content<?= (int) $section_id ?>'] = 'wysiwyg-section-<?= (int) $section_id ?>';
+    </script>
     <table style="padding-bottom:10px;width:100%">
         <tr>
             <td style="text-align:left;margin-left:1em">

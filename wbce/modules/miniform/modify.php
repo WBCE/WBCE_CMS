@@ -50,9 +50,7 @@ if (!isset($links)) {
 
 $sel = ' selected';
 
-$query = "SELECT * FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'";
-$get_settings = $database->query($query);
-$settings = $get_settings->fetchRow();
+$settings = $database->fetchRow("SELECT * FROM {TP}mod_miniform WHERE section_id = ?", [$section_id]);
 if(!$settings['email'])           $settings['email'] = SERVER_EMAIL;
 if(!$settings['emailfrom'])       $settings['emailfrom'] = SERVER_EMAIL;
 if(!$settings['subject'])         $settings['subject'] = $MF['SUBJECT'];

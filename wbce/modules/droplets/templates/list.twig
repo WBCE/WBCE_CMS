@@ -2,22 +2,30 @@
 <script>
     var DROPLETS_SHOW_DATE = {% if show_date %}{{ show_date }}{% else %}0{% endif %};
 </script>
-<div style="padding:10px 15px 0;">
-    <a class="button" href="{{ MODULE_DIR }}/add_droplet.php"><i class="fa fa-fw fa-tint"></i>{{ L_('DR_TEXT:ADD_DROPLET') }}</a>
+<div style="display:flex; align-items:center; justify-content:space-between; gap:1rem;">
+    {% if droplets|length > 2 %}
+    <input type="text" id="filterTable" class="cp-table-filter" style="min-height: 34px; margin-bottom:0;" data-filter-table="myTable" placeholder="{{ L_('TEXT:SEARCH') }} &hellip;">
+    {% else %}
+    <span></span>
+    {% endif %}
+    <a class="button toggler" href="{{ MODULE_DIR }}/add_droplet.php"><i class="fa fa-fw fa-tint"></i>{{ L_('DR_TEXT:ADD_DROPLET') }}</a>
 </div>
+
 <form method="post" action="{{ TOOL_URI }}">
     {{ FTAN }}
-    <table class="droplets row_a tablesorter filters-table" id="myTable">
+    <table class="cp-table table-bordered table-hover" id="myTable">
 	<thead>
             <tr>
-                <th width="40"></th>
-                <th width="25%">{{ L_('TEXT:NAME') }}</th>
-                <th>{{ L_('TEXT:DESCRIPTION') }}</th>
+                {% block headings %}
+                <th class="sorter-false" width="40"></th>
+                <th class="sort" width="25%">{{ L_('TEXT:NAME') }}</th>
+                <th class="sort">{{ L_('TEXT:DESCRIPTION') }}</th>
                 {% if show_date %}
-                <th width="6%">{{ L_('TEXT:DATE') }}</th>
+                <th class="sort" width="6%">{{ L_('TEXT:DATE') }}</th>
                 {% endif %}
-                <th width="6%">{{ L_('TEXT:ACTIVE') }}</th>
-                <th width="7%"></th>
+                <th class="sort" width="6%">{{ L_('TEXT:ACTIVE') }}</th>
+                <th class="sorter-false" width="7%"></th>
+                {% endblock %}
             </tr>
 	</thead>
 	<tbody>
@@ -81,7 +89,8 @@
     <tfoot>
         <tr>     
             <td colspan="2"><label style="font-weight:600"><input type="checkbox" id="checkAll" /> {{ droplets|length }} Droplets</label></td>
-            <td align="right" colspan="{% if show_date %}4{% else %}5{% endif %}">
+            <td colspan="{% if show_date %}2{% else %}1{% endif %}"></td>
+            <td align="right" colspan="2">
                 <label style="font-weight:600">
                     <input type="checkbox" id="show_date" {% if show_date %}checked{% endif %} data-uri="{{ TOOL_URI }}&amp;do=show_date&amp;val={% if show_date %}{{ show_date }}{% else %}0{% endif %}" /> {{ L_('DR_TEXT:SHOW_DATE') }}
                 </label>

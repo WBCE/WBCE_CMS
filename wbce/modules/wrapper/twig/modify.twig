@@ -1,0 +1,49 @@
+{#
+    wrapper/twig/modify.twig
+
+    Variables:
+      page_id, section_id — IDs
+      FTAN                — raw FTAN hidden input HTML
+      WB_URL, ADMIN_URL   — base URLs
+      url                 — currently stored iframe URL
+      height              — currently stored iframe height (px)
+#}
+<form name="wrapper" action="{{ WB_URL }}/modules/wrapper/save.php" method="post">
+    <input type="hidden" name="page_id"    value="{{ page_id }}" />
+    <input type="hidden" name="section_id" value="{{ section_id }}" />
+    {{ FTAN | raw }}
+
+    <div class="cp-settings">
+        <div class="cp-toggle-section"><div class="cp-card-head">
+            <label>
+                Wrapper
+            </label>
+        </div>
+            <section>
+
+                {# ── URL ──────────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TEXT:URL') }}</div>
+                    <div class="cp-setting-value">
+                        <input type="text" name="url" value="{{ url | e }}" style="width:100%;" />
+                    </div>
+                </div>
+
+                {# ── Height ───────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TEXT:HEIGHT') }}</div>
+                    <div class="cp-setting-value">
+                        <input type="number" step="5" name="height" value="{{ height }}" maxlength="4" style="width:100px;" />
+                    </div>
+                </div>
+
+                {# ── Buttons ──────────────────────────────────────────────── #}
+                <div class="cp-buttons-row">
+                    <a href="{{ ADMIN_URL }}/pages/modify.php?page_id={{ page_id }}" class="button">« {{ L_('TEXT:BACK') }}</a>
+                    <button type="submit" class="button ico-save pos-right">{{ L_('TEXT:SAVE') }}</button>
+                </div>
+
+            </section>
+        </div>
+    </div>
+</form>

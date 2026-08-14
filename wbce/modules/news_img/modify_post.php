@@ -15,6 +15,11 @@
 
 require_once __DIR__.'/functions.inc.php';
 
+// Deferred header: setViewUrl() only has an effect if it runs 
+// before print_header(), so header printing is pushed past
+// the point where we know the post's real frontend URL.
+$admin_header = false;
+
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
 
@@ -23,6 +28,7 @@ if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
     $post_id = intval($_GET['post_id']);
 }
 if (!$post_id) {
+    $admin->print_header();
     $admin->print_error(
         $MESSAGE['GENERIC_SECURITY_ACCESS']
      .' (IDKEY) '.__FILE__.':'.__LINE__,
@@ -40,9 +46,20 @@ if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
 
 // get post
 $post_data = mod_nwi_post_get($post_id);
-$post_data['content_short']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_short']);
-$post_data['content_long']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_long']);
-$post_data['content_block2']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_block2']);
+
+// Reuse the LinkResolver provider we already have for this module instead of
+// re-deriving the URL here: same rules (page_link() + active check) as
+// [news_img:NN] tokens resolve to at render time. Falls back to the
+// container page (Admin::getViewUrl()'s default) when the post is inactive
+// or otherwise unresolvable.
+$viewUrl = LinkResolver::providerFor('news_img')?->resolve($post_id);
+if ($viewUrl !== null) {
+    $admin->setViewUrl($viewUrl);
+}
+$admin->print_header();
+$post_data['content_short'] = str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_short']);
+$post_data['content_long']  = str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_long']);
+$post_data['content_block2']= str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_block2']);
 
 // ----- delete previewimage ---------------------------------------------------
 if (isset($_GET['post_img'])) {

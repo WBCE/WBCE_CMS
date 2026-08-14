@@ -12,6 +12,11 @@ define('DB_NAME',         '{DB_NAME}');
 define('DB_USERNAME',     '{DB_USERNAME}');
 define('DB_PASSWORD',     '{DB_PASSWORD}');
 define('DB_CHARSET',      '{DB_CHARSET}');
+// Only used when DB_TYPE is 'sqlite' — absolute path to the .sqlite file.
+// Empty for MySQL installs; Database.php then falls back to its own default.
+if ('{SQLITE_DB_PATH}' !== '') {
+    define('SQLITE_DB_PATH', '{SQLITE_DB_PATH}');
+}
 define('TABLE_PREFIX',    '{TABLE_PREFIX}');
 define('WB_URL',          '{WB_URL}');
 define('ADMIN_DIRECTORY', '{ADMIN_DIRECTORY}');

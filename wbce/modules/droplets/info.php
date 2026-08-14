@@ -14,39 +14,73 @@ $core = true;
 $module_directory   = 'droplets';
 $module_name        = 'Droplets';
 $module_function    = 'tool';
-$module_version     = '2.4.2';
+$module_version     = '2.4.5';
 $module_platform    = '1.6.0';
 $module_author      = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan';
-$module_license     = 'GNU General Public License';
+$module_license     = 'GNU/GPL v2';
 $module_description = 'This tool allows you to manage your local Droplets.';
 $module_icon        = 'fa fa-tint';
 $module_home        = 'https://addons.wbce.org/pages/addons.php?do=item&item=54';
 $module_guid        = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
- * Version history
- * ===============
+ * Version History
+ * =============================================================================
  *
- * 
- * v2.4.2 Stefek 24.04 2026
+ *
+ * v2.4.5 Christian M. Stefan 10.08 2026
+ *        - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *          experimental SQLite readiness
+ *
+ * v2.4.4 Christian M. Stefan 09.08 2026
+ *        - wire the new framework/CodeVet.php into every save path
+ *          (ajax_save_droplet.php, save_droplet.php,
+ *          functions.inc.php::check_droplet_syntax()): saved Droplet code
+ *          is now scanned for eval()-in-code, dynamic/variable function
+ *          calls, backticks, system/obfuscation functions and superglobal
+ *          access, not just checked for valid PHP syntax
+ *        - check_droplet_syntax() intentionally keeps CodeVet::scan() out
+ *          of its own path (it re-runs on every admin overview load, not
+ *          just on save) — the security scan is enforced once, at save time
+ *
+ * v2.4.3 Christian M. Stefan 09.08 2026
+ *        - fix SQL injection in the per-request Droplet lookup (droplets.php);
+ *          name was interpolated straight into a LIKE clause, now parameterized
+ *        - remove addslashes()/add_slashes() before PDO writes; was corrupting
+ *          stored titles/comments/code containing quotes
+ *        - migrate remaining mysqli-style calls to the PDO API
+ *          (fetchValue/fetchAll/insertRow/upsertRow/deleteRow/hasError/addField)
+ *        - fix `if (!$database->query/insertRow(...))` checks that could never
+ *          detect a failure (those calls never return a falsy value)
+ *        - rebuild the admin list on the same cp-table chrome as admin/users
+ *          (cp-table/table-bordered/table-hover, sort icons, working
+ *          search-as-you-type filter, fix bcp-pane-inlay typo that ate the
+ *          content padding)
+ *        - replace jquery.tablesorter.js with a small vanilla-JS click-to-sort
+ *          script; drop js/mdcr.js (unreferenced legacy email-obfuscation
+ *          script) and img/*.gif sort icons (superseded by text icons)
+ *        - align inline delete-confirm row class with cp_theme.css
+ *          (on-delete, not row-on-delete) so it gets the warning color
+ *
+ * v2.4.2 Christian M. Stefan 24.04 2026
  *        - set $core var, 
  *        - remove deprecated $module_level var
  * 
- * v2.4.0 Stefek 06.02 2023 
+ * v2.4.0 Christian M. Stefan 06.02 2023 
  *        - move OpF Filter file to `/modules/droplets/` directory 
              and remove `/modules/mod_opf_droplets/` directory
  *
- * v2.3.4 Stefek 05.02 2023
+ * v2.3.4 Christian M. Stefan 05.02 2023
  *        - improve some javascript behavior
  *            [] inline delete confirm
  *            [] deactivat droplet from within droplets list
  *
- * v2.3.3 Stefek 04.02 2023
+ * v2.3.3 Christian M. Stefan 04.02 2023
  *        - expand the readme/help file
  *        - include German translation for readme/help file
  *        - insert credits of original and subsequent module devs 
  *
- * v2.3.2 Stefek 02.02 2023
+ * v2.3.2 Christian M. Stefan 02.02 2023
  *        - template rework making the module ACPI Ready
  *        - add setting to show date (latest edit/creation)
  *

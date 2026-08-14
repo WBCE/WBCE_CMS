@@ -285,6 +285,19 @@ nav.cp-tabs a {
     font-size: inherit;
     flex: 1;
 }
+/* TOOL_ICON / module_icon() can inject raw inline <svg> markup (no fixed
+   width/height) — without this it renders at whatever intrinsic size the
+   SVG's viewBox implies, which is usually enormous. Font Awesome <i> icons
+   are unaffected (sized via font-size already). */
+.cp-card-head svg {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: -.4em;
+    margin-right: 6px;
+    /* SVG specifics */
+    fill: currentColor;
+    shape-rendering: geometricPrecision;
+}
 .cp-card-head label span {
     font-weight: 600;
     text-transform: none; font-size:125%;

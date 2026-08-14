@@ -5,6 +5,10 @@
       FTAN              — FTAN hidden input (raw HTML)
       RETURN_URL        — form action URL
       RETURN_TO_TOOLS   — back-button URL (tools list)
+      IS_HTTPS          — bool; ALTCHA needs a secure context (crypto.subtle) —
+                           below this the widget-customization section is
+                           replaced by a warning box and Captcha.php falls
+                           back to a math captcha automatically.
       USEABLE_CAPTCHAS  — { key: label } map of available captcha types
       CAPTCHA_TYPE      — currently active type key
       ENABLED_CAPTCHA   — '1' or '0'
@@ -91,6 +95,17 @@
                 </div>
                 <blockquote class="info">&nbsp;{{ L_("CAPTCHA:MODULES_SETTINGS_INFO") }}</blockquote>
 
+                {% if not IS_HTTPS %}
+                {# ══ No HTTPS — ALTCHA cannot run in the browser at all ════════ #}
+                <div class="cp-card-head" id="config">
+                    <label><i class="fa fa-wrench"></i> {{ L_('CAPTCHA:WIDGET_HEADING') }}</label>
+                </div>
+                <blockquote class="error-box" style="font-size:1.05em;padding:16px;">
+                    <p><b><i class="fa fa-exclamation-triangle"></i> {{ L_('CAPTCHA:NO_HTTPS_HEADING') }}</b></p>
+                    <p>{{ L_('CAPTCHA:NO_HTTPS_INFO') }}</p>
+                    <p>{{ L_('CAPTCHA:NO_HTTPS_FALLBACK') }}</p>
+                </blockquote>
+                {% else %}
                 {# ══ ALTCHA Widget-Anpassung ════════════════════════════════ #}
                 <div class="cp-card-head" id="config">
                     <label><i class="fa fa-wrench"></i> {{ L_('CAPTCHA:WIDGET_HEADING') }}</label>
@@ -246,6 +261,7 @@
                     </div>
                 </div>{# /cp-card-aside #}
                 </section>{# /has-aside #}
+                {% endif %}
 
                 {# ── Buttons ───────────────────────────────────────────────── #}
                 <div class="cp-buttons-row">
@@ -258,8 +274,8 @@
         </div>
     </div>
 </form>
-               
-                    
+
+{% if IS_HTTPS %}
 <script>
 (function () {
     'use strict';
@@ -353,3 +369,4 @@
     altchaUpdatePreview();
 }());
 </script>
+{% endif %}

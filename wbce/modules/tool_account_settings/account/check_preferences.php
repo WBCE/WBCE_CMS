@@ -37,7 +37,7 @@ if (is_array($sEncPassword)){
 } else { 
 
     // Get entered values
-    $sDisplayName  = remove_special_characters($oAccounts->add_slashes(strip_tags($oAccounts->get_post('display_name'))));
+    $sDisplayName  = remove_special_characters(strip_tags($oAccounts->get_post('display_name')));
     $sLC           = $oAccounts->get_post('language');
     $sLanguage     = preg_match('/^[A-Z]{2}$/', $sLC) ? $sLC : 'EN';
     $sTimezone     = is_numeric($oAccounts->get_post('timezone')) ? $oAccounts->get_post('timezone')*60*60 : 0;
@@ -47,18 +47,18 @@ if (is_array($sEncPassword)){
     // Update user data
     $aUpdate = array(
         'user_id'      => $oAccounts->get_user_id(),
-        'display_name' => $database->escapeString($sDisplayName),
-        'language'     => $database->escapeString($sLanguage),
-        'timezone'     => $database->escapeString($sTimezone),
-        'date_format'  => $database->escapeString($sDateFormat),
-        'time_format'  => $database->escapeString($sTimeFormat),
+        'display_name' => $sDisplayName,
+        'language'     => $sLanguage,
+        'timezone'     => $sTimezone,
+        'date_format'  => $sDateFormat,
+        'time_format'  => $sTimeFormat,
     );
 
     // Validate email format
     if (!$oAccounts->validate_email($sNewEmail)) {
         $aMsg['error'][] = 'MESSAGE:USERS_INVALID_EMAIL';
     } else {
-        $aUpdate['email'] = $database->escapeString($sNewEmail);
+        $aUpdate['email'] = $sNewEmail;
     }
 
     // Validate new password if entered
@@ -77,7 +77,12 @@ if (is_array($sEncPassword)){
     }
 
     // Update Data in Database
-    if (empty($aMsg['error']) && $database->updateRow('{TP}users', 'user_id', $aUpdate)) {
+    $bUpdateOk = false;
+    if (empty($aMsg['error'])) {
+        $database->upsertRow('{TP}users', 'user_id', $aUpdate);
+        $bUpdateOk = !$database->hasError();
+    }
+    if ($bUpdateOk) {
         $aMsg['success'][] = 'MESSAGE:PREFERENCES_DETAILS_SAVED';
         if (isset($aUpdate['password']))
             $aMsg['success'][] = 'MESSAGE:PREFERENCES_PASSWORD_CHANGED';
@@ -113,13 +118,13 @@ if (is_array($sEncPassword)){
             $aTokenReplace = array(
                 'BACKEND_VIEW_LINK' => ADMIN_URL.'/admintools/tool.php?tool=tool_account_settings&user_id='.$aUpdate['user_id'],
                 'USER_DISPLAY_NAME' => $aUpdate['display_name'],
-                'USER_LOGIN_NAME'   => $database->get_one("SELECT `username` FROM `{TP}users` WHERE `user_id` = ".$aUpdate['user_id'])
+                'USER_LOGIN_NAME'   => $database->fetchValue("SELECT `username` FROM `{TP}users` WHERE `user_id` = ?", [$aUpdate['user_id']])
             );
             $oAccounts->sendChangeNotificationEmail($aTokenReplace);
         }
         
     } else {
-        $aMsg['error'][] = $database->get_error();
+        $aMsg['error'][] = $database->getError();
     }
 }
 if (!empty($aMsg)){

@@ -13,31 +13,12 @@
 // Must include code to stop this file being accessed directly
 defined('WB_PATH') or die('No direct access!');
 
-// global $admin;
-
+// DDL lives in install_struct.sql and goes through importSql() 
 $msg = [];
-$sql  = 'DROP TABLE IF EXISTS `{TP}mod_droplets`';
-if (!$database->query($sql)) {
-    $msg[] = $database->get_error();
-}
-
-$sql  = "CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` ( 
-    `id`            INT NOT NULL auto_increment, 
-    `name`          VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, 
-    `code`          LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL , 
-    `description`   TEXT  CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, 
-    `modified_when` INT NOT NULL default '0', 
-    `modified_by`   INT NOT NULL default '0', 
-    `active`        INT NOT NULL default '0', 
-    `admin_edit`    INT NOT NULL default '0', 
-    `admin_view`    INT NOT NULL default '0', 
-    `show_wysiwyg`  INT NOT NULL default '0', 
-    `comments`      TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, 
-    PRIMARY KEY ( `id` ) 
-    ) 
-    ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-if (!$database->query($sql)) {
-    $msg[] = $database->get_error();
+foreach ($database->importSql(__DIR__ . '/install_struct.sql', null, false) as $r) {
+    if (!$r['ok']) {
+        $msg[] = $r['msg'];
+    }
 }
 
 // add all droplets from the droplet subdirectory
@@ -78,8 +59,9 @@ foreach ($names as $dropfile) {
             'modified_by' => (method_exists($admin, 'get_user_id') && ($admin->get_user_id()!=null) ? $admin->get_user_id() : 1),
         ];
         
-        if (!$database->insertRow('{TP}mod_droplets', $aDroplet)) {
-            $msg[] = $database->get_error();
+        $database->insertRow('{TP}mod_droplets', $aDroplet);
+        if ($database->hasError()) {
+            $msg[] = $database->getError();
         }
         // do not output anything if this script is called during fresh installation
         // if (method_exists($admin, 'get_user_id')) echo "Droplet import: $name<br/>";

@@ -592,12 +592,14 @@ function opf_register_filter($filter, $serialized=FALSE) {
     else
         $update = opf_is_registered($name);
     if($update) { // update, fetch some old values from db
+        global $database;
         $sql_action = 'UPDATE';
-        if($id>0) $sql_where = "WHERE `id`=".(int)$id;
-        else $sql_where = "WHERE `name`='".addslashes($name)."'"; // keep this addslashes()-call!
-        $old = opf_db_query( "SELECT * FROM `{TP_OPFD}` $sql_where");
-        if($old===FALSE)return(FALSE);
-        $old = $old[0];
+        if($id>0) {
+            $old = $database->fetchRow("SELECT * FROM `{TP_OPFD}` WHERE `id` = ?", [(int)$id]);
+        } else {
+            $old = $database->fetchRow("SELECT * FROM `{TP_OPFD}` WHERE `name` = ?", [$name]);
+        }
+        if($old===null)return(FALSE);
         $old_type = $old['type'];
         $old_pos = $old['position'];
         if($type==$old_type) { // type unchanged, so keep position
@@ -617,36 +619,45 @@ function opf_register_filter($filter, $serialized=FALSE) {
             $additional_fields_languages = $old['additional_fields_languages'];
             $additional_fields = $old['additional_fields'];
         } else $additional_values = $old['additional_values'];
+        // Target the exact row being updated -- match the lookup above
+        // (id when given, otherwise name). Previously $sql_where was never
+        // assigned (stayed '' from its declaration), so this UPDATE ran with
+        // NO WHERE clause at all and silently overwrote every row in the
+        // table with the same values -- a pre-existing bug, not SQLite-specific.
+        $sql_where = $id>0
+            ? sprintf('WHERE `id`=%d', $id)
+            : sprintf("WHERE `name`='%s'", $database->escapeString($name));
      } else {
         $sql_action = 'INSERT INTO';
     }
-    $res = opf_db_run_query( "$sql_action `{TP_OPFD}` SET
-                                             `userfunc`=%d,
-                                             `plugin`='%s',
-                                             `position`=%d,
-                                             `active`=%d,
-                                             `type`='%s',
-                                             `name`='%s',
-                                             `file`='%s',
-                                             `func`='%s',
-                                             `funcname`='%s',
-                                             `modules`='%s',
-                                             `desc`='%s',
-                                             `pages`='%s',
-                                             `pages_parent`='%s',
-                                             `allowedit`=%d,
-                                             `allowedittarget`=%d,
-                                             `configurl`='%s',
-                                             `csspath`='%s',
-                                             `helppath`='%s',
-                                             `additional_values`='%s',
-                                             `additional_fields`='%s',
-                                             `additional_fields_languages`='%s'
-                                             $sql_where",
-                                            $userfunc,$plugin,$position,$active,$type,$name,$file,$func,$funcname,
-                                            $modules,$desc,$pages,$pages_parent,$allowedit,$allowedittarget,
-                                            $configurl,$csspath,$helppath,$additional_values,$additional_fields,
-                                            $additional_fields_languages);
+    // Column list with per-column sprintf format -- ints stay unquoted (%d),
+    // strings are single-quoted (%s is inserted already-escaped by
+    // opf_db_run_query()'s vsprintf step, same as the original template).
+    $cols = [
+        'userfunc' => '%d', 'plugin' => "'%s'", 'position' => '%d', 'active' => '%d',
+        'type' => "'%s'", 'name' => "'%s'", 'file' => "'%s'", 'func' => "'%s'",
+        'funcname' => "'%s'", 'modules' => "'%s'", 'desc' => "'%s'", 'pages' => "'%s'",
+        'pages_parent' => "'%s'", 'allowedit' => '%d', 'allowedittarget' => '%d',
+        'configurl' => "'%s'", 'csspath' => "'%s'", 'helppath' => "'%s'",
+        'additional_values' => "'%s'", 'additional_fields' => "'%s'",
+        'additional_fields_languages' => "'%s'",
+    ];
+    $vals = [$userfunc,$plugin,$position,$active,$type,$name,$file,$func,$funcname,
+             $modules,$desc,$pages,$pages_parent,$allowedit,$allowedittarget,
+             $configurl,$csspath,$helppath,$additional_values,$additional_fields,
+             $additional_fields_languages];
+
+    if ($sql_action === 'UPDATE') {
+        // `INSERT ... SET col=val` is MySQL-only syntax -- invalid on SQLite
+        // ("near SET: syntax error"). UPDATE's own SET clause is standard SQL
+        // and works on both, so only the insert path needed a real rewrite.
+        $setClause = implode(', ', array_map(fn($c, $f) => "`$c`=$f", array_keys($cols), $cols));
+        $res = opf_db_run_query("UPDATE `{TP_OPFD}` SET $setClause $sql_where", ...$vals);
+    } else {
+        $colList = '`' . implode('`, `', array_keys($cols)) . '`';
+        $ph      = implode(', ', array_values($cols));
+        $res = opf_db_run_query("INSERT INTO `{TP_OPFD}` ($colList) VALUES ($ph)", ...$vals);
+    }
 
     if(class_exists('Settings') && defined('WBCE_VERSION')){
         // force refresh the filter definitions

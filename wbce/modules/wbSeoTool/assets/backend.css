@@ -1,0 +1,37 @@
+/**
+ * WBCE CMS AdminTool: wbSeoTool
+ *
+ * backend.css
+ * Small supplement on top of the shared cp-* control-panel design system
+ * (templates/theme_fallbacks/css/cp_theme.css + cp_chrome.css) — same
+ * pattern as modules/captcha_control/backend.css. The config form itself
+ * (twig/modify_config.twig) uses cp-card / cp-setting-row markup and needs
+ * no bespoke table styling anymore.
+ *
+ * NOTE: pageTree.css is loaded separately (only for the tree view) via
+ * I::insertCssFile() in view_pageTree.php — not imported here, to avoid the
+ * config page paying for tree-only styles.
+ *
+ * @package     wbSeoTool
+ * @author      Christian M. Stefan (https://www.wbEasy.de/)
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+.cp-subfields {
+	margin-top: .35rem;
+	padding-left: .1rem;
+	display: flex;
+	flex-direction: column;
+	gap: .35rem;
+}
+
+.cp-subfields label {
+	font-weight: normal;
+	display: flex;
+	align-items: center;
+	gap: .4rem;
+}
+
+.cp-subfields input[type="number"] {
+	width: 70px;
+}

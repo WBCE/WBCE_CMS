@@ -100,48 +100,9 @@ if (isset($group_id)) {
 
 foreach ($posts as $item) {
 
-    // ── Resolve [wblink123] shortcodes in content_short ───────────────────────
-    $pattern = '/\[wblink([0-9]+)\]/isU';
-    if (preg_match_all($pattern, $item['content_short'], $aMatches, PREG_SET_ORDER)) {
-
-        // Build search-replace map: '[wblink123]' => '#' (dead-link fallback)
-        $aSearchReplaceList = [];
-        foreach ($aMatches as $aMatch) {
-            $aSearchReplaceList[strtolower($aMatch[0])] = '#';
-        }
-
-        // Collect the numeric page IDs — already validated as [0-9]+ by the regex
-        $pageIds = array_map(
-            static fn(array $m): int => (int)$m[1],
-            $aMatches
-        );
-
-        // Fetch matching pages using ? placeholders for each ID.
-        // fetchAll() is the right method here: we need all rows, not a stream.
-        if (!empty($pageIds)) {
-            $ph    = implode(', ', array_fill(0, count($pageIds), '?'));
-            $pages = $database->fetchAll(
-                "SELECT `page_id`, `link` FROM `{TP}pages` WHERE `page_id` IN($ph)",
-                $pageIds
-            );
-
-            foreach ($pages as $aPage) {
-                $relLink = $aPage['link']
-                    ? PAGES_DIRECTORY . $aPage['link'] . PAGE_EXTENSION
-                    : '#';
-                // Only replace the dead-link fallback when the file actually exists
-                if (is_readable(WB_PATH . $relLink)) {
-                    $aSearchReplaceList['[wblink' . $aPage['page_id'] . ']'] = WB_URL . $relLink;
-                }
-            }
-        }
-
-        $item['content_short'] = str_ireplace(
-            array_keys($aSearchReplaceList),
-            $aSearchReplaceList,
-            $item['content_short']
-        );
-    }
+    // Resolve link tokens ([pagelink:NN], [wblinkNN], [module:NN]) in content_short.
+    // RSS feeds don't pass through OPF, so LinkResolver is called directly here.
+    $item['content_short'] = LinkResolver::resolveContent($item['content_short']);
     $itemLink = WB_URL . PAGES_DIRECTORY . $item['link'] . PAGE_EXTENSION;
 
 ?>

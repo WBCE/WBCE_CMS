@@ -68,6 +68,20 @@ function fireToast(xhr) {
     });
 }
 
+// ── Jump to the line CodeVet flagged — 1-based, -1/0 means "no line info" ──
+var _errorLineMarks = {};
+function jumpToErrorLine(editor, line, instanceId) {
+    if (!editor || !line || line < 1) return;
+    var idx = line - 1;
+    if (instanceId && _errorLineMarks[instanceId] !== undefined) {
+        editor.removeLineClass(_errorLineMarks[instanceId], 'background', 'cet-error-line');
+    }
+    editor.addLineClass(idx, 'background', 'cet-error-line');
+    if (instanceId) _errorLineMarks[instanceId] = idx;
+    editor.setCursor({ line: idx, ch: 0 });
+    editor.scrollIntoView({ line: idx, ch: 0 }, 100);
+}
+
 function getCMMode(ext) {
     var map = {
         php:        'application/x-httpd-php',
@@ -316,7 +330,8 @@ function getCMMode(ext) {
             ajaxData:               {},
             onSave:                 null,
             single:                 true,
-            instanceId:             'ce-instance-0'
+            instanceId:             'ce-instance-0',
+            errorLine:              0
         };
 
         var settings = $.extend({}, defaults, options);
@@ -445,6 +460,12 @@ function getCMMode(ext) {
             editor.getWrapperElement().style.fontSize = initialFontSize + 'px';
             editor.refresh();
 
+            // Jump to the line CodeVet flagged on the page that just re-rendered
+            // this editor after a blocked save (see error_line/errorLine option).
+            if (settings.errorLine) {
+                jumpToErrorLine(editor, settings.errorLine, instanceId);
+            }
+
             // Apply dark mode class if needed
             if (initialTheme === 'wbce-night') {
                 $('.AceBar').addClass('darkMode');
@@ -475,6 +496,8 @@ function getCMMode(ext) {
                         })
                         .fail(function(xhr) {
                             fireToast(xhr);
+                            var line = xhr.responseJSON && xhr.responseJSON.line;
+                            if (line) jumpToErrorLine(editor, line, instanceId);
                         });
                 };
             }

@@ -83,6 +83,48 @@ class Captcha
     // ── Public API ────────────────────────────────────────────────────────────
 
     /**
+     * ALTCHA's widget relies on the Web Crypto API (crypto.subtle) for its
+     * proof-of-work hashing, which browsers only expose in "secure contexts"
+     * — HTTPS origins (or localhost). On a plain-HTTP site the widget cannot
+     * solve its challenge at all (it silently logs "secure context (HTTPS)
+     * required" and never completes) — hiding it wouldn't help either, since
+     * anyone could just request the same page over http:// to bypass it on a
+     * misconfigured host that answers both schemes.
+     *
+     * Checked against WB_URL (the site's configured base URL) rather than
+     * the current request's scheme, since this reflects "does this site have
+     * a certificate at all" rather than a per-request fluke.
+     *
+     * localhost is treated as HTTPS-equivalent, matching real browser
+     * behaviour: browsers grant http://localhost a secure context too, so
+     * ALTCHA works there regardless of scheme. Without this exception every
+     * local dev install (typically http://localhost) would show the
+     * fallback even though ALTCHA actually works fine in the browser.
+     *
+     * Demo/testing gate: define WBCE_CAPTCHA_FORCE_FALLBACK as true (e.g. in
+     * config.php) to force the math-captcha fallback regardless of the above
+     * — including on localhost — so the fallback can be demoed deterministically
+     * without needing a real non-HTTPS host. Leave undefined in production.
+     */
+    public static function isHttps(): bool
+    {
+        if (defined('WBCE_CAPTCHA_FORCE_FALLBACK') && WBCE_CAPTCHA_FORCE_FALLBACK) {
+            return false;
+        }
+
+        if (!defined('WB_URL')) {
+            return false;
+        }
+
+        if (str_starts_with(WB_URL, 'https://')) {
+            return true;
+        }
+
+        $host = strtolower((string)(parse_url(WB_URL, PHP_URL_HOST) ?? ''));
+        return in_array($host, ['localhost', '127.0.0.1', '::1'], true);
+    }
+
+    /**
      * Resolve whether captcha is enabled — local module setting takes precedence
      * over the global ENABLED_CAPTCHA constant.
      *
@@ -136,6 +178,17 @@ class Captcha
         // Honeypot is always rendered alongside ALTCHA when ASP is enabled.
         $aspEnabled = self::isAspEnabled();
 
+        // No HTTPS → ALTCHA can't run in the browser at all. Fall back to a
+        // simple math captcha instead of rendering a widget that will never
+        // complete its challenge.
+        if (!self::isHttps()) {
+            self::renderMathCaptcha($action, $sec_id);
+            if ($aspEnabled && $action !== 'text') {
+                echo self::renderHoneypot($sec_id);
+            }
+            return;
+        }
+
         switch ($action) {
             case 'text':
                 // ALTCHA has its own built-in label ("Ich bin kein Roboter" etc.)
@@ -185,6 +238,11 @@ class Captcha
             }
         }
 
+        // ── No HTTPS → verify the math captcha instead ────────────────────────
+        if (!self::isHttps()) {
+            return self::verifyMathCaptcha($input, $sec_id);
+        }
+
         // ── ALTCHA verification ───────────────────────────────────────────────
         if (!empty($_POST[$altchaField])) {
             // Full SHA-256 PoW + HMAC check.
@@ -200,6 +258,69 @@ class Captcha
         }
 
         return false;
+    }
+
+
+    // ── Math captcha (non-HTTPS fallback) ═══════════════════════════════════════
+
+    /**
+     * Render a minimal arithmetic captcha — no GD/images required, works on
+     * any transport. Used automatically instead of ALTCHA when the site is
+     * not served over HTTPS (see isHttps()).
+     *
+     * Uses the SAME session key as the ALTCHA sync token ('captcha' . $sec_id)
+     * rather than a dedicated key, because several callers (mpform, miniform,
+     * admin/login/forgot) never call Captcha::verify() at all — they compare
+     * $_POST['captcha'] against $_SESSION['captcha' . $sec_id] themselves,
+     * a legacy pattern ALTCHA's sync-token input was built to satisfy. Using
+     * a different key here would mean those callers compare against a value
+     * that was never set, so the answer could never validate.
+     */
+    private static function renderMathCaptcha(string $action, string $sec_id): void
+    {
+        $key = 'captcha' . $sec_id;
+
+        if ($action === 'text') {
+            echo L_('CAPTCHA:VERIFICATION_INFO_RES||Please solve the calculation to verify you are human.');
+            return;
+        }
+
+        if ($action === 'input') {
+            echo '<input type="text" name="captcha" maxlength="10" autocomplete="off" required />' . "\n";
+            return;
+        }
+
+        // 'all' | 'widget' | 'image' | 'image_iframe' — question + input together.
+        $x  = mt_rand(1, 9);
+        $y  = mt_rand(1, 9);
+        $op = mt_rand(0, 1); // 0 = addition, 1 = subtraction
+        if ($op === 1 && $x < $y) {
+            [$x, $y] = [$y, $x]; // avoid negative results
+        }
+        $_SESSION[$key] = $op === 0 ? $x + $y : $x - $y;
+        $sign = $op === 0 ? '+' : '−';
+
+        echo '<div class="captcha-math-fallback" style="display:flex;align-items:center;gap:.5em;flex-wrap:wrap">'
+           . '<span>' . (int)$x . ' ' . $sign . ' ' . (int)$y . ' = ?</span>'
+           . '<input type="text" name="captcha" maxlength="10" autocomplete="off" required'
+           . ' aria-label="' . h(L_('CAPTCHA:VERIFICATION_INFO_RES||Please solve the calculation to verify you are human.')) . '" />'
+           . '</div>' . "\n";
+    }
+
+    /**
+     * Verify the math captcha answer against the session-stored result.
+     * Single-use — the session value is cleared regardless of outcome.
+     * Same session key as renderMathCaptcha() — see its docblock.
+     */
+    private static function verifyMathCaptcha($input, string $sec_id): bool
+    {
+        $key = 'captcha' . $sec_id;
+        if (!isset($_SESSION[$key])) {
+            return false;
+        }
+        $expected = $_SESSION[$key];
+        unset($_SESSION[$key]);
+        return is_numeric($input) && (int)$input === (int)$expected;
     }
 
 
@@ -229,8 +350,26 @@ class Captcha
         $i18nMap  = ['FR' => 'fr-fr', 'PT' => 'pt-pt', 'ES' => 'es-es', 'NO' => 'nb', 'GR' => 'el'];
         $i18nCode = strtolower($i18nMap[$wbceLang] ?? $wbceLang);
 
-        // Scripts — emitted once per page, synchronous (no async/defer) so
-        // altcha.min.js runs first, i18n second, widget_setup last.
+        // Scripts — emitted once per page. type="module" is required, not
+        // optional: altcha.min.js is a Rollup bundle whose top-level scope is
+        // NOT wrapped in an IIFE — it declares internal minified bit-flag
+        // constants at its top level, one of which happens to be named `$`
+        // (`const $ = 32768`, a Svelte-internal flag). Loaded as a classic
+        // script, that `$` leaks into the shared global scope and permanently
+        // shadows jQuery's `$` for every script that runs afterward on the
+        // page (confirmed: window.$ stays intact, but the bare identifier `$`
+        // is shadowed — reassigning window.$ afterward does NOT undo it).
+        // That's what broke jquery_theme.js's `$.insert(...)` call whenever
+        // ALTCHA was active. type="module" gives each file its own top-level
+        // scope, so nothing leaks — verified in-browser: jQuery, $.insert and
+        // the ALTCHA widget itself all keep working together.
+        //
+        // Module scripts are deferred as a group but execute in relative
+        // document order, so altcha.min.js → i18n.js → widget_setup.js still
+        // run in that order; only the scope isolation changes. All three must
+        // stay type="module" together — mixing classic and module here would
+        // reorder execution (deferred modules vs. synchronous classic scripts)
+        // and could run widget_setup.js before the widget class is registered.
         //
         // widget_setup.js is a static external file rather than an inline <script>
         // because two code paths both fail for inline JS with {…}:
@@ -241,11 +380,11 @@ class Captcha
         $setupJs = $moduleUrl . '/altcha/widget_setup.js';
         if (!defined('_CAPTCHA_ALTCHA_SCRIPT_LOADED')) {
             define('_CAPTCHA_ALTCHA_SCRIPT_LOADED', true);
-            echo '<script src="' . h($widgetJs) . '"></script>' . "\n";
+            echo '<script type="module" src="' . h($widgetJs) . '"></script>' . "\n";
             if ($wbceLang !== 'EN') {
-                echo '<script src="' . h($i18nJs) . '"></script>' . "\n";
+                echo '<script type="module" src="' . h($i18nJs) . '"></script>' . "\n";
             }
-            echo '<script src="' . h($setupJs) . '"></script>' . "\n";
+            echo '<script type="module" src="' . h($setupJs) . '"></script>' . "\n";
         }
 
         // Sync token — lets legacy modules' own $_POST['captcha'] check pass.

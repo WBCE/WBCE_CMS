@@ -34,10 +34,27 @@
         {{ position }}
 {% if droplets %}
 <div class="Inset" id="privacyPolicy">
-    <img src="{{ ADDON_URL }}/img/droplets_logo.png" style="max-width:250px"/>
+    <img src="{{ ADDON_URL }}/droplets_logo.png" style="max-width:250px"/>
         <p style="margin:0"><strong>Version {{ module_version }}</strong></p>
         <button type="button" 
                 data-redirect-location="http://addons.wbce.org/pages/droplets.php" 
                 data-new-window="true">{{ L_('DR_TEXT:DOWNLOAD') }}</button>
 </div>
+<style>
+    .Inset {
+        text-align: center;
+
+        border-radius: 8px;
+        padding: 8px;
+        background: #fff;
+    }
+
+    .Inset-title {
+        margin-top: calc(2 * var(--unit));
+        color: var(--cyan-dark);
+        text-align: center;
+        line-height: 1;
+        font-size: var(--unit);
+    }
+</style>
 {% endif %}

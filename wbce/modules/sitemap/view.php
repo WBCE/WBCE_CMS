@@ -34,30 +34,19 @@ if (!function_exists("sitemap")) {
 
         // menus
         $sWhereMenus = '';
+        $menuParams = [];
         if (isset($menus[0]) && $menus[0] != 0) {
-            $sWhereMenus = " AND";
-            $sWhereMenus .= "`menu` =" . $menus[0];
-            unset($menus[0]);
-            if (!empty($menus)) {
-                foreach ($menus as $rec) {
-                    $sWhereMenus .= " OR `menu` =" . $rec;
-                }
-            }			
+            $menuParams = array_values($menus);
+            $sWhereMenus = " AND (`menu` = " . implode(' OR `menu` = ', array_fill(0, count($menuParams), '?')) . ")";
         }
         // Query pages
-		$qp = "SELECT * FROM `{TP}pages` WHERE ".$where_sql." AND `parent` = '".$parent."' ".$sWhereMenus." ORDER BY `position` ASC";
-		//debug_dump($qp);
-        $query_menu = $database->query($qp);
+        $query_menu = $database->query(
+            "SELECT * FROM `{TP}pages` WHERE ".$where_sql." AND `parent` = ? ".$sWhereMenus." ORDER BY `position` ASC",
+            [$parent, ...$menuParams]
+        );
 
-        //beforehand fetch the menu-link page ids
-        $qML = "SELECT page_id FROM `{TP}mod_menu_link`";
-        $oML = $database->query($qML);
-        $aML = [];
-        if (is_object($oML) && $oML->numRows() > 0) {
-            while ($ml =$oML->fetchRow(MYSQLI_ASSOC)) {
-                $aML[] = $ml['page_id'];
-            }
-        }
+        // resolve menu_link target URLs once per request (memoized in show_menu2)
+        $menuLinkData = sm2_get_menulink_data();
 
         //
         // start collecting the output string
@@ -72,15 +61,16 @@ if (!function_exists("sitemap")) {
             while ($page = $query_menu->fetchRow()) {
 
                 //get username from user id
-                $userquery  = "SELECT `display_name` FROM `{TP}users` WHERE `user_id` = ".$page['modified_by'];
-                $query_user = $database->query($userquery);
-                $user       = $query_user->fetchRow();
+                $user = $database->fetchRow("SELECT `display_name` FROM `{TP}users` WHERE `user_id` = ?", [$page['modified_by']]);
 
-                // handle correct menu links
-                if (defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true && in_array($page['page_id'], $aML)) {
-                    $this_page_link = sm2_correct_menu_links(page_link($page['link']));
+                // menu_link pages: link straight at the resolved target (internal or external);
+                // structure-only nodes (no target at all) get '#'
+                if (isset($menuLinkData['none'][$page['page_id']])) {
+                    $this_page_link = '#';
                 } else {
-                    $this_page_link = page_link($page['link']);
+                    $this_page_link = $menuLinkData['internal'][$page['page_id']]
+                        ?? $menuLinkData['external'][$page['page_id']]
+                        ?? page_link($page['link']);
                 }
 
                 $aReplacements = array(
@@ -119,8 +109,7 @@ if (!function_exists("sitemap")) {
 //
 
 // Get settings
-$get_settings             = $database->query("SELECT * FROM `{TP}mod_sitemap` WHERE `section_id` = " . $section_id);
-$settings                 = $get_settings->fetchRow();
+$settings                 = $database->fetchRow("SELECT * FROM `{TP}mod_sitemap` WHERE `section_id` = ?", [$section_id]);
 $menus 					  = stripslashes($settings['menus']);
 $settings['header']       = stripslashes($settings['header']);
 $settings['smloop']       = stripslashes($settings['sitemaploop']);
@@ -152,10 +141,9 @@ if ($static == true or $static == false) {
 
         case 3: // value 3 means start at parent of current page
             global $database;
-            $query_parent_id = $database->query("SELECT `parent` FROM `{TP}pages` WHERE page_id=" . $page_id);
-            if ($query_parent_id->numRows() > 0) {
-                $parentrow = $query_parent_id->fetchRow();
-                $parent    = $parentrow['parent'];
+            $parentrow = $database->fetchRow("SELECT `parent` FROM `{TP}pages` WHERE page_id = ?", [$page_id]);
+            if ($parentrow !== null) {
+                $parent = $parentrow['parent'];
             }
             break;
 

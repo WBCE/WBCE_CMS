@@ -11,12 +11,18 @@
  */
 
 // Insert an extra row into the database
-$header = addslashes('');
-$level_header = addslashes('<ul>');
-$sitemaploop = addslashes('<li><a href="[LINK]" target="[TARGET]">[PAGE_TITLE]</a></li>');
-$level_footer = addslashes('</ul>');
-$footer = addslashes('');
-
-$database->query("INSERT INTO ".TABLE_PREFIX."mod_sitemap (page_id,section_id,static,header,sitemaploop,footer,level_header,level_footer,startatroot,depth,show_hidden) VALUES ('$page_id','$section_id','1','$header','$sitemaploop','$footer','$level_header','$level_footer', '1', '0','0')");
+$database->insertRow('{TP}mod_sitemap', [
+	'page_id'      => $page_id,
+	'section_id'   => $section_id,
+	'static'       => 1,
+	'header'       => '',
+	'sitemaploop'  => '<li><a href="[LINK]" target="[TARGET]">[PAGE_TITLE]</a></li>',
+	'footer'       => '',
+	'level_header' => '<ul>',
+	'level_footer' => '</ul>',
+	'startatroot'  => 1,
+	'depth'        => 0,
+	'show_hidden'  => 0,
+]);
 
 ?>

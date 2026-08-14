@@ -373,7 +373,14 @@ log_sep('Settings & module updates');
 Settings::set('default_theme',               $DEFAULT_THEME);
 log_ok("default_theme = $DEFAULT_THEME");
 Settings::set('er_level',                    'E3');
-Settings::set('rename_files_on_upload',      'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk,inc,tpl', false);
+// Merge required blocked extensions into the existing setting instead of a
+// conditional insert-only set — on upgrades this key already exists, so
+// Settings::set(..., false) would silently no-op and never add newly
+// required entries (e.g. "tpl", closing an elFinder upload bypass).
+$requiredUploadBlocklist = ['ph.*?', 'cgi', 'pl', 'pm', 'exe', 'com', 'bat', 'pif', 'cmd', 'src', 'asp', 'aspx', 'js', 'lnk', 'inc', 'tpl'];
+$currentUploadBlocklist  = array_filter(array_map('trim', explode(',', (string) Settings::get('rename_files_on_upload', ''))));
+$mergedUploadBlocklist   = array_unique(array_merge($currentUploadBlocklist, $requiredUploadBlocklist));
+Settings::set('rename_files_on_upload', implode(',', $mergedUploadBlocklist));
 Settings::set('sec_anchor',                  'wbce_', false);
 Settings::set('redirect_timer',              '1500', false);
 Settings::set('mediasettings',               '', false);

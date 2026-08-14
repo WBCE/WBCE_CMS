@@ -68,6 +68,13 @@ if (!function_exists('loadPlugin')) {
     }
 }
 
+if (!function_exists('loadTemplateAssets')) {
+    function loadTemplateAssets(string $dir, ?array $only = null): void
+    {
+        I::loadTemplateAssets($dir, $only);
+    }
+}
+
 if (!function_exists('insertWebFont')) {
     function insertWebFont(string $url, string $alias = '', string $format = 'woff2'): void
     {
@@ -79,5 +86,19 @@ if (!function_exists('insertFont')) {
     function insertFont(string|array $sources, array $options = []): void
     {
         I::insertFont($sources, $options);
+    }
+}
+
+if (!function_exists('insertCssBundle')) {
+    function insertCssBundle(array $sources, string $identifier, string $position = 'head_late', array $attrs = []): void
+    {
+        I::insertCssBundle($sources, $identifier, $position, $attrs);
+    }
+}
+
+if (!function_exists('insertJsBundle')) {
+    function insertJsBundle(array $sources, string $identifier, string $position = 'body_late', array $attrs = []): void
+    {
+        I::insertJsBundle($sources, $identifier, $position, $attrs);
     }
 }

@@ -18,8 +18,41 @@
 
   if (!btn || !status || !testedFld) return;
 
+  const mysqlFields  = document.getElementById('mysql-fields');
+  const sqliteFields = document.getElementById('sqlite-fields');
+  const typeRadios   = document.querySelectorAll('input[name="database_type"]');
+
+  function currentDbType() {
+    const checked = document.querySelector('input[name="database_type"]:checked');
+    if (checked) return checked.value;
+    const hidden = document.getElementById('database_type');
+    return hidden ? hidden.value : 'mysql';
+  }
+
+  // SQLite is only ever offered when the server told us it's allowed
+  // (I18N.allowSqlite, mirrored from allow_sqlite()). The actual gate lives
+  // server-side in db_conn_check.php / install_save.php — this only drives
+  // which fields are shown.
+  function applyDbType() {
+    const type = I18N.allowSqlite ? currentDbType() : 'mysql';
+    const isSqlite = type === 'sqlite';
+    if (mysqlFields)  mysqlFields.style.display  = isSqlite ? 'none' : '';
+    if (sqliteFields) sqliteFields.style.display = isSqlite ? '' : 'none';
+
+    ['database_host', 'database_name', 'database_username'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.required = !isSqlite;
+    });
+
+    resetTest();
+  }
+
+  if (I18N.allowSqlite) {
+    typeRadios.forEach(el => el.addEventListener('change', applyDbType));
+  }
+
   // Reset test state whenever any DB field changes
-  const fields = ['database_host', 'database_name', 'database_username', 'database_password'];
+  const fields = ['database_host', 'database_name', 'database_username', 'database_password', 'database_path'];
   fields.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', resetTest);
@@ -52,14 +85,30 @@
   }
 
   btn.addEventListener('click', async () => {
-    const host = document.getElementById('database_host').value.trim();
-    const name = document.getElementById('database_name').value.trim();
-    const user = document.getElementById('database_username').value.trim();
-    const pass = document.getElementById('database_password').value;
+    const dbType = I18N.allowSqlite ? currentDbType() : 'mysql';
+    let body;
 
-    if (!host || !name || !user) {
-      showStatus(false, I18N.required + ' (host / database name / username)');
-      return;
+    if (dbType === 'sqlite') {
+      const path = document.getElementById('database_path')?.value.trim() ?? '';
+      body = new URLSearchParams({ db_type: 'sqlite', db_path: path });
+    } else {
+      const host = document.getElementById('database_host').value.trim();
+      const name = document.getElementById('database_name').value.trim();
+      const user = document.getElementById('database_username').value.trim();
+      const pass = document.getElementById('database_password').value;
+
+      if (!host || !name || !user) {
+        showStatus(false, I18N.required + ' (host / database name / username)');
+        return;
+      }
+
+      body = new URLSearchParams({
+        db_type: 'mysql',
+        db_host: host,
+        db_name: name,
+        db_user: user,
+        db_pass: pass
+      });
     }
 
     // Set loading state
@@ -71,14 +120,6 @@
     `;
 
     status.style.display = 'none';
-
-    // Build POST body with the values already read above (correct IDs)
-    const body = new URLSearchParams({
-      db_host: host,
-      db_name: name,
-      db_user: user,
-      db_pass: pass
-    });
 
     try {
       // lang is passed as a GET param; db_conn_check.php reads $_GET['lang']
@@ -129,8 +170,8 @@
     }
   });
 
-  // Initial reset
-  resetTest();
+  // Initial state
+  applyDbType();
 })();
 
 

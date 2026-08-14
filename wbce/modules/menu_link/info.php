@@ -14,7 +14,7 @@ $core = true;
 $module_directory   = 'menu_link';
 $module_name        = 'Menu Link';
 $module_function    = 'page';
-$module_version     = '3.0.2';
+$module_version     = '3.0.3';
 $module_platform    = '1.7.0';
 $module_author      = 'Ryan Djurovich, thorn, Christian M. Stefan';
 $module_license     = 'GNU General Public License';
@@ -24,7 +24,11 @@ $module_icon        = 'fa fa-sitemap';
 /**
  * Version history
  * 
- * 3.0.2  
+ * 3.0.3
+ *        - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *          experimental SQLite readiness
+ *
+ * 3.0.2
  *        - new third link type "Structure Only (no link)" (target_page_id=-2):
  *          renders href="#", not clickable, children still shown - for parent
  *          items that exist only to group their children in the menu

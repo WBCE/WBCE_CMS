@@ -200,15 +200,16 @@ class CodeEditor
     private static function outputInitScript(string $id, string $syntax, array $options): void
     {
         $defaults = [
-            'height'    => 500,
-            'toolbar'   => false,
-            'line_wrap' => false,
-            'readonly'  => false,
-            'ajax_save' => false,
-            'ajax_url'  => '',
-            'ajax_data' => [],
-            'on_save'   => '',
-            'theme'     => '',
+            'height'     => 500,
+            'toolbar'    => false,
+            'line_wrap'  => false,
+            'readonly'   => false,
+            'ajax_save'  => false,
+            'ajax_url'   => '',
+            'ajax_data'  => [],
+            'on_save'    => '',
+            'theme'      => '',
+            'error_line' => 0,
         ];
         $opt = array_merge($defaults, $options);
 
@@ -275,6 +276,7 @@ class CodeEditor
             'toolbar'          => true,
             'ajaxSaveCheckbox' => (bool)$opt['ajax_save'],
             'instanceId'       => 'ce-' . preg_replace('/[^a-z0-9_-]/i', '-', $id),
+            'errorLine'        => (int)$opt['error_line'],
         ];
 
         $onSaveJs     = $opt['on_save'] ? json_encode($opt['on_save']) : 'null';

@@ -41,10 +41,9 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
             $sEmail  = '';
         } else {
             // Check if the email exists in the database
-            $sSql = "SELECT * FROM `{TP}users` WHERE `email`='".$database->escapeString($sEmail)."'";
-
-            if(($rRow = $database->query($sSql))){
-                if($aUser = $rRow->fetchRow(MYSQLI_ASSOC)) {
+            $aUser = $database->fetchRow("SELECT * FROM `{TP}users` WHERE `email` = ?", [$sEmail]);
+            if (!$database->hasError()) {
+                if($aUser) {
                     if(strlen($aUser['signup_confirmcode']) > 25){
                         header("Location: ".ACCOUNT_URL."/signup_continue_page.php?switch=wrong_inputs");
                         exit(0); // break up the script here
@@ -87,14 +86,15 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                                 'last_reset' => time(),
                             );
 
-                            if($database->updateRow('{TP}users', 'user_id', $aUpdateUser)){
+                            $database->upsertRow('{TP}users', 'user_id', $aUpdateUser);
+                            if(!$database->hasError()){
                                 header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch."&email=".$sMailTo);
                                 exit(0);
                             } else {
                                 // Error updating database
                                 $oMsgBox->error($MESSAGE['RECORD_MODIFIED_FAILED']);
                                 if(WBCE_DEBUG) {
-                                    $oMsgBox->error($database->get_error().'<br />'.$sSql);
+                                    $oMsgBox->error($database->getError());
                                 }
                             }
 
@@ -104,7 +104,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                                 'user_id'    => $aUser['user_id'],
                                 'password'   => $sCurrentPw
                             );
-                            $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
+                            $database->upsertRow('{TP}users', 'user_id', $aUpdateUser);
                             header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&from=resend_forgot_pass&mail_err=".$checkSend);
                             exit(0);
                         }
@@ -116,7 +116,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                 // Query failed
                 if(WBCE_DEBUG) {
                     $oMsgBox->error('SystemError:: Database query failed!');
-                    $oMsgBox->error($database->get_error().'<br />'.$sSql);
+                    $oMsgBox->error($database->getError());
                 }
             }
         }

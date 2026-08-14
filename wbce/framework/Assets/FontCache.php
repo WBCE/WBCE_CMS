@@ -78,9 +78,9 @@ final class FontCache
      */
     public function resolve(string $url, string $format, string $alias): array
     {
-        $key     = $this->key($url, $format);
-        $cssFile = $this->cacheDir . $key . '.css';
-        $cssUrl  = $this->toUrl($key . '.css');
+        $cssName = $alias !== '' ? $this->sanitizeAlias($alias) . '.css' : $this->key($url, $format) . '.css';
+        $cssFile = $this->cacheDir . $cssName;
+        $cssUrl  = $this->toUrl($cssName);
 
         if (!is_file($cssFile)) {
             if (!extension_loaded('curl')) {
@@ -89,28 +89,43 @@ final class FontCache
                 }
                 return ['cssUrl' => $url, 'aliasCss' => ''];
             }
+            $key = $this->key($url, $format);
             if (!$this->download($url, $format, $cssFile, $key)) {
                 if ($this->debug) {
                     error_log('FontCache: download failed — using external URL: ' . $url);
                 }
                 return ['cssUrl' => $url, 'aliasCss' => ''];
             }
+            // When an alias is given, rewrite font-family directly in the CSS file.
+            // This avoids a separate inline <style> block — the <link> to alias.css
+            // already carries the renamed font-family declarations.
+            if ($alias !== '') {
+                $aliased = $this->buildAliasCss($cssFile, $alias);
+                if ($aliased !== '') {
+                    file_put_contents($cssFile, $aliased);
+                }
+            }
         }
 
-        $aliasCss = ($alias !== '') ? $this->buildAliasCss($cssFile, $alias) : '';
-
-        return ['cssUrl' => $cssUrl, 'aliasCss' => $aliasCss];
+        return ['cssUrl' => $cssUrl, 'aliasCss' => ''];
     }
 
     /**
      * Delete all cached files for a specific URL + format combination.
      * Called by AssetQueue on admin force-refresh (CTRL+F5).
      */
-    public function forceRefresh(string $url, string $format): void
+    public function forceRefresh(string $url, string $format, string $alias = ''): void
     {
-        $key = $this->key($url, $format);
-        foreach (glob($this->cacheDir . $key . '*') ?: [] as $file) {
+        $cssName = $alias !== '' ? $this->sanitizeAlias($alias) . '.css' : $this->key($url, $format) . '.css';
+        foreach (glob($this->cacheDir . $cssName . '*') ?: [] as $file) {
             @unlink($file);
+        }
+        // For hash-based names also clean up any sidecar files (e.g. old-style .hash files)
+        if ($alias === '') {
+            $key = $this->key($url, $format);
+            foreach (glob($this->cacheDir . $key . '*') ?: [] as $file) {
+                @unlink($file);
+            }
         }
     }
 
@@ -144,30 +159,39 @@ final class FontCache
 
         $base = $this->toUrl(''); // base URL for font files: .../cache/fonts/
 
-        // Process @font-face blocks individually so filenames can carry a
-        // human-readable prefix derived from font-family + font-weight.
-        // Example: Inter_400_<md5>.woff2, Inter_100_900_<md5>.woff2 (variable font)
+        // Process @font-face blocks individually so filenames carry a
+        // human-readable prefix derived from font-family + font-weight [+ font-style].
+        // Examples: Inter_400.woff2, Inter_400_italic.woff2, Inter_100_900.woff2
         $css = (string)preg_replace_callback(
             '/@font-face\s*\{([^}]+)\}/is',
             function (array $blockMatch) use ($base, $ua): string {
                 $inner = $blockMatch[1];
 
-                // Extract font-family and font-weight to build filename prefix
+                // Extract font-family, font-weight, font-style to build filename prefix
                 $family = '';
                 $weight = '';
+                $style  = '';
                 if (preg_match('/font-family\s*:\s*["\']?([^"\';\r\n]+)["\']?\s*;/i', $inner, $fm)) {
                     $family = trim($fm[1]);
                 }
                 if (preg_match('/font-weight\s*:\s*([^;\r\n]+)\s*;/i', $inner, $wm)) {
                     $weight = trim($wm[1]);
                 }
+                if (preg_match('/font-style\s*:\s*([^;\r\n]+)\s*;/i', $inner, $sm)) {
+                    $style = strtolower(trim($sm[1]));
+                }
 
-                // Sanitize: alphanumeric only, spaces/hyphens → underscore
+                // Sanitize: alphanumeric only, spaces/hyphens → underscore.
+                // font-style suffix only when non-normal (italic, oblique) to avoid
+                // collision between e.g. Poppins 400 normal and Poppins 400 italic.
                 $prefix = '';
                 if ($family !== '') {
-                    $fam    = preg_replace('/[^a-zA-Z0-9]+/', '_', $family);
-                    $wgt    = preg_replace('/[^a-zA-Z0-9]+/', '_', $weight);
-                    $prefix = rtrim($fam . '_' . $wgt, '_') . '_';
+                    $fam   = preg_replace('/[^a-zA-Z0-9]+/', '_', $family);
+                    $wgt   = preg_replace('/[^a-zA-Z0-9]+/', '_', $weight);
+                    $sty   = ($style !== '' && $style !== 'normal')
+                           ? '_' . preg_replace('/[^a-zA-Z0-9]+/', '_', $style)
+                           : '';
+                    $prefix = rtrim($fam . '_' . $wgt, '_') . $sty . '_';
                 }
 
                 // Download each font file url() within this block
@@ -177,7 +201,11 @@ final class FontCache
                         $fontUrl  = $m[2];
                         $quote    = $m[1];
                         $ext      = strtolower(pathinfo((string)strtok($fontUrl, '?'), PATHINFO_EXTENSION)) ?: 'woff2';
-                        $filename = $prefix . md5($fontUrl) . '.' . $ext;
+                        // Stable name: Family_Weight.ext — predictable for editor.css references.
+                        // Falls back to a URL hash only when family couldn't be parsed.
+                        $filename = $prefix !== ''
+                            ? rtrim($prefix, '_') . '.' . $ext
+                            : md5($fontUrl) . '.' . $ext;
                         $path     = $this->cacheDir . $filename;
 
                         if (!is_file($path)) {
@@ -256,6 +284,19 @@ final class FontCache
     private function key(string $url, string $format): string
     {
         return md5($url . '|' . $format);
+    }
+
+    /**
+     * Sanitize an alias string to a safe, predictable filename stem.
+     * "Template Script" → "template_script"
+     * Rules: lowercase, any run of non-alphanumeric chars → single underscore,
+     *        leading/trailing underscores stripped.
+     */
+    private function sanitizeAlias(string $alias): string
+    {
+        $s = strtolower($alias);
+        $s = preg_replace('/[^a-z0-9]+/', '_', $s);
+        return trim($s, '_') ?: 'font';
     }
 
     /**

@@ -60,8 +60,7 @@ if (!($admin->is_authenticated() && $admin->get_permission('outputfilter_dashboa
     exit(json_encode($aRspnd));
 }
 
-// Sanitize variables
-$purpose = $admin->add_slashes($_POST['purpose']);
+$purpose = $_POST['purpose'];
 if ($purpose == "toggle_status") {
     require WB_PATH.'/modules/outputfilter_dashboard/functions_outputfilter.php';
 
@@ -75,7 +74,7 @@ if ($purpose == "toggle_status") {
 
     if(!opf_set_active($iId, $iActive)) {
         $aRspnd['success'] = false;
-        $aRspnd['message'] = 'db query failed: '.$database->get_error();
+        $aRspnd['message'] = 'db query failed: '.$database->getError();
         $aRspnd['message'] = 'id: '.$iId.' active: '.$iActive;
         exit(json_encode($aRspnd));
     } else {

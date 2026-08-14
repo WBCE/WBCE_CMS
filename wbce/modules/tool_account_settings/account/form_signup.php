@@ -113,10 +113,10 @@ if(isset($_POST['signup_form_sent'])){
         // ///////////////////////////////////
 
         // Prepare user variables for SQL queries
-        $sUsername    = $database->escapeString($username);
-        $sDisplayName = $database->escapeString($display_name);
-        $sEmail       = $database->escapeString($email);
-        $sGroupsID    = $database->escapeString($groups_id);
+        $sUsername    = $username;
+        $sDisplayName = $display_name;
+        $sEmail       = $email;
+        $sGroupsID    = $groups_id;
         $sPassword    = $oAccounts->GenerateRandomPassword(); // generate password
         $aInsertUser = array(
             'group_id'         => $sGroupsID,
@@ -133,8 +133,8 @@ if(isset($_POST['signup_form_sent'])){
         ); 	 		
         $database->insertRow('{TP}users', $aInsertUser);
 
-        if ($database->is_error()) {		
-            header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs"); //&err=".$database->get_error());
+        if ($database->hasError()) {
+            header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs"); //&err=".$database->getError());
             exit(0);
         }				
 
@@ -168,7 +168,7 @@ if(isset($_POST['signup_form_sent'])){
             'LOGIN_URL'            => ACCOUNT_URL . '/login.php'
         );	
         
-        // prepare DB updateRow array
+        // prepare DB upsertRow array
         $aUpdateUser = array(
             'user_id'            => $iUserID,
             'signup_confirmcode' => $sConfirmCode,
@@ -182,7 +182,7 @@ if(isset($_POST['signup_form_sent'])){
             $sEmailTemplateName = 'activation_link';	
             $sMailTo            = $email;
           
-            $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
+            $database->upsertRow('{TP}users', 'user_id', $aUpdateUser);
         }
 
         if ($oAccounts->cfg['signup_double_opt_in'] == 0 && $oAccounts->cfg['user_activated_on_signup'] == 1){
@@ -197,7 +197,7 @@ if(isset($_POST['signup_form_sent'])){
 
         if($oAccounts->cfg['signup_double_opt_in'] == 0 && $oAccounts->cfg['user_activated_on_signup'] == 0){
           
-            $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
+            $database->upsertRow('{TP}users', 'user_id', $aUpdateUser);
 
             // Prepare E-Mail with APPROVAL LINK to send to the AccountsManager
             $sOnScreenSwitch    = 'manager_confirm_new_signup';

@@ -1,5 +1,5 @@
 <section class="help">
-    <h1><img src="<?=get_url_from_path(dirname(__DIR__))?>/img/droplets_logo.png" alt="Droplets"></h1>
+    <h1><img src="<?=get_url_from_path(dirname(__DIR__))?>/droplets_logo.png" alt="Droplets"></h1>
     <div class="authors">
         <p><span>Developed by</span></p>
              <p><b>Original authors:</b> Ruud <a href="https://dev4me.com/">Dev4me</a> and John (PCWacht)<br>

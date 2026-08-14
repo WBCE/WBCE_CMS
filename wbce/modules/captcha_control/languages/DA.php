@@ -44,3 +44,9 @@ $CAPTCHA['CORNER_LIGHT']       = 'Let';
 $CAPTCHA['CORNER_ROUND']       = 'Rund';
 $CAPTCHA['PREVIEW']            = 'Forhåndsvisning';
 $CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Beskyttet af ALTCHA';
+
+// ── No HTTPS fallback ────────────────────────────────────────────────────────
+$CAPTCHA['NO_HTTPS_HEADING']       = 'Ingen indstillinger tilgængelige — HTTPS påkrævet';
+$CAPTCHA['NO_HTTPS_INFO']          = 'ALTCHA er afhængig af en browserfunktion (Web Crypto), der kun fungerer på HTTPS-websteder. Dette websted er i øjeblikket kun tilgængeligt via almindelig HTTP, så widgeten ville aldrig kunne fuldføre sin kontrol — der er derfor intet at konfigurere her, før der er installeret et SSL-certifikat, og webstedet er skiftet til HTTPS.';
+$CAPTCHA['NO_HTTPS_FALLBACK']      = 'I mellemtiden bruges automatisk et simpelt regne-captcha (f.eks. "3 + 5 = ?") i stedet, så formularer forbliver beskyttet.';
+$CAPTCHA['VERIFICATION_INFO_RES']  = 'Løs venligst regnestykket for at bekræfte, at du ikke er en robot.';

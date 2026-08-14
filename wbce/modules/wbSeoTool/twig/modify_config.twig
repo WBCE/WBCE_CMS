@@ -1,0 +1,157 @@
+{#
+    wbSeoTool/twig/modify_config.twig
+
+    Variables:
+      RETURN_URL     — form action URL (tool.php?tool=wbSeoTool&pos=config)
+      RETURN_TO_TOOL — back-button URL (tool.php?tool=wbSeoTool)
+      config         — decoded settings_json array
+      rewriteColumnMissing / rewriteColumnWarning
+
+    Language strings are read directly via L_('TXT:KEY') (module strings,
+    languages/EN.php + DE.php, namespace registered by Lang::loadLanguage())
+    and L_('TEXT:KEY') (core strings) — nothing needs to be passed in.
+
+    getTwig() globals used: FTAN, TOOL_ICON, TOOL_URI
+
+    autoescape is OFF (WBCE convention) — values are escaped explicitly via |e.
+#}
+
+<form name="config_editor" action="{{ RETURN_URL }}" method="post">
+    {{ FTAN|raw }}
+    <div class="cp-settings">
+        <div class="cp-toggle-section cp-card-body">
+            <div class="cp-card-head">
+                <label>{{ TOOL_ICON|raw }} {{ L_('TXT:TOOL_CONFIG') }}</label>
+            </div>
+
+            <section>
+                {# ── Title Counter ─────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">Title Counter</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="iTitleCount_use" name="iTitleCount_use"{{ config.iTitleCount.use ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div id="iTitleCount" class="cp-subfields">
+                            <label>minimum: <input type="number" name="iTitleCount_minimum" value="{{ config.iTitleCount.minimum|default(30) }}"></label>
+                            <label>optimum: <input type="number" name="iTitleCount_optimum" value="{{ config.iTitleCount.optimum|default(50) }}"></label>
+                            <label>maximum: <input type="number" name="iTitleCount_maximum" value="{{ config.iTitleCount.maximum|default(60) }}"></label>
+                        </div>
+                    </div>
+                </div>
+
+                {# ── Description Counter ───────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">Description Counter</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="iDescriptionCount_use" name="iDescriptionCount_use"{{ config.iDescriptionCount.use ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div id="iDescriptionCount" class="cp-subfields">
+                            <label>minimum: <input type="number" name="iDescriptionCount_minimum" value="{{ config.iDescriptionCount.minimum|default(90) }}"></label>
+                            <label>optimum: <input type="number" name="iDescriptionCount_optimum" value="{{ config.iDescriptionCount.optimum|default(150) }}"></label>
+                            <label>maximum: <input type="number" name="iDescriptionCount_maximum" value="{{ config.iDescriptionCount.maximum|default(160) }}"></label>
+                        </div>
+                    </div>
+                </div>
+
+                {# ── Keywords ───────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">Keywords</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="keywordsConfig_use" name="keywordsConfig_use"{{ config.keywordsConfig.use ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div id="keywordsConfig" class="cp-subfields">
+                            <label>{{ L_('TXT:CUSTOM_KEYWORDS_STRING') }}:
+                                <input type="text" name="keywordsConfig_wordReplace" value="{{ config.keywordsConfig.wordReplace|default('keywords')|e }}">
+                            </label>
+                            <div class="cp-setting-hint">{{ L_('TXT:CUSTOM_KEYWORDS_STRING_HINT')|raw }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {# ── Menu title ─────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TXT:MENU_TITLE') }}</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="menuTitleConfig_use" name="menuTitleConfig_use"{{ config.menuTitleConfig.use ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div class="cp-setting-hint">{{ L_('TXT:USE_MENU_TITLE_HINT') }}</div>
+                    </div>
+                </div>
+
+                {# ── Remaining chars ───────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TXT:USE_REMAINING_CHARS') }}</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="bUseRemainingChars_use" name="bUseRemainingChars"{{ config.bUseRemainingChars ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div class="cp-setting-hint">{{ L_('TXT:USE_REMAINING_CHARS_HINT') }}</div>
+                    </div>
+                </div>
+
+                {# ── Language flags ────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TXT:USE_FLAGS') }}</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="bUseFlags_use" name="bUseFlags"{{ config.bUseFlags ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div class="cp-setting-hint">{{ L_('TXT:USE_FLAGS_HINT') }}</div>
+                    </div>
+                </div>
+
+                {# ── Rewrite URL ───────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">URL Rewrite</div>
+                    <div class="cp-setting-value">
+                        <label>
+                            <input type="checkbox" id="rewriteUrl_use" name="rewriteUrl_use"{{ config.rewriteUrl.use ? ' checked' : '' }}>
+                            {{ L_('TXT:USE') }}
+                        </label>
+                        <div id="rewriteUrl" class="cp-subfields">
+                            <label>{{ L_('TXT:USED_DB_FIELD') }}:
+                                <input type="text" name="rewriteUrl_dbString"
+                                       class="{{ rewriteColumnMissing ? 'validation-feedback' : '' }}"
+                                       value="{{ config.rewriteUrl.dbString|default('')|e }}">
+                            </label>
+                            {% if rewriteColumnMissing %}
+                            <div class="alert-danger">{{ rewriteColumnWarning|raw }}</div>
+                            {% endif %}
+                            <div class="cp-setting-hint" style="color:var(--danger);">{{ L_('TXT:USE_REWRITE_URL_HINT') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="cp-buttons-row">
+            <a href="{{ RETURN_TO_TOOL }}" class="button">&laquo; {{ L_('TEXT:BACK') }}</a>
+            <button type="submit" name="save_config" class="button ico-save pos-right">{{ L_('TEXT:SAVE') }}</button>
+        </div>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var groups = ['iTitleCount', 'iDescriptionCount', 'keywordsConfig', 'rewriteUrl'];
+    groups.forEach(function (name) {
+        var checkbox = document.getElementById(name + '_use');
+        var panel = document.getElementById(name);
+        if (!checkbox || !panel) return;
+        panel.style.display = checkbox.checked ? '' : 'none';
+        checkbox.addEventListener('change', function () {
+            panel.style.display = checkbox.checked ? '' : 'none';
+        });
+    });
+});
+</script>

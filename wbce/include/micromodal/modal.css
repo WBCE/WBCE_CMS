@@ -2,14 +2,16 @@
   Theme-Ready Modal Styles
 \**************************/
 
-#modal-1 {
+/* Generic — not tied to one hardcoded id (MicroModal's own demo used
+   "modal-1" specifically; FEE uses this for several different modals with
+   their own ids — the icon picker, and more to come, per the project's own
+   plan to use MicroModal more broadly). Any element with the base .modal
+   class hides by default and shows once MicroModal adds .is-open. */
+.modal {
   display: none;
 }
 
-.modal.is-open,
-#modal-1.is-open, 
-#modal-1.open 
-{
+.modal.is-open {
   display: block;
 }
 
@@ -198,6 +200,9 @@
      are never set by this rule, so they leak through untouched otherwise). */
   margin: 0;
   min-height: auto;
+}
+.modal__btn:hover {
+    color: var(--ws-tree-color);
 }
 
 .modal__btn-primary {

@@ -1,18 +1,13 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        modules
- * @package         wrapper
- * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version      	$Id: save.php 1538 2011-12-10 15:06:15Z Luisehahne $
- * @filesource		$HeadURL: http://svn.websitebaker2.org/branches/2.8.x/wb/modules/wrapper/install.php $
- * @lastmodified    $Date: 2011-01-10 13:21:47 +0100 (Mo, 10 Jan 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 require('../../config.php');
@@ -31,18 +26,21 @@ $admin->print_header();
 
 // Update the mod_wrapper table with the contents
 if(isset($_POST['url'])) {
-	$url = $admin->add_slashes(strip_tags($_POST['url']));
+	$url = strip_tags($_POST['url']);
 	$height = $_POST['height'];
 	if(!is_numeric($height)) {
 		$height = 400;
 	}
-	$query = "UPDATE ".TABLE_PREFIX."mod_wrapper SET url = '$url', height = '$height' WHERE section_id = '$section_id'";
-	$database->query($query);
+	$database->upsertRow('{TP}mod_wrapper', 'section_id', [
+		'section_id' => $section_id,
+		'url'        => $url,
+		'height'     => $height,
+	]);
 }
 
 // Check if there is a database error, otherwise say successful
-if($database->is_error()) {
-	$admin->print_error($database->get_error(), $js_back);
+if($database->hasError()) {
+	$admin->print_error($database->getError(), $js_back);
 } else {
 	$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 }

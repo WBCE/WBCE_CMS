@@ -73,11 +73,13 @@ if($page_type != '') {
 		$admin->print_error('PageTtype '.$TEXT['ERROR'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 	}
 
-	$sToJS = "
-		var JsAdmin = { WB_URL : WB_URL, ADMIN_URL : ADMIN_URL };
-		var JsAdminTheme = { THEME_URL : THEME_URL };
-		buttonCell=".$js_buttonCell.";\n";
-	I::insertJsCode ($sToJS, "BODY BTM-", 'JsAdminVars');
+	// AssetQueue renders JS files before inline JS within the same position bucket.
+	// Use body_early so this block lands before body_late JS files execute.
+	// Use PHP values directly — no runtime dependency on WB_URL/ADMIN_URL JS vars.
+	$sToJS  = "var JsAdmin      = { WB_URL: '" . addslashes(WB_URL)    . "', ADMIN_URL: '" . addslashes(ADMIN_URL) . "' };\n";
+	$sToJS .= "var JsAdminTheme = { THEME_URL: '" . addslashes(THEME_URL) . "' };\n";
+	$sToJS .= "var buttonCell   = " . (int)$js_buttonCell . ";\n";
+	I::insertJsCode($sToJS, "BODY TOP", 'JsAdminVars');
 
 	// jQuery UI Sortable is required for drag & drop
 	if(in_array('dragdrop.js', $js_scripts)) {

@@ -13,7 +13,7 @@
 $module_directory = 'sitemap';
 $module_name      = 'Sitemap';
 $module_function  = 'page';
-$module_version   = '4.0.11';
+$module_version   = '4.1.1';
 $module_platform  = '1.4.0';
 $module_author    = 'Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)';
 $module_license   = 'GNU General Public License';
@@ -25,8 +25,15 @@ $module_description = 'This module allows you to easily create a sitemap. You ca
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     DEVELOPMENT HISTORY (Change Log):
 	
-	v.4.0.11 florian
-			some bug fixes reported by bear (https://forum.wbce.org/viewtopic.php?id=4669)
+    v.4.1.1 Christian M. Stefan (Stefanek)
+            multi-driver SQL corrections (MySQL/SQLite) as preparation for
+            experimental SQLite readiness
+
+    v.4.1.0 Christian M. Stefan (Stefanek)
+            sitemap: parameterize queries, remove addslashes(), fix truthiness bug
+ 
+    v.4.0.11 florian
+            some bug fixes reported by bear (https://forum.wbce.org/viewtopic.php?id=4669)
 
     v.4.0.10 Colinax
             fix fix database queryin view.php

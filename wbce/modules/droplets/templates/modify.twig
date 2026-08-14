@@ -82,10 +82,11 @@
 </form>
 </div>
     {{ CodeEditor('contentedit', 'x-php', {
-        'height':    550,
-        'toolbar':   true,
-        'line_wrap': true,
-        'ajax_save': true,
-        'ajax_url':  ajax_url,
-        'ajax_data': {'idKey': idKey}
+        'height':     550,
+        'toolbar':    true,
+        'line_wrap':  true,
+        'ajax_save':  true,
+        'ajax_url':   ajax_url,
+        'ajax_data':  {'idKey': idKey},
+        'error_line': error_line|default(0)
     }) }}

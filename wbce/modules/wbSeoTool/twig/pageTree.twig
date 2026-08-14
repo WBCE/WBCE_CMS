@@ -1,0 +1,39 @@
+{#
+/**
+ * WBCE CMS AdminTool: wbSeoTool
+ *
+ * pageTree.twig — outer wrapper: header, column toggles, tree root.
+ * getTwig() globals used: TOOL_ICON, TOOL_URI. Language strings via
+ * L_('TXT:KEY') (module) — nothing passed in from PHP.
+ */
+#}
+<div class="cp-settings">
+    <div class="cp-toggle-section cp-card-body">
+        <div class="cp-card-head">
+            <label>{{ TOOL_ICON|raw }} {{ L_('TXT:TOOL_CONFIG') }}</label>
+        </div>
+        <div id="wbseotool-toolbar">
+            <label><input type="checkbox" data-toggle-col="title" checked> &lt;meta:title&gt;</label>
+            {% if REWRITE_URL %}
+            <label><input type="checkbox" data-toggle-col="url" checked> &lt;{{ REWRITE_URL|e }}&gt;</label>
+            {% endif %}
+            <label><input type="checkbox" data-toggle-col="description" checked> &lt;description&gt;</label>
+            {% if KEYWORDS_CONFIG %}
+            <label><input type="checkbox" data-toggle-col="keywords" checked> &lt;{{ KEYWORDS_CONFIG|e }}&gt;</label>
+            {% endif %}
+            <span class="wbseotool-toolbar-right">
+                <a href="{{ TOOL_URI }}&pos=config" class="wbseotool-icon">{{ inline_svg(ICONS_PATH ~ '/cog.svg') }}</a>
+                <a href="{{ TOOL_URI }}&pos=config">{{ L_('TXT:ADVANCED_SETTINGS') }}</a>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="page" id="wbseotool">
+	<ol id="pageTree" class="wbseotool-tree" data-ajax-url="{{ AJAX_URL }}">
+		{% if pages %}
+			{% include 'pageTreeSingle.twig' with {'pages': pages} %}
+		{% else %}
+			<li>{{ L_('TXT:NO_PAGES_FOUND') }}</li>
+		{% endif %}
+	</ol>
+</div>

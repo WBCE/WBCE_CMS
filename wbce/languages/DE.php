@@ -725,6 +725,8 @@ $SIGNAL['ADDON_DEACTIVATED']     = '%s %s wurde deaktiviert.';
 // ── ZIP / Entpacken
 $SIGNAL['ADDON_EXTRACT_OK']      = 'Archiv für %s "%s" erfolgreich entpackt.';
 $SIGNAL['ADDON_EXTRACT_ERROR']   = 'Entpacken von %s "%s" fehlgeschlagen.';
+$SIGNAL['ADDON_SECURITY_BLOCKED'] = 'Von CodeVet blockiert: %s "%s" enthält unzulässigen Code und wurde nicht bereitgestellt.';
+$SIGNAL['ADDON_SECURITY_WARNING'] = 'CodeVet-Hinweis zu %s "%s": auffälliger, aber nicht blockierter Code gefunden — bitte Quelle prüfen.';
 // ── Remote-Abruf
 $SIGNAL['ADDON_FETCH_OK']        = '%s "%s" wurde erfolgreich heruntergeladen.';
 $SIGNAL['ADDON_FETCH_ERROR']     = 'Download von %s "%s" fehlgeschlagen.';

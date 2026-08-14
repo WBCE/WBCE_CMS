@@ -41,8 +41,7 @@ if(isAjaxRequest() && isset($_POST['miniform'])) {
 
 $mf = new mform($section_id);
 
-$get_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'");
-$settings = $get_settings->fetchRow();
+$settings = $database->fetchRow("SELECT * FROM {TP}mod_miniform WHERE section_id = ?", [$section_id]);
 $form = $settings['template'];
 $email = $settings['email'];
 $emailfrom = $settings['emailfrom'];
@@ -66,7 +65,7 @@ if(!isset($_SESSION['no'.$section_id]) && !isset($_SESSION['form']) && $wb->get_
 	$_SESSION['no'.$section_id] = true;
 } 
 if(isset($_GET['guid'])) {
-	$guid = addslashes($_GET['guid']);
+	$guid = $_GET['guid'];
 	$mf->load_history($section_id, 0, $guid );
 	$mf->fieldGetSeen = true;
 }

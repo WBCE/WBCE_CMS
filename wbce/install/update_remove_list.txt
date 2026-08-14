@@ -47,6 +47,8 @@
 [ADMIN]/preferences/password.php
 [ADMIN]/users/users.php           // 1.7.0 refactor
 [ADMIN]/users/save.php            // 1.7.0 refactor
+[ADMIN]/groups/add.php            // 1.7.0 refactor
+[ADMIN]/groups/groups.php         // 1.7.0 refactor
 
 # Framework
 [FRAMEWORK]/I.php                        // replaced by framework/Assets/I.php (AssetQueue shim)
@@ -107,8 +109,9 @@
 [MODULES]/SecureFormSwitcher/language_load.php
 [MODULES]/CodeMirror_Config/initialize.php                     // changed to initialize_be.php
 [MODULES]/menu_link/upgrade.php
-[MODULES]/menu_link/backend.css          // 1.7.0 cleanup
+[MODULES]/menu_link/backend.css                                // 1.7.0 cleanup
 [MODULES]/menu_link/functions.pageTree.php
+[MODULES]/wrapper/modify.htt
 
 
 # Templates (Themes)
@@ -180,6 +183,7 @@
 [MODULES]/menu_link/selectator/
 [MODULES]/jsadmin/images/
 [MODULES]/jsadmin/languages/
+[MODULES]/wrapper/languages/
 [TEMPLATE]/advancedThemeWbFlat/
 [TEMPLATE]/argos_theme/
 [TEMPLATE]/argos_theme_classic/

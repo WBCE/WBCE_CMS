@@ -1,0 +1,191 @@
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.pane h2 {
+    margin: .4em .5em;
+}
+.pane h2 span{
+    font-weight: 400;
+}
+div.formRow .settingValue{
+    line-height: 1.9;
+}
+div.formRow .settingValue label{
+    font-weight:500 !important;
+}
+.setting_name {
+    vertical-align: top;
+}
+.newsection {
+    border-top: 1px dashed #fff;
+}
+
+.card .pane>.tabs li.page-title{
+        margin-bottom: 0;
+}
+.card .pane>.tabs li.page-title{
+        margin-bottom: 1px;
+}
+a.tooltip span {
+    display: none;
+    margin-left: 14px;
+    width: 430px;
+}
+a.tooltip:hover span {
+    display: inline;
+    position: absolute;
+    padding: 5px;
+    border: 1px solid #000000;
+    background: #ffffff;
+    color: #000000;
+}
+
+div.drok, div.drfail {
+    border: solid 1px #006600;
+    color: #006600;
+    font-weight: bold;
+    padding: 5px;
+}
+div.drfail {
+    border: solid 1px #f00;
+    color: #f00;
+}
+
+/* ── Sort icon (⇅/↑/↓) — see assets/backend_body.js ─────────────────────────
+   th.sort already gets cursor:pointer + a static '⇅' from cp_chrome.css;
+   we inject our own dynamic icon instead, so the static one is suppressed. */
+th.sort::after {
+    content: none;
+}
+.tablesorter-sort-icon {
+    display: inline-block;
+    margin-left: 4px;
+    opacity: .5;
+    font-weight: normal;
+}
+.tablesorter-headerAsc .tablesorter-sort-icon,
+.tablesorter-headerDesc .tablesorter-sort-icon {
+    opacity: 1;
+}
+
+/* Droplets' first column (checkbox + validity icon) and last column
+   (duplicate/delete actions) don't fit cp-table's default first-/last-child
+   treatment (mono ID badge, forced right-align) — reset it back to normal. */
+#myTable td:first-child,
+#myTable td:last-child {
+    font-family: inherit;
+    text-align: left;
+    white-space: nowrap;
+    width: auto;
+    font-size: 100%;
+}
+#myTable td:last-child {
+    text-align: center;
+}
+
+a.internal {
+    margin: 0 2px;
+    vertical-align: inherit;
+}
+.alertbox {
+    width: 94%;
+}
+.togglehub li:not(:first-of-type){
+    font-size: 85%;
+}
+a:hover, a:active, a:focus{
+    text-decoration: none;
+}
+#operateChecked{
+    padding:5px 15px;
+}
+
+.droplet-name a {
+    color: #5B7CA3;
+    font-weight: 800;
+    font-size: 110%;
+}
+
+tr.inactive td{
+    opacity: 0.65;
+}
+
+.modify-date{
+    font-size: 85%;
+    color: darkgrey;
+}
+
+/**
+ * blinking droplet
+ */
+.fa-tint{
+    font-size: 125%;
+}
+.text-danger {
+  color: #e6375e;
+}
+.blinking {
+  animation: blinker 1s step-end infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+
+/**
+ HELP
+ */
+ .authors{
+    font-size: .85em;
+    text-align: center;
+    line-height: 1.5;
+    padding: 10px;
+    margin: 5px auto 25px;
+    width: 70%;
+    border: 1px dashed #b7d2e6;
+    background-color: #f6fbf8;
+ }
+ .authors span{
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+ }
+
+.help p {
+    margin: 0.2em 1.1em 0.4em ;
+}
+.help a {
+    color: #5B7CA3;
+    font-weight: 600;
+}
+.help img {
+    display: block;
+  margin: 15px;
+  margin-left: auto;
+  margin-right: auto;
+
+  width: 50%;
+}
+pre {
+    background: #fff8e0 none repeat scroll 0 0;
+    border: 1px dashed #DDDDDD;
+    color: #666666;
+    margin: 10px 18px;
+    padding: 5px 3px;
+    overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    /* width: 99%; */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+input[switch=bool]:checked:disabled + label {
+    background: #c0de7dbf;
+    cursor: not-allowed;
+}

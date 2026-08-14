@@ -35,9 +35,7 @@ if (!$section_id){
     exit();
 }
 
-$query = "SELECT * FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'";
-$get_settings = $database->query($query);
-$settings = $get_settings->fetchRow();
+$settings = $database->fetchRow("SELECT * FROM {TP}mod_miniform WHERE section_id = ?", [$section_id]);
 $remote = $settings['remote_id'];
 
 
@@ -66,7 +64,7 @@ if(isset($_POST['remote'])) {
 	if(!$nwdata) {
 		echo "<div class='mf-error'>".$MF['LOADERROR']."</div>";
 	} else {
-		$database->query("UPDATE `".TABLE_PREFIX."mod_miniform` SET `remote_id`= '$remote' WHERE `section_id` = '$section_id'");
+		$database->query("UPDATE `{TP}mod_miniform` SET `remote_id` = ? WHERE `section_id` = ?", [$remote, $section_id]);
 		echo "<div class='mf-success'>".$MF['LOADSUCCESS']."</div>";
 	}	
 }

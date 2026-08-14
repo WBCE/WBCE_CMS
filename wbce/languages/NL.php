@@ -720,6 +720,8 @@ $SIGNAL['ADDON_DEACTIVATED']     = '%s "%s" is gedeactiveerd.';
 // ── ZIP / Uitpakken
 $SIGNAL['ADDON_EXTRACT_OK']      = 'Archief van %s "%s" succesvol uitgepakt.';
 $SIGNAL['ADDON_EXTRACT_ERROR']   = 'Uitpakken van %s "%s" mislukt.';
+$SIGNAL['ADDON_SECURITY_BLOCKED'] = 'Geblokkeerd door CodeVet: %s "%s" bevat niet-toegestane code en is niet klaargezet.';
+$SIGNAL['ADDON_SECURITY_WARNING'] = 'CodeVet-melding voor %s "%s": opvallende maar niet-geblokkeerde code gevonden — controleer de bron.';
 // ── Download
 $SIGNAL['ADDON_FETCH_OK']        = '%s "%s" succesvol gedownload.';
 $SIGNAL['ADDON_FETCH_ERROR']     = 'Download van %s "%s" mislukt.';

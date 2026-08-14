@@ -53,8 +53,15 @@ $hasErr         = false;
 $alreadyCurrent = false;
 $rawOutput      = '';
 
-// Stage errors only — staging-OK signals are internal
+// Stage errors — staging-OK signals are internal, except CodeVet warnings
+// (not an error, but the admin should still see what was flagged)
 foreach ($stageSignals as $r) {
+    if ($r['signal'] === 'ADDON_SECURITY_WARNING') {
+        $msgs[] = isset($SIGNAL[$r['signal']])
+            ? sprintf($SIGNAL[$r['signal']], 'template', $r['label'])
+            : $r['label'];
+        continue;
+    }
     if ($service->isOkSignal($r['signal'])) continue;
     $msgs[] = isset($SIGNAL[$r['signal']])
         ? sprintf($SIGNAL[$r['signal']], 'template', $r['label'])

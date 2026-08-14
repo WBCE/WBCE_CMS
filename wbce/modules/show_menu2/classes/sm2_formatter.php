@@ -515,11 +515,7 @@ function sm2_get_menulink_data()
             if ($row['extern'] === '') {
                 continue;
             }
-            $url = str_replace('[WB_URL]', WB_URL, $row['extern']);
-            // convert [wblinkXX] (optionally followed by #anchor) into a proper page URL
-            if (preg_match('/\[wblink(\d+)\](#\S*)?/', $url, $m)) {
-                $url = $wb->page_link((int)$m[1]).($m[2] ?? '');
-            }
+            $url = LinkResolver::resolveContent(str_replace('[WB_URL]', WB_URL, $row['extern']));
             $data['external'][$pageId] = $url;
         } elseif ($targetPageId > 0 && isset($targetLinks[$targetPageId])) {
             $url = $wb->page_link($targetLinks[$targetPageId]);

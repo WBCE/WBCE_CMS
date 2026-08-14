@@ -150,7 +150,7 @@ if ($module_type == "news_img") {
                     "WHERE `tag_id`='%d'",
                     TABLE_PREFIX,TABLE_PREFIX,$tag_id
                 ));
-                $dup_tag_id = $database->get_one("SELECT LAST_INSERT_ID()");
+                $dup_tag_id = $database->lastInsertId();
             } else {
                 $query_tags = $database->query(sprintf(
                     "SELECT * FROM `%smod_news_img_tags` AS t1 " .
@@ -212,7 +212,7 @@ if ($module_type == "news_img") {
             $database->query($sql);
 
             // get new post ID
-            $post_id = $database->get_one("SELECT LAST_INSERT_ID()");
+            $post_id = $database->lastInsertId();
 
             // set dir names
             $mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
@@ -443,7 +443,7 @@ if ($module_type == "news_img") {
                     $sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`group_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`active`) VALUES ('$section_id','0','$position','','','','','0')";
                     $database->query($sql);
 
-                    $post_id = $database->get_one("SELECT LAST_INSERT_ID()");
+                    $post_id = $database->lastInsertId();
 
                     $mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
                     $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
@@ -704,7 +704,7 @@ if ($module_type == "news_img") {
             $sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`group_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`active`) VALUES ('$section_id','0','$position','','','','','0')";
             $database->query($sql);
 
-            $post_id = $database->get_one("SELECT LAST_INSERT_ID()");
+            $post_id = $database->lastInsertId();
 
             $mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
             $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";

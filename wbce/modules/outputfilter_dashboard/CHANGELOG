@@ -1,7 +1,31 @@
 
 Header: Version-History
 
-1.6.8   %(Stefek, 25 July 2026)%
+1.6.9   %(Christian M. Stefan, 10 August 2026)%
+    - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+      experimental SQLite readiness
+
+        install.php's `mod_outputfilter_dashboard` table DDL moved to
+        install_struct.sql, routed through Database::importSql() instead of
+        opf_db_run_query() so it gets normalized for the active driver.
+
+        opf_db_query()/opf_db_query_vars()/opf_db_run_query() (functions.php)
+        checked `$result === NULL` to detect a failed query -- a leftover
+        from the old mysqli-era Database contract. The current PDO-based
+        Database::query() always returns a DatabaseResult object, never
+        null, so every failure was silently reported as success. Switched
+        all three to Database::hasError().
+
+        opf_register_filter() (functions_outputfilter.php) built its
+        insert/update as `INSERT INTO ... SET col=val, ...` -- MySQL-only
+        syntax invalid on SQLite -- split into a proper `INSERT INTO
+        (cols) VALUES (...)` / `UPDATE ... SET ...` pair. Also fixed a
+        pre-existing, driver-independent bug found in the process: the
+        UPDATE branch's WHERE clause (`$sql_where`) was declared but never
+        assigned, so every filter update ran against the whole table
+        instead of the one row being edited.
+
+1.6.8   %(Christian M. Stefan, 25 July 2026)%
     - Consolidate standalone mod_opf_* modules into core_outputfilters plugin
 
         Seven standalone opffilter modules (mod_opf_auto_placeholder, mod_opf_csstohead,
@@ -17,7 +41,7 @@ Header: Version-History
         old module directories and their addons-table entries. install.php is cleaned up.
 
 
-1.6.7   %(Stefek, 25 July 2026)%
+1.6.7   %(Christian M. Stefan (Stefek), 25 July 2026)%
     - ensure inline filter funcs re-open PHP context before eval
         ajax_save_filter.php now stores inline code with a leading <?php tag.
         functions.php adds a defensive guard for existing DB entries that lack

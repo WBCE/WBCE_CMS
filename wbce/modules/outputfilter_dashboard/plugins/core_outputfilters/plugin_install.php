@@ -7,8 +7,8 @@ $coreOpfFilters = [
     [
         'name'         => 'Internal Link Replacer',
         'type'         => OPF_TYPE_PAGE,
-        'file'         => '{OPF:PLUGIN_PATH}/opf_wblink.php',
-        'funcname'     => 'opff_mod_opf_wblink',
+        'file'         => '{OPF:PLUGIN_PATH}/opf_pagelink.php',
+        'funcname'     => 'opff_mod_opf_pagelink',
         'plugin'       => 'core_outputfilters',
         'pages_parent' => 'all,search',
         'desc'         => [
@@ -61,7 +61,7 @@ $coreOpfFilters = [
 
 foreach ($coreOpfFilters as $filter) {
     $filter['active']    = 1;
-    $filter['allowedit'] = in_array($filter['funcname'], ['opff_mod_opf_insert', 'opff_mod_opf_wblink']) ? 0 : 1;
+    $filter['allowedit'] = in_array($filter['funcname'], ['opff_mod_opf_insert', 'opff_mod_opf_pagelink']) ? 0 : 1;
     if (opf_register_filter($filter) == true) {
         $setting = preg_replace('/.*\/(.+?)\.php$/', '$1', $filter['file']);
         Settings::set($setting, 1, false);

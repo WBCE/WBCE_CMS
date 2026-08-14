@@ -22,12 +22,10 @@ $iRecordID      = intval($_POST['iRecordID']);
 if (is_array($_POST['iRecordID'])) { $iRecordID=0; }
 
 if($iRecordID > 0) {
-	// build query
-	$query = "DELETE FROM `".TABLE_PREFIX."mod_miniform_data` WHERE `message_id` = '".$iRecordID."' LIMIT 1";
 	// excecute query
-	$database->query($query);
+	$database->deleteRow('{TP}mod_miniform_data', 'message_id', $iRecordID);
 	// test for errors
-	if($database->is_error()) {
+	if($database->hasError()) {
 		$aJsonRespond['message'] = 'Deleting record failed!';
 	} else {
 		$aJsonRespond['message'] = 'Record deleted successfully!';

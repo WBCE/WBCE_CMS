@@ -20,4 +20,4 @@ $aCfg = array(
 );
 
 // write default settings into {TP}settings table
-Settings::Set("cmc_cfg", serialize( $aCfg ));
+Settings::set("cmc_cfg", serialize( $aCfg ));
