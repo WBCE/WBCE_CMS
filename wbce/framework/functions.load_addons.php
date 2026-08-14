@@ -27,7 +27,9 @@
  * @param  string  $data                 The PHP code as a string
  * @param  bool    $striptags            Strip HTML tags from the value? (default: true)
  * @param  bool    $convert_to_entities  Convert special characters to HTML entities? (default: true)
- * @return string| false                 The extracted value or false if not found / not a simple string
+ * @return string|bool|false             The extracted value, a real PHP bool for a bare
+ *                                       true/false literal, or false if not found /
+ *                                       not a simple string or bool literal
  */
 function get_variable_content($search, $data, $striptags = true, $convert_to_entities = true)
 {
@@ -71,6 +73,12 @@ function get_variable_content($search, $data, $striptags = true, $convert_to_ent
                 // Keep scanning: a later re-assignment of the same variable
                 // must win, exactly like real PHP execution would resolve it.
                 $found = $value;
+            } elseif (is_array($tokens[$i]) && $tokens[$i][0] === T_STRING
+                && in_array(strtolower($tokens[$i][1]), ['true', 'false'], true)
+            ) {
+                // Bare boolean literal (e.g. `$allow_all_db_access = false;`) —
+                // same last-assignment-wins scanning as the string case above.
+                $found = strtolower($tokens[$i][1]) === 'true';
             }
         }
         $i++;
