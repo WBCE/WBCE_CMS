@@ -37,6 +37,19 @@ PlainMDE keeps the underlying `<textarea>`'s value in sync on every
 keystroke, so a plain (non-JS) form submit works unmodified — no special
 serialization step needed before posting the form.
 
+### Inline tree previews
+
+A fenced block tagged `file-tree` / `page-tree` (also spelled `filetree` /
+`pagetree`) is shown as a rendered tree while the cursor is elsewhere, and as
+plain source as soon as the selection enters it — click it to edit. The live
+preview renders the same blocks the same way.
+
+PlainMDE only drives this; the drawing is done by whatever loads
+`window.WbceFileTree` (`modules/tiptap_editor/assets/filetree.js`, vendored as
+`modules/MarkdownWbce/layout/filetree.js`). Without such a renderer on the page
+the feature stays silent and the block is edited as ordinary source. Opt out per
+instance with `{ treeView: false }`.
+
 Optional pieces, loaded the same way:
 
 - `PlainMDEDecorations.attach(editor.codemirror)` — heading-size preview,
@@ -80,4 +93,4 @@ this project's own stylesheet.
 
 ## Authors
 
-Christian M. Stefan ([wbEasy.de](https://www.wbeasy.de))
+Christian M. Stefan ([wbEasy.de](https://www.wbEasy.de))

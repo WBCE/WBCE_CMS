@@ -450,3 +450,16 @@
 .mdr-pmde-theme .cm-s-default .cm-hr        { color: var(--pmde-cm-hr, #999); }
 .mdr-pmde-theme .cm-s-default .cm-link      { color: var(--pmde-cm-link, #00c); }
 .mdr-pmde-theme .cm-s-default .cm-error     { color: var(--pmde-cm-error, #f00); }
+
+/* ── Inline tree previews (plainmde-treeview.js) ─────────────────────────
+   The widget replaces a ```file-tree / ```page-tree block while the cursor is
+   elsewhere. The tree itself is styled by the renderer's own stylesheet
+   (filetree.css); only placement belongs here. */
+.pmde-treeview {
+    display: block;
+    margin: .35rem 0;
+    cursor: text;
+}
+.pmde-treeview .file-tree-container {
+    margin: 0;
+}

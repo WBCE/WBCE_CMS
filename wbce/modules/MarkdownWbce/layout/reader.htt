@@ -108,9 +108,15 @@
                     <input type="hidden" name="rel_path" value="[REL_PATH]">
                     <textarea id="mdr-edit-textarea" name="content">[RAW_MARKDOWN]</textarea>
                     <div class="mdr-edit-actions">
-                        <button type="button" class="mdr-edit-cancel" id="mdr-edit-cancel">Cancel</button>
-                        <span class="mdr-edit-status" id="mdr-edit-status"></span>
-                        <button type="submit" class="mdr-edit-save">Save</button>
+                        <button type="button" class="mdr-edit-cancel" id="mdr-edit-cancel">Back</button>
+                        <span class="mdr-edit-status" id="mdr-edit-status" role="status" aria-live="polite"></span>
+                        <button type="submit" class="mdr-edit-save" id="mdr-edit-save">
+                            <span class="mdr-save-label">Save</span>
+                            <svg class="mdr-save-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle class="mdr-save-check-ring" cx="12" cy="12" r="10"/>
+                                <path class="mdr-save-check-mark" d="M7 12.5l3.2 3.2L17 9"/>
+                            </svg>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -135,6 +141,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     var toggleBtn   = document.getElementById('mdr-edit-toggle');
     var cancelBtn   = document.getElementById('mdr-edit-cancel');
+    var saveBtn     = document.getElementById('mdr-edit-save');
+    var saveTimer   = null;
     var panel       = document.getElementById('mdr-edit-panel');
     var article     = document.getElementById('mdr-article');
     var form        = document.getElementById('mdr-edit-form');
@@ -196,9 +204,38 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleBtn.addEventListener('click', enterEdit);
     cancelBtn.addEventListener('click', leaveEdit);
 
+    // Save feedback lives on the Save button itself: it flips to a drawn
+    // checkmark for a moment and goes back to "Save". Only failures put text
+    // next to it — a success needs no words.
+    function showSaved() {
+        clearTimeout(saveTimer);
+        statusEl.textContent = '';
+        statusEl.classList.remove('is-error');
+        saveBtn.classList.remove('is-saving');
+        saveBtn.classList.add('is-done');
+        saveBtn.disabled = true;
+        saveTimer = setTimeout(function () {
+            saveBtn.classList.remove('is-done');
+            saveBtn.disabled = false;
+        }, 1600);
+    }
+
+    function showError(message) {
+        clearTimeout(saveTimer);
+        saveBtn.classList.remove('is-saving', 'is-done');
+        saveBtn.disabled = false;
+        statusEl.textContent = message;
+        statusEl.classList.add('is-error');
+    }
+
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        statusEl.textContent = 'Saving…';
+        clearTimeout(saveTimer);
+        statusEl.textContent = '';
+        statusEl.classList.remove('is-error');
+        saveBtn.classList.remove('is-done');
+        saveBtn.classList.add('is-saving');
+        saveBtn.disabled = true;
 
         fetch(form.dataset.saveUrl, {
             method: 'POST',
@@ -208,13 +245,13 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
         .then(function (result) {
             if (result.ok && result.data && result.data.success) {
-                statusEl.textContent = result.data.message || 'Saved.';
+                showSaved();
             } else {
-                statusEl.textContent = (result.data && result.data.message) || 'Save failed.';
+                showError((result.data && result.data.message) || 'Save failed.');
             }
         })
         .catch(function () {
-            statusEl.textContent = 'Save failed (network error).';
+            showError('Save failed (network error).');
         });
     });
 });

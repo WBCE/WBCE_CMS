@@ -1,8 +1,10 @@
 /* layout/filetree.css — visual FileTree renderer
  * Vendored from modules/tiptap_editor/assets/filetree.css — keep in sync
  * manually if the original changes (except the --ft-* dark-mode block
- * below, which is MarkdownWbce-only — the tiptap editor has no theme
- * switcher). Load alongside layout/filetree.js.
+ * below and the toolbar padding, which are MarkdownWbce-only — the tiptap
+ * editor has no theme switcher and no code toolbar). Load alongside
+ * layout/filetree.js. Covers FileTree and PageTree, including the page
+ * visibility icons and the inline {menulink} marker.
  *
  * --mdr-* tokens come from layout/style.css (always loaded first) — same
  * light/dark source of truth as the rest of the reader.
@@ -197,6 +199,30 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3C/svg%3E");
 }
 
+/* Seite — PageTree-Knoten ohne Kinder (Violett) */
+.icon-page {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237c3aed'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Cpath fill='%23ffffff' d='M7.5 10.5h9v1.5h-9zM7.5 13.5h9V15h-9zM7.5 16.5h6V18h-6z'/%3E%3C/svg%3E");
+}
+
+/* Seitengruppe — PageTree-Knoten mit Kindern (Violett) */
+.icon-pagegroup {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='15' width='6' height='6' rx='1.5'/%3E%3Crect x='15' y='15' width='6' height='6' rx='1.5'/%3E%3Crect x='9' y='3' width='6' height='6' rx='1.5'/%3E%3Cpath d='M6 15v-1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1M12 9v3'/%3E%3C/svg%3E");
+}
+
+/* Seiten-Sichtbarkeit — {public} {hidden} {private} {registered} {none}
+ * Same artwork and colours as the page settings dropdowns: copied from
+ * include/wbeSelect/icons/<state>.svg (Iconify wrapper attributes dropped,
+ * only viewBox + path + fill kept). Inlined on purpose — this file is meant to
+ * be vendorable (modules/MarkdownWbce/layout/ has its own copy), so it must not
+ * depend on a relative path into another component's asset folder. If those
+ * icons are ever restyled, re-copy them here.
+ */
+.icon-status-public     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1536 1792'%3E%3Cpath d='M1024 512V40q22 14 36 28l408 408q14 14 28 36h-472zm-128 32q0 40 28 68t68 28h544v1056q0 40-28 68t-68 28H96q-40 0-68-28t-28-68V96q0-40 28-68T96 0h800v544z' fill='%2359b327'/%3E%3C/svg%3E"); }
+.icon-status-hidden     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1536 1792'%3E%3Cpath d='M1024 512V40q22 14 36 28l408 408q14 14 28 36h-472zm-128 32q0 40 28 68t68 28h544v1056q0 40-28 68t-68 28H96q-40 0-68-28t-28-68V96q0-40 28-68T96 0h800v544z' fill='%23b1b1b1'/%3E%3C/svg%3E"); }
+.icon-status-private    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1792 1792'%3E%3Cpath d='M1523 1339q-22-155-87.5-257.5T1251 963q-67 74-159.5 115.5T896 1120t-195.5-41.5T541 963q-119 16-184.5 118.5T269 1339q106 150 271 237.5t356 87.5t356-87.5t271-237.5zm-243-699q0-159-112.5-271.5T896 256T624.5 368.5T512 640t112.5 271.5T896 1024t271.5-112.5T1280 640zm512 256q0 182-71 347.5t-190.5 286T1245 1721t-349 71q-182 0-348-71t-286-191t-191-286T0 896t71-348t191-286T548 71T896 0t348 71t286 191t191 286t71 348z' fill='%2303a9f4'/%3E%3C/svg%3E"); }
+.icon-status-registered { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1792 1792'%3E%3Cpath d='M896 64q-169 0-323 66T307.5 307.5T130 573T64 896t66 323t177.5 265.5T573 1662t323 66t323-66t265.5-177.5T1662 1219t66-323t-66-323t-177.5-265.5T1219 130T896 64zm0-64q182 0 348 71t286 191t191 286t71 348t-71 348t-191 286t-286 191t-348 71t-348-71t-286-191t-191-286T0 896t71-348t191-286T548 71T896 0zM496 832q16 0 16 16v480q0 16-16 16h-32q-16 0-16-16V848q0-16 16-16h32zm400 64q53 0 90.5 37.5t37.5 90.5q0 35-17.5 64t-46.5 46v114q0 14-9 23t-23 9h-64q-14 0-23-9t-9-23v-114q-29-17-46.5-46t-17.5-64q0-53 37.5-90.5T896 896zm0-768q209 0 385.5 103T1561 510.5T1664 896t-103 385.5t-279.5 279.5T896 1664t-385.5-103T231 1281.5T128 896t103-385.5T510.5 231T896 128zM544 608v96q0 14 9 23t23 9h64q14 0 23-9t9-23v-96q0-93 65.5-158.5T896 384t158.5 65.5T1120 608v96q0 14 9 23t23 9h64q14 0 23-9t9-23v-96q0-146-103-249T896 256T647 359T544 608zm864 736V832q0-26-19-45t-45-19H448q-26 0-45 19t-19 45v512q0 26 19 45t45 19h896q26 0 45-19t19-45z' fill='%23efac2a'/%3E%3C/svg%3E"); }
+.icon-status-none       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1536 1568'%3E%3Cpath d='M1312 797q0-161-87-295l-754 753q137 89 297 89q111 0 211.5-43.5T1153 1184t116-174.5t43-212.5zm-999 299l755-754q-135-91-300-91q-148 0-273 73T297 523t-73 274q0 162 89 299zm1223-299q0 157-61 300t-163.5 246t-245 164t-298.5 61t-298.5-61t-245-164T61 1097T0 797t61-299.5T224.5 252t245-164T768 27t298.5 61t245 164T1475 497.5t61 299.5z' fill='%23d49898'/%3E%3C/svg%3E"); }
+
 /* Font-Datei — woff / woff2 / ttf / otf / eot (Magenta, serifen-"A") */
 .icon-font {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23db2777' d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Ctext x='11.4' y='19' font-family='Georgia,Cambria,serif' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E");
@@ -206,3 +232,14 @@
    .mdr-code-lang/.mdr-code-copy from layout/markdown.css instead of the
    original tiptap version's standalone .treeview-copy-btn — see
    layout/filetree.js. */
+
+/* Inline-Marker-Icons — {menulink} & Co., gerendert an ihrer Textposition.
+ * currentColor: nimmt die Farbe der Umgebung an (Titel dunkel, Kommentar grau).
+ */
+.tree-inline-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}

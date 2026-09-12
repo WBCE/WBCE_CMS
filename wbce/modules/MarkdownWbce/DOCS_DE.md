@@ -142,6 +142,40 @@ Flaggen-SVGs müssen unter `WB_PATH/languages/` liegen:
 
 ---
 
+## Baumdiagramme — `file-tree` und `page-tree`
+
+Zwei Fenced-Block-Sprachen werden als visueller Baum statt als Code gerendert,
+über `layout/filetree.js` (derselbe Renderer wie im TipTap-Editor — ein Baum
+sieht im Editor, im Reader und im Frontend identisch aus):
+
+    ```file-tree      Icons aus der Dateiendung, Ordner enden auf "/"
+    ```page-tree      Seiten-Icons plus WBCEs Sichtbarkeits-Zustände
+
+Die Verbindungszeichen (`│ ├ └ ─`) bestimmen die Einrückungstiefe. Im
+**file**-Baum beginnt der Kommentar beim ersten Leerzeichen nach `name.ext`, im
+**page**-Baum ausschließlich bei `//`, `#` oder `/*` — Seitentitel enthalten
+Leerzeichen.
+
+### Marker
+
+| Marker | Wo | Wirkung |
+|---------------------------------------------------------|------------|-------------------------------------------------|
+| `{public}` `{hidden}` `{private}` `{registered}` `{none}` | page-tree | setzt das Zeilen-Icon auf diesen Status |
+| `{menulink}` oder 🔗 | beide | setzt ein Link-Icon **genau an dieser Stelle** |
+
+Eine Seite ohne Sichtbarkeits-Marker wird als `public` dargestellt. Eine Zeile,
+die andere gruppiert (oberste Ebene oder Name mit `/`), behält das Gruppen-Icon,
+sofern sie nicht selbst einen Marker trägt. Marker erscheinen nie als Text.
+
+```page-tree
+EN {menulink}
+│   ├── Home
+│   ├── Blog {hidden}          // nicht im Menü
+│   └── Über Mich {private}
+```
+
+---
+
 ## Vollständiges Beispiel
 
 ```php

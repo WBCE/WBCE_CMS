@@ -118,6 +118,14 @@ if ($activeIdx >= count($docs)) {
 }
 $activeDoc = $docs[$activeIdx];
 
+// The path of the file actually on screen. 'relPath' is only what the link
+// ASKED for; findExistingDoc() may have resolved it to a language variant
+// (README.md -> README_DE.md on a DE install). Everything that has to hit that
+// exact file - above all the edit form's rel_path, which ajax_save_doc.php
+// writes to - must use this, or an edit silently lands in the other language's
+// file while the reader keeps showing the unchanged one.
+$activeRelPath = MdReaderHelper::_toWebRelPath($activeDoc['absPath']);
+
 // ── 3. Render active document ─────────────────────────────────────────────────
 
 $content = MdReaderHelper::renderFile($activeDoc['absPath']);
@@ -157,7 +165,7 @@ unset($lv);
 // [x](../docs/y.md) against the DOC's own location, not reader.php's own
 // URL (window.location.pathname is always .../modules/MarkdownWbce/
 // reader.php, regardless of which doc is open).
-$docDirRel = str_replace('\\', '/', dirname($activeDoc['relPath']));
+$docDirRel = str_replace('\\', '/', dirname($activeRelPath));
 
 // ── 5. Syntax highlighting (self-hosted highlight.js) ────────────────────────
 //
@@ -169,11 +177,17 @@ $docDirRel = str_replace('\\', '/', dirname($activeDoc['relPath']));
 
 $needsHljs = MdReaderHelper::needsCodeMirror($content) || $canWrite;
 
-// ── 5c. FileTree — visual tree for ```file-tree fenced blocks ────────────────
-// See ParsedownWbce::blockFencedCode() for the <pre class="file-tree"> markup
-// and layout/filetree.js (vendored from modules/tiptap_editor) for the render.
+// ── 5c. FileTree — visual tree for ```file-tree / ```page-tree blocks ────────
+// See ParsedownWbce::blockFencedCode() for the <pre class="file-tree"> /
+// <pre class="page-tree"> markup and layout/filetree.js (vendored from
+// modules/tiptap_editor) for the render.
+//
+// In edit mode the assets are always loaded, regardless of what the document
+// currently contains: the editor's inline tree preview and its live preview
+// (PlainMDETreeView / PlainMDE.markdown()) need the renderer the moment an
+// author *types* a tree fence, which is by definition after this check.
 
-$needsFileTree = MdReaderHelper::needsFileTree($content);
+$needsFileTree = $canWrite || MdReaderHelper::needsFileTree($content);
 
 // ── 5b. Edit mode assets + raw source ─────────────────────────────────────────
 
@@ -192,7 +206,7 @@ if ($canWrite) {
     // e.g. ![x](docs/foo.gif) resolves the same way it does in the
     // rendered viewer (MdReaderHelper::_rewriteImagePaths()), instead of
     // resolving relative to reader.php's own URL.
-    $docDirUrl = WB_URL . str_replace('\\', '/', dirname($activeDoc['relPath']));
+    $docDirUrl = WB_URL . str_replace('\\', '/', dirname($activeRelPath));
 }
 
 // ── 6. Build tab URLs (for multi-doc navigation) ──────────────────────────────
@@ -243,8 +257,8 @@ $html = $parser->parse($template, [
     'DOC_DIR_REL'   => $docDirRel,
     'FTAN_TAG'      => $ftanTag,
     'RAW_MARKDOWN'  => $rawMd,
-    'REL_PATH'      => $activeDoc['relPath'],
-    'DOC_PATH'      => ltrim((string) $activeDoc['relPath'], '/'),
+    'REL_PATH'      => $activeRelPath,
+    'DOC_PATH'      => ltrim($activeRelPath, '/'),
     'SAVE_URL'      => WB_URL . '/modules/MarkdownWbce/ajax_save_doc.php',
     'STYLE_V'       => $assetVer('style.css'),
     'MARKDOWN_V'    => $assetVer('markdown.css'),

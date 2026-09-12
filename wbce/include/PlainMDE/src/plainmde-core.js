@@ -273,6 +273,13 @@ var PlainMDE = (function () {
         this.sideBySideActive = false;
         this.fullscreenActive = false;
 
+        // Inline tree previews for ```file-tree / ```page-tree blocks, opt-out
+        // via { treeView: false }. No-ops when plainmde-treeview.js or the tree
+        // renderer it needs (window.WbceFileTree) is not loaded on this page.
+        if (options.treeView !== false && window.PlainMDETreeView) {
+            this.treeView = PlainMDETreeView.attach(this.codemirror);
+        }
+
         if (options.initialCleanup !== false) {
             this.codemirror.refresh();
         }
@@ -417,6 +424,12 @@ var PlainMDE = (function () {
 
     PlainMDE.prototype._renderPreview = function () {
         this.previewEl.innerHTML = this.previewRender(this.codemirror.getValue(), this);
+        // Tree fences (see plainmde-preview.js) become visual trees — no-op when
+        // no renderer is loaded on this page, and it must run before hljs below,
+        // which would otherwise highlight a tree's <pre><code> as source.
+        if (window.WbceFileTree && window.WbceFileTree.enhance) {
+            window.WbceFileTree.enhance(this.previewEl);
+        }
         // Trial: highlight.js, loaded by the page (not bundled here) — no-op
         // when window.hljs isn't present, so this stays safe for every
         // PlainMDE consumer whether or not it opts into loading hljs.

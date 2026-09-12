@@ -10,7 +10,8 @@ if (!class_exists('Parsedown')) {
 class ParsedownWbce extends Parsedown {
 
     /**
-     * ```file-tree fenced blocks render as <pre class="file-tree"><code>…
+     * ```file-tree and ```page-tree fenced blocks render as
+     * <pre class="file-tree"> / <pre class="page-tree"> with <code>…
      * </code></pre> instead of the usual <pre><code class="language-file-
      * tree">…</code></pre> — matches modules/tiptap_editor/assets/
      * filetree.js's `pre.file-tree` selector, so the same client-side
@@ -29,9 +30,19 @@ class ParsedownWbce extends Parsedown {
         }
 
         $codeClass = $Block['element']['element']['attributes']['class'] ?? '';
-        if ($codeClass === 'language-file-tree') {
+
+        // Accept every spelling of the two tags: file-tree / filetree /
+        // fileTree / file_tree, same for page. Normalising to letters only
+        // means an author never has to remember which variant "works".
+        $tag = (strpos($codeClass, 'language-') === 0)
+             ? strtolower(preg_replace('/[^A-Za-z]/', '', substr($codeClass, 9)))
+             : '';
+
+        if ($tag === 'filetree' || $tag === 'pagetree') {
             unset($Block['element']['element']['attributes']);
-            $Block['element']['attributes'] = array('class' => 'file-tree');
+            $Block['element']['attributes'] = array(
+                'class' => $tag === 'pagetree' ? 'page-tree' : 'file-tree',
+            );
         }
 
         return $Block;

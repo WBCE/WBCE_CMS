@@ -56,12 +56,15 @@ I::insertJsBundle([
     // toolbar.js and preview.js both attach properties onto it (PlainMDE.buttons,
     // PlainMDE.markdown, ...) and must load after it. decorations.js/sync.js
     // define their own independent PlainMDEDecorations/PlainMDESync objects.
+    // treeview.js defines PlainMDETreeView, which core's constructor attaches
+    // when present - hence after core, whose constructor only runs later.
     $srcDir . '/plainmde-core.js',
     $srcDir . '/plainmde-toolbar.js',
     $srcDir . '/plainmde-preview.js',
     $srcDir . '/plainmde-decorations.js',
     $srcDir . '/plainmde-sync.js',
     $srcDir . '/plainmde-media.js',
+    $srcDir . '/plainmde-treeview.js',
 ], 'PlainMDE', 'body_late');
 
 // Toolbar's image button opens elFinder instead of a plain URL prompt when

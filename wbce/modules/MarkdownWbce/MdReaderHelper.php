@@ -510,13 +510,13 @@ class MdReaderHelper
 
     /**
      * Returns true when the rendered HTML contains a ```file-tree fenced
-     * block (rendered by ParsedownWbce::blockFencedCode() as
+     * or ```page-tree block (rendered by ParsedownWbce::blockFencedCode() as
      * <pre class="file-tree">…</pre>) that layout/filetree.js should turn
      * into a visual icon tree.
      */
     public static function needsFileTree(string $html): bool
     {
-        return (bool) preg_match('/<pre\b[^>]*class="file-tree"/i', $html);
+        return (bool) preg_match('/<pre\b[^>]*class="(?:file|page)-tree"/i', $html);
     }
 
     /**
@@ -552,7 +552,13 @@ class MdReaderHelper
      * Windows/browser leniency in dev but breaks on a real Linux/Apache
      * deployment.
      */
-    private static function _toWebRelPath(string $absPath): string
+    /**
+     * WB_PATH-relative, forward-slashed path for an absolute file path —
+     * the form every public API here (and reader.php's edit form) hands
+     * around. Public because reader.php needs the relative path of the doc
+     * it actually resolved and displays, not the one that was requested.
+     */
+    public static function _toWebRelPath(string $absPath): string
     {
         $relative = str_replace(WB_PATH, '', $absPath);
         $relative = str_replace('\\', '/', $relative);

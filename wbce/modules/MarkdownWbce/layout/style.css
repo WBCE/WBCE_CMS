@@ -253,10 +253,68 @@ html, body {
     background: var(--mdr-bg);
     color: var(--mdr-fg);
 }
-.mdr-edit-save { background: var(--mdr-green); border-color: var(--mdr-green); color: #fff; margin-left: auto; }
+.mdr-edit-save {
+    background: var(--mdr-green);
+    border-color: var(--mdr-green);
+    color: #fff;
+    margin-left: auto;
+    position: relative;
+    min-width: 84px;
+    transition: background .15s ease, border-color .15s ease;
+}
 .mdr-edit-save:hover { background: var(--mdr-green-hover); }
 .mdr-edit-cancel:hover { background: var(--mdr-bg-subtle); }
-.mdr-edit-status { font-size: 12px; color: var(--mdr-fg-muted); }
+.mdr-edit-status { font-size: 12px; color: var(--mdr-fg-muted); margin-left: auto; }
+.mdr-edit-status.is-error { color: var(--mdr-red, #d1242f); }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mdr-edit-status.is-error { color: #ff7b72; }
+}
+:root[data-theme="dark"] .mdr-edit-status.is-error { color: #ff7b72; }
+/* an error pushes the status text to the right, next to Save; the plain
+   .mdr-edit-status keeps the same slot so nothing jumps. */
+.mdr-edit-status.is-error + .mdr-edit-save { margin-left: .6rem; }
+
+/* ── Save feedback ───────────────────────────────────────────────────────
+   The button reports its own outcome: "Saving…" while the request is out,
+   then a checkmark that draws itself once before the label comes back. */
+.mdr-edit-save .mdr-save-label::after { content: ''; }
+.mdr-edit-save.is-saving .mdr-save-label::after { content: '…'; }
+.mdr-edit-save:disabled { cursor: default; }
+
+.mdr-save-check {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    pointer-events: none;
+}
+.mdr-save-check-ring { stroke-opacity: .45; }
+.mdr-save-check-mark { stroke-dasharray: 18; stroke-dashoffset: 18; }
+
+.mdr-edit-save.is-done { background: var(--mdr-green-hover); border-color: var(--mdr-green-hover); }
+.mdr-edit-save.is-done .mdr-save-label { opacity: 0; }
+.mdr-edit-save.is-done .mdr-save-check { opacity: 1; animation: mdr-check-pop .28s ease-out; }
+.mdr-edit-save.is-done .mdr-save-check-mark { animation: mdr-check-draw .32s .08s ease-out forwards; }
+
+@keyframes mdr-check-draw { to { stroke-dashoffset: 0; } }
+@keyframes mdr-check-pop  {
+    0%   { transform: scale(.55); }
+    70%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mdr-edit-save.is-done .mdr-save-check,
+    .mdr-edit-save.is-done .mdr-save-check-mark { animation: none; }
+    .mdr-save-check-mark { stroke-dashoffset: 0; }
+}
 
 /* ── Body layout ─────────────────────────────────────────────────────────── */
 .mdr-body {

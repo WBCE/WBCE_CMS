@@ -2,6 +2,51 @@
 
 All notable changes to the `MarkdownWbce` module.
 
+## 0.3.2 - 2026-09-12 Christian M. Stefan
+
+### Fixed
+- **Edit mode saved into the wrong language file.** The edit form posted
+  `rel_path` = the path the *link* asked for, while the editor was showing
+  what `findExistingDoc()` had resolved it to. On a DE install, opening
+  `/modules/foo/README.md` displays `README_DE.md` — and Save then overwrote
+  `README.md` with the German text, reported success, and the reader kept
+  showing the unchanged `README_DE.md`, so the edit looked lost. `reader.php`
+  now derives `$activeRelPath` from the resolved `absPath` and uses it for the
+  form, the footer path and the image base URL; `MdReaderHelper::_toWebRelPath()`
+  became public for it.
+
+### Changed
+- **Save feedback moved onto the Save button.** Instead of a grey "Saved." to the
+  far left of the bar, the button itself reports: "Saving…" while the request is
+  out, then a checkmark that draws itself inside a ring for 1.6 s before the
+  label returns. Only failures still put text next to the button, now in red.
+  Honours `prefers-reduced-motion`.
+- **"Cancel" is now "Back"** — it never discarded anything, it left edit mode.
+
+### Added
+- **```page-tree fenced blocks.** `ParsedownWbce::blockFencedCode()` now
+  special-cases this tag next to ```file-tree, emitting
+  `<pre class="page-tree">`; `MdReaderHelper::needsFileTree()` matches both, so
+  the reader loads `layout/filetree.css` / `layout/filetree.js` for either.
+- **`layout/filetree.js` re-vendored** from `modules/tiptap_editor/assets/` at
+  its current state: renders page trees with page/page-group icons, understands
+  the page visibility markers `{public}` `{hidden}` `{private}` `{registered}`
+  `{none}` and the inline `{menulink}` marker (or its glyph 🔗), and treats a space in a page
+  title as a title (only `//`, `#`, `/*` start a comment there). The reader's
+  own toolbar divergence is kept and now badges "PageTree" / "FileTree" by kind.
+- `layout/filetree.css`: the new icon rules ported in, leaving the
+  MarkdownWbce-only dark-mode block and toolbar padding untouched.
+- **Every spelling of the two tags works**: `file-tree`, `filetree`, `fileTree`,
+  `file_tree` (and the same for page) all normalise to the same block — letters
+  only, case-insensitive. Also makes the TipTap editor's Markdown export, which
+  writes ```fileTree, round-trip.
+- **Inline tree previews while editing** (`reader.php`): in edit mode the tree
+  assets are now always loaded, not only when the current document happens to
+  contain a tree, because PlainMDE renders a tree the moment one is typed (see
+  `include/PlainMDE/src/plainmde-treeview.js`).
+- `DOCS.md` / `DOCS_DE.md`: a "Tree Diagrams" section documenting both fence
+  types and every marker.
+
 ## 0.3.1 - 2026-09-10 Christian M. Stefan
 
 ### Changed

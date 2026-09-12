@@ -40,6 +40,17 @@
         return lang ? ' class="language-' + lang + '"' : '';
     }
 
+    // The two fence tags that render as a visual tree rather than as code —
+    // same normalisation (letters only, case-insensitive) as
+    // ParsedownWbce::blockFencedCode(), so file-tree / filetree / fileTree /
+    // file_tree are all the same tag, and likewise for page. Returns the kind
+    // ('file' | 'page') or '' for a normal code fence.
+    function fenceTreeKind(openingLine) {
+        var m = openingLine.match(/^\s*```\s*(\S*)/);
+        var tag = m && m[1] ? m[1].toLowerCase().replace(/[^a-z]/g, '') : '';
+        return tag === 'pagetree' ? 'page' : (tag === 'filetree' ? 'file' : '');
+    }
+
     // Block boundary detection.
     // Fenced code blocks and list runs (including "loose" ones with a blank
     // line between items, as long as list content follows) are each kept
@@ -107,6 +118,13 @@
 
         if (FENCE_LINE.test(lines[0])) {
             var body = lines.slice(1, FENCE_LINE.test(lines[lines.length - 1]) ? -1 : undefined).join('\n');
+            // Tree fences get the markup the tree renderer looks for; whoever
+            // renders the preview turns it into the visual tree afterwards
+            // (plainmde-core.js's _renderPreview() calls WbceFileTree.enhance()).
+            var treeKind = fenceTreeKind(lines[0]);
+            if (treeKind) {
+                return '<pre class="' + treeKind + '-tree"><code>' + escapeHtml(body) + '</code></pre>';
+            }
             return '<pre><code' + fenceLangClass(lines[0]) + '>' + escapeHtml(body) + '</code></pre>';
         }
         if (HEADING_LINE.test(lines[0])) {

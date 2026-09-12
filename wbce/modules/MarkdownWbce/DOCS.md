@@ -186,6 +186,40 @@ Flag SVGs must be located under `WB_PATH/languages/`:
 
 ---
 
+## Tree Diagrams — `file-tree` and `page-tree`
+
+Two fenced-block languages render as visual trees instead of code, via
+`layout/filetree.js` (the same renderer the TipTap editor uses, so a tree looks
+identical in the editor, in the reader and on the frontend):
+
+    ```file-tree      icons from the file extension, folders end in "/"
+    ```page-tree      page icons, plus WBCE's page visibility states
+
+Connector characters (`|`, `+`, `` ` ``, or the box-drawing `│ ├ └ ─`) set the
+indent depth; in a **file** tree the first space after `name.ext` starts the
+comment column, in a **page** tree only an explicit `//`, `#` or `/*` does —
+page titles contain spaces.
+
+### Markers
+
+| Marker | Where | Effect |
+|---------------------------------------------------------|------------|-------------------------------------------------|
+| `{public}` `{hidden}` `{private}` `{registered}` `{none}` | page-tree | sets the row icon to that visibility state |
+| `{menulink}` or 🔗 | both | inserts a link icon **where it stands** |
+
+A page without a visibility marker renders as `public`. A row that groups others
+(top level, or a name ending in `/`) keeps the group icon unless it carries a
+marker itself. Markers are stripped from the rendered text.
+
+```page-tree
+EN {menulink}
+│   ├── Home
+│   ├── Blog {hidden}          // not in the menu
+│   └── Über Mich {private}
+```
+
+---
+
 ## Complete Example
 
 ```php
