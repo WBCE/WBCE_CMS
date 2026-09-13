@@ -113,7 +113,7 @@ $TXT['log_installing_languages']= 'Installerer språk';
 $TXT['log_required_mod_missing']= 'Manglende nødvendige moduler: ';
 $TXT['log_finalizing']          = 'Fullfører installasjonen';
 
-$TXT['log_done']                = '✓ Ferdig';
+$TXT['log_done']                = 'Ferdig';
 $TXT['log_complete']            = '━━━ Installasjon fullført ━━━';
 $TXT['log_failed']              = 'Installasjon mislyktes – se feilmeldinger ovenfor';
 

@@ -524,6 +524,37 @@ span.lang-badge.curr-lang{
 #db-status.log-ok   { display: block; background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
 #db-status.log-fail { display: block; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
 
+/* ── Table prefix collision warning ──────────────────────── */
+.prefix-warning-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 3px solid #f59e0b;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: .82rem;
+  color: #92400e;
+  line-height: 1.6;
+  animation: fadeUp .35s ease both;
+}
+.prefix-warning-box p     { margin: 0 0 8px; }
+.prefix-warning-box code  { font-size: .95em; word-break: break-all; }
+.prefix-confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+.prefix-confirm input { margin-top: 2px; flex: none; }
+/* Nudge the user when they try to install without ticking the box */
+.prefix-warning-box.needs-confirm {
+  border-color: var(--red, #dc2626);
+  border-left-color: var(--red, #dc2626);
+  background: #fef2f2;
+  color: #991b1b;
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── wbePwGen: match installer blue palette ──────────────── */
@@ -581,7 +612,9 @@ input.wrong:focus, select.wrong:focus {
 .inst-done          { text-align: center;}
 .inst-btn           { display:inline-block; padding:11px 22px; 
                       border-radius:8px; font-size:14px; font-weight:600; 
-                      text-decoration:none; margin-right: 12px;}
+                      text-decoration:none; margin-right: 12px;
+                      /* the log-export button is a <button>, the rest are <a> */
+                      border:none; cursor:pointer; font-family:inherit; line-height:1.2; }
 .inst-btn-primary   { background:#3182ce; color:#fff; }
 .inst-btn-sec       { background:#e2e8f0; color:#1a202c; }
 .inst-done-msg      { font-size:15px; font-weight:600; color:#276749; margin-bottom:14px; }

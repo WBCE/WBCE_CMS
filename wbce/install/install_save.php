@@ -248,6 +248,27 @@ try {
         ]);
     }
     $dbtest->query("SELECT 1");
+
+    // ── Table prefix collision ───────────────────────────────────────────────
+    // install_prepare.sql starts with DROP TABLE IF EXISTS `{TP}...`, so a
+    // prefix that is already in use means an existing site is about to be
+    // wiped. The AJAX test warns about this and asks for a tick box; here we
+    // enforce it, because a tampered or stale form must not slip past.
+    $existingTables = find_prefixed_tables($dbtest, $database_type, $table_prefix);
+    if ($existingTables && empty($_POST['prefix_confirm'])) {
+        unset($dbtest);
+        set_error(
+            d('e31: ') . sprintf(
+                $MSG['db_prefix_in_use'],
+                _h($table_prefix),
+                count($existingTables)
+            ) . ' ' . $MSG['db_prefix_unconfirmed'],
+            'table_prefix',
+            true
+        );
+        exit;
+    }
+
     unset($dbtest);
 } catch (PDOException $e) {
     $msg = $e->getMessage();
@@ -383,7 +404,7 @@ if (is_readable($_vFile)) {
 
 try {
     $database = new Database();
-    log_ok($TXT['log_done'] ?? '✓ Done');
+    log_ok($TXT['log_done'] ?? 'Done');
 } catch (Throwable $e) {
     log_err('Database connection failed: ' . $e->getMessage());
 }

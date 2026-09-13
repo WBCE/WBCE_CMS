@@ -55,11 +55,45 @@ if ($langCode !== 'EN' && preg_match('/^[A-Z]{1,5}$/', $langCode)) {
     }
 }
 
-function json_out(bool $ok, string $msg): void
+function json_out(bool $ok, string $msg, array $extra = []): void
 {
     ob_end_clean(); // discard any PHP notices/warnings captured in the buffer
-    echo json_encode(['ok' => $ok, 'message' => $msg], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['ok' => $ok, 'message' => $msg] + $extra, JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+/**
+ * Builds the `prefix_*` part of the JSON response for a live connection.
+ *
+ * Reported as a warning, not an error: reinstalling over an existing prefix is
+ * a legitimate (if destructive) thing to want. The installer only insists that
+ * the user confirms it knowingly.
+ */
+function prefix_payload(PDO $pdo, string $dbType, string $prefix, array $MSG): array
+{
+    $tables = find_prefixed_tables($pdo, $dbType, $prefix);
+    if (!$tables) {
+        return ['prefix_in_use' => false];
+    }
+
+    $shown = array_slice($tables, 0, 8);
+    $list  = implode(', ', array_map('htmlspecialchars', $shown));
+    if (count($tables) > count($shown)) {
+        $list .= sprintf($MSG['db_prefix_more'], count($tables) - count($shown));
+    }
+
+    return [
+        'prefix_in_use' => true,
+        'prefix_count'  => count($tables),
+        'prefix_msg'    => sprintf($MSG['db_prefix_in_use'], htmlspecialchars($prefix), count($tables))
+                         . ':<br><code>' . $list . '</code>',
+    ];
+}
+
+// Table prefix the user typed — validated the same way install_save.php does.
+$prefix = trim($_POST['db_prefix'] ?? '');
+if (preg_match('/[^a-z0-9_]/', $prefix)) {
+    $prefix = '';
 }
 
 // ── Input validation ─────────────────────────────────────────────────────────
@@ -110,7 +144,8 @@ if ($dbType === 'sqlite') {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         ]);
         $pdo->query('SELECT 1');
-        json_out(true, sprintf($MSG['db_sqlite_success'], $fullPath));
+        json_out(true, sprintf($MSG['db_sqlite_success'], $fullPath),
+                 prefix_payload($pdo, 'sqlite', $prefix, $MSG));
     } catch (PDOException $e) {
         json_out(false, sprintf($MSG['db_sqlite_failed'], $e->getMessage()));
     }
@@ -161,7 +196,8 @@ try {
     $pdo->query('SELECT 1');
     
     // Success
-    json_out(true, sprintf($MSG['db_success'], htmlspecialchars($version)));
+    json_out(true, sprintf($MSG['db_success'], htmlspecialchars($version)),
+             prefix_payload($pdo, 'mysql', $prefix, $MSG));
 
 } catch (PDOException $e) {
     $errorMsg = $e->getMessage();

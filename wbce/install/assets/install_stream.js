@@ -276,15 +276,21 @@
       || (wbUrl ? wbUrl + '/admin' : (adminField ? adminField.value : ''));
     adminUrl = adminUrl.replace(/[\\/]+$/, '');
 
+    // Offered in both branches — a failed install is exactly when the log
+    // matters most, and install/ is often deleted right after a successful one.
+    var logBtn = (window.WbceLogExport ? window.WbceLogExport.buttonHtml() : '');
+
     if (success) {
       actionsEl.innerHTML =
         '<div class="inst-done"><p class="inst-done-msg">' + escHtml(I18N.installSuccess || 'Installation complete!') + '</p>' +
         (adminUrl ? '<a href="' + escHtml(adminUrl) + '/login/index.php" class="inst-btn inst-btn-sec">' + escHtml(I18N.goAdmin || 'Go to Admin Login') + '</a>' : '') +
+        logBtn +
         '</div>';
     } else {
       actionsEl.innerHTML =
         '<p class="inst-done-msg inst-done-err">' + escHtml(I18N.installFailed || 'Installation failed — see errors above.') + '</p>' +
-        '<a href="index.php" class="inst-btn inst-btn-sec">' + escHtml(I18N.tryAgain || '← Try again') + '</a>';
+        '<a href="index.php" class="inst-btn inst-btn-sec">' + escHtml(I18N.tryAgain || '← Try again') + '</a>' +
+        logBtn;
     }
     actionsEl.style.display = 'block';
   }

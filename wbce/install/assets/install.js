@@ -18,6 +18,10 @@
 
   if (!btn || !status || !testedFld) return;
 
+  const prefixWarn    = document.getElementById('prefix-warning');
+  const prefixWarnMsg = document.getElementById('prefix-warning-msg');
+  const prefixConfirm = document.getElementById('prefix_confirm');
+
   const mysqlFields  = document.getElementById('mysql-fields');
   const sqliteFields = document.getElementById('sqlite-fields');
   const typeRadios   = document.querySelectorAll('input[name="database_type"]');
@@ -52,7 +56,9 @@
   }
 
   // Reset test state whenever any DB field changes
-  const fields = ['database_host', 'database_name', 'database_username', 'database_password', 'database_path'];
+  // The prefix is part of what gets checked, so editing it invalidates the test.
+  const fields = ['database_host', 'database_name', 'database_username', 'database_password',
+                  'database_path', 'table_prefix'];
   fields.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', resetTest);
@@ -62,6 +68,7 @@
     testedFld.value = '0';
     status.style.display = 'none';
     status.className = '';
+    hidePrefixWarning();
 
     // Hide steps 4 + 5 until DB test succeeds again
     ['step4-card', 'step5-card'].forEach(function (id) {
@@ -78,10 +85,30 @@
     `;
   }
 
+  function hidePrefixWarning() {
+    if (!prefixWarn) return;
+    prefixWarn.style.display = 'none';
+    prefixWarn.querySelector('.prefix-warning-box')?.classList.remove('needs-confirm');
+    if (prefixConfirm) prefixConfirm.checked = false;
+  }
+
+  // Shown only when the connection succeeded AND the prefix is already taken.
+  // Not an error — the user may well be reinstalling on purpose — but the
+  // install button stays gated until the checkbox is ticked.
+  function showPrefixWarning(html) {
+    if (!prefixWarn || !prefixWarnMsg) return;
+    prefixWarnMsg.innerHTML = html;
+    prefixWarn.style.display = '';
+  }
+
   function showStatus(ok, msg) {
-    status.className = ok ? 'ok' : 'fail';
+    status.className = ok ? 'log-ok' : 'log-fail';
     status.innerHTML = (ok ? '✔ ' : '✖ ') + msg;
     status.style.display = 'block';
+  }
+
+  function currentPrefix() {
+    return document.getElementById('table_prefix')?.value.trim() ?? '';
   }
 
   btn.addEventListener('click', async () => {
@@ -90,7 +117,7 @@
 
     if (dbType === 'sqlite') {
       const path = document.getElementById('database_path')?.value.trim() ?? '';
-      body = new URLSearchParams({ db_type: 'sqlite', db_path: path });
+      body = new URLSearchParams({ db_type: 'sqlite', db_path: path, db_prefix: currentPrefix() });
     } else {
       const host = document.getElementById('database_host').value.trim();
       const name = document.getElementById('database_name').value.trim();
@@ -107,7 +134,8 @@
         db_host: host,
         db_name: name,
         db_user: user,
-        db_pass: pass
+        db_pass: pass,
+        db_prefix: currentPrefix()
       });
     }
 
@@ -141,6 +169,12 @@
 
       showStatus(data.ok, data.message);
       testedFld.value = data.ok ? '1' : '0';
+
+      if (data.ok && data.prefix_in_use) {
+        showPrefixWarning(data.prefix_msg);
+      } else {
+        hidePrefixWarning();
+      }
 
       // Reveal steps 4 + 5 only on success
       if (data.ok) {
@@ -213,12 +247,24 @@
       if (tested && tested.value !== '1') {
         e.preventDefault();
         const dbStatus = document.getElementById('db-status');
-        dbStatus.className = 'fail';
+        dbStatus.className = 'log-fail';
         dbStatus.innerHTML = '✖ ' + I18N.dbUntested;
         // Scroll to DB section
         document.getElementById('database_host')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
+    }
+
+    // Prefix collision: refuse to submit until the user confirms the overwrite.
+    // install_save.php re-checks this server-side — this is only the friendly half.
+    const prefixWarn    = document.getElementById('prefix-warning');
+    const prefixConfirm = document.getElementById('prefix_confirm');
+    if (prefixWarn && prefixWarn.style.display !== 'none' && prefixConfirm && !prefixConfirm.checked) {
+      e.preventDefault();
+      prefixWarn.querySelector('.prefix-warning-box')?.classList.add('needs-confirm');
+      prefixConfirm.focus();
+      prefixWarn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
     }
 
     // ── Native HTML5 validation ────────────────────────

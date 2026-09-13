@@ -101,6 +101,13 @@ $MSG['db_unknown_db']         = 'Die Datenbank existiert nicht. Bitte erstelle s
 $MSG['db_connection_refused'] = 'Verbindung zum Host fehlgeschlagen. Bitte prüfe Hostname und Port.';
 $MSG['db_connection_failed']  = 'Verbindung fehlgeschlagen: %s';
 
+// ─── Prüfung auf bereits verwendetes Tabellenpräfix ──────────────────────────
+$MSG['db_prefix_in_use']      = 'Achtung: Das Tabellenpräfix <b>%1$s</b> wird in dieser Datenbank bereits von %2$d Tabelle(n) verwendet';
+$MSG['db_prefix_more']        = ' … und %d weitere';
+$MSG['db_prefix_warning']     = 'Eine Installation mit diesem Präfix <b>löscht diese Tabellen samt Inhalt</b> — auch eine bestehende WBCE-Website. Wähle ein anderes Präfix oder bestätige unten.';
+$MSG['db_prefix_confirm']     = 'Ja, die vorhandenen Tabellen überschreiben. Mir ist klar, dass deren Daten verloren gehen.';
+$MSG['db_prefix_unconfirmed'] = 'Das Tabellenpräfix wird in dieser Datenbank bereits verwendet. Wähle ein anderes Präfix oder setze den Bestätigungshaken, um die vorhandenen Tabellen zu überschreiben.';
+
 // ─── Streaming Progress Log (reduced & multilingual) ─────────────────────────
 $TXT['log_writing_config']      = 'Schreibe config.php';
 $TXT['log_export_snapshot']     = 'Exportiere Konstants Schnappschuß';
@@ -116,9 +123,10 @@ $TXT['log_required_mod_missing']= 'Benötigte Module fehlen';
 $TXT['log_finalizing']          = 'Schließe Installation ab';
 $TXT['log_export_snapshot']     = 'Exportiere `var/sys_constants.php` Snapshot';
 
-$TXT['log_done']                = '✓ erledigt';
-$TXT['log_not_found']           = '✗ nicht gefunden';
-$TXT['log_cannot_remove']       = '✗ konnte nicht entfernt werden';
+$TXT['btn_download_log']     = 'Log herunterladen';
+$TXT['log_done']                = 'erledigt';
+$TXT['log_not_found']           = 'nicht gefunden';
+$TXT['log_cannot_remove']       = 'konnte nicht entfernt werden';
 $TXT['log_complete']            = '━━━━━━━━━ Installation abgeschlossen ━━━━━━━━━';
 $TXT['log_failed']              = 'Installation fehlgeschlagen – siehe Fehler oben';
 

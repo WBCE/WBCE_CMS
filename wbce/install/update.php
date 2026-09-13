@@ -217,6 +217,17 @@ const I18N = {
 };
 const ADMIN_URL = <?= json_encode(ADMIN_URL) ?>;
 </script>
+<script src="./assets/log_export.js" type="text/javascript"></script>
+<script>
+WbceLogExport.init({
+    logSelector: '#update-log',
+    filePrefix:  'wbce-update-log',
+    title:       'WBCE CMS — Update log',
+    version:     <?= json_encode(defined('NEW_WBCE_VERSION') ? NEW_WBCE_VERSION : '') ?>,
+    label:       <?= json_encode($TXT['btn_download_log']) ?>
+
+});
+</script>
 <script src="./assets/upgrade.js" type="text/javascript"></script>
 </body>
 </html>
