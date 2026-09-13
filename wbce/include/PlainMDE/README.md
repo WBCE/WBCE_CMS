@@ -37,6 +37,21 @@ PlainMDE keeps the underlying `<textarea>`'s value in sync on every
 keystroke, so a plain (non-JS) form submit works unmodified — no special
 serialization step needed before posting the form.
 
+### Syntax highlighting in fenced code blocks
+
+A ```` ```php ````, ```` ```js ````, ```` ```sql ```` … block is highlighted in the
+editor while you type. This is CodeMirror's own nested-mode mechanism, not a second
+highlighting engine: the markdown mode switches to the mode named in the fence
+(resolved through `meta.js`), so it survives every keystroke and every re-render.
+
+`plugin.php` loads the modes `modules/CodeMirror_Config` ships — JavaScript, CSS,
+C-like, HTML-mixed, PHP, SQL, Twig, HTTP, properties — plus `meta.js`, which maps
+language names and aliases onto them. A fence whose language has no mode loaded stays
+plain; add its mode file to the bundle in `plugin.php` and it highlights too.
+
+The preview pane is a different matter: there PlainMDE calls `window.hljs` when the
+host page provides highlight.js, and leaves the code plain when it does not.
+
 ### Inline tree previews
 
 A fenced block tagged `file-tree` / `page-tree` (also spelled `filetree` /

@@ -36,6 +36,27 @@ I::insertJsBundle([
     $cmDir . '/addon/mode/overlay.js',
     $cmDir . '/mode/xml/xml.js',
 
+    // ── Modes for fenced code blocks ──
+    // PlainMDE's markdown mode already switches to a nested mode for every
+    // ```<lang> fence (see plainmde-markdown.js: state.localMode =
+    // getMode(RegExp.$1), resolved through CodeMirror.findModeByName). It just
+    // never found one, because only the xml mode above was loaded — so a PHP
+    // block looked exactly like a plain one. These are the modes
+    // CodeMirror_Config ships; meta.js is what maps "php", "js", "sh" … to
+    // them. Load order matters: htmlmixed needs xml/javascript/css, php needs
+    // htmlmixed and clike. A language without a mode simply stays unhighlighted,
+    // exactly as before.
+    $cmDir . '/mode/javascript/javascript.js',
+    $cmDir . '/mode/css/css.js',
+    $cmDir . '/mode/clike/clike.js',
+    $cmDir . '/mode/htmlmixed/htmlmixed.js',
+    $cmDir . '/mode/php/php.js',
+    $cmDir . '/mode/sql/sql.js',
+    $cmDir . '/mode/twig/twig.js',
+    $cmDir . '/mode/http/http.js',
+    $cmDir . '/mode/properties/properties.js',
+    $cmDir . '/mode/meta.js',
+
     // ── The only two CodeMirror pieces PlainMDE still vendors: the markdown/
     // gfm modes (for live syntax highlighting) and autorefresh (editor shown
     // inside a tab/modal that starts hidden). Search-cursor and placeholder
