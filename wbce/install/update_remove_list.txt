@@ -180,10 +180,6 @@
 [MODULES]/ckeditor_dev/
 [MODULES]/outputfilter_dashboard/dialog/
 [MODULES]/outputfilter_dashboard/images/
-[MODULES]/outputfilter_dashboard/
-[MODULES]/outputfilter_dashboard/
-[MODULES]/outputfilter_dashboard/
-[MODULES]/outputfilter_dashboard/
 [MODULES]/el_finder/
 [MODULES]/output_filter/
 [MODULES]/user_search/
