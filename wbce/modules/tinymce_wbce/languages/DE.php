@@ -239,9 +239,9 @@ $TXT['SUBJECT']              = 'Betreff';
 $TXT['MESSAGE']              = 'Nachricht';
 $TXT['LINK_DIALOG_TITLE']    = 'Link einfügen/bearbeiten';
 $TXT['LINK_PAGE_ITEM']       = 'Oder ein bestimmtes Element auf dieser Seite';
-$TXT['LINKIMG_TAB']          = 'Bild';
-$TXT['LINKIMG_URL']          = 'Bild-URL';
-$TXT['LINKIMG_BROWSE']       = 'Bild wählen…';
+$TXT['LINKIMG_TAB']          = 'Medien';
+$TXT['LINKIMG_URL']          = 'Datei-URL';
+$TXT['LINKIMG_BROWSE']       = 'Datei wählen…';
 $TXT['LINK_STYLE']           = 'Style (inline CSS)';
 
 // ── Editor plugin: wbdroplets ────────────────────────────────────────────────

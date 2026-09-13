@@ -2,6 +2,23 @@
 
 *Changelog entries from v0.2.53 onward are written in English.*
 
+## v0.3.4 — 2026-09-13
+
+### Fixed
+- **Link dialog "Bild" tab: picking a file in elFinder never filled in the Image URL field** (reported via forum, with screenshot). The browse button's `postMessage` listener checked for `e.data.mceAction === 'fileSelected'` — a shape that is never sent. `modules/elfinder/ef/elfinder_postmessage.php` actually posts `{ wbceMediaPick: true, url, title }`, exactly what the module's other two elFinder integrations (the image-dblclick handler and TinyMCE's own `file_picker_callback`, both in `include.php`) already listen for. Fixed `plugins/link/plugin.min.js` to use the same contract, plus the same `?select=` current-folder prefill and `e.origin` check the other two already had.
+
+### Changed
+- **Link dialog: the "Bild" (Image) tab is now labelled "Medien"/"Media"** (`$MENU['MEDIA']`, the core admin's own string — falls back to `TXT:LINKIMG_TAB` if that's ever unavailable) — it always opened the whole media library via elFinder, not an image-only picker, so the old label undersold it. Field/button text (`TXT:LINKIMG_URL`, `TXT:LINKIMG_BROWSE`) generalized from "Image URL"/"Choose image…" to "File URL"/"Choose file…" to match. This is now the intended way to link to any media file — PDF, Markdown, whatever — rather than adding a second browse button to the "Link" tab (tried, then reverted — see below). The live `<img>` preview now hides itself gracefully (via the image's own `error` event) instead of showing a broken-image glyph when the picked file isn't actually an image.
+
+~~### Added~~ (reverted, same session)
+- ~~"Browse…" button on the Link dialog's "Link" tab~~ — superseded by the "Bild" → "Medien" tab rename above; a second browse button duplicating the Media tab's job was decided against.
+
+### Fixed
+- **Re-opening a link to a non-image media file (PDF, Markdown, …) landed on the "Link" tab instead of "Medien"** (live-tested after the rename above). The tab that opens for an *existing* link was still decided purely by image file extension (`imgMatch`) — a link to `CLAUDE.md` or any other non-image never matched, regardless of the tab rename. Added a second signal, `mediaMatch`: does the href fall under the media library's own base URL (`TINYMCE_MEDIA_URL`, new — `WB_URL . MEDIA_DIRECTORY`, injected in `include.php` next to `TINYMCE_ELFINDER`), checked both as an absolute URL and, as a fallback, path-only (for root-relative hrefs). This covers every file type the Media tab's own browse button can pick, without an ever-incomplete per-extension whitelist. Where `TINYMCE_MEDIA_URL` isn't injected (e.g. the toolbar configurator's live preview), detection degrades gracefully back to the extension-only check.
+
+### Fixed (shared library, not tinymce_wbce-specific)
+- **Selecting text inside the Link dialog's URL field could close the whole dialog** (same forum report, follow-up). Root cause was in the vendored `include/micromodal/modal.min.js`, not in this module: MicroModal's `onClick` only checks which element the terminating `mouseup`/`click` landed on — a drag-selection inside the URL field can end with the cursor drifting onto `.modal__overlay` (it wraps the whole dialog as the backdrop), which the library reads as "clicked the backdrop" and closes. Patched `onClick` to also require an empty `window.getSelection()`, so a click that's the tail end of a text-selection drag no longer closes the modal. Fixes every MicroModal dialog in the project (also the preset import-collision dialog in `tool.php`), not just this one.
+
 ## v0.3.3 — 2026-08-11
 
 ### Changed

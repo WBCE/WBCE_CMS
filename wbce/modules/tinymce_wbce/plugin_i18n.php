@@ -21,6 +21,8 @@ if (!function_exists('tinymce_wbce_plugin_i18n')) {
     {
         Lang::loadLanguage(__DIR__); // idempotent
 
+        global $MENU;
+
         return [
             // shared dialog buttons
             'insert'         => L_('TXT:INSERT'),
@@ -101,7 +103,10 @@ if (!function_exists('tinymce_wbce_plugin_i18n')) {
                 'top'          => L_('TXT:BREAK_FRAMESET'),
                 'subject'      => L_('TXT:SUBJECT'),
                 'message'      => L_('TXT:MESSAGE'),
-                'image'        => L_('TXT:LINKIMG_TAB'),
+                // Tab label: the picker opens the Media library regardless of file
+                // type (PDF, Markdown, image, …), so it borrows the core admin's
+                // own "Media" string instead of a module-specific "Image" one.
+                'image'        => $MENU['MEDIA'] ?? L_('TXT:LINKIMG_TAB'),
                 'imageUrl'     => L_('TXT:LINKIMG_URL'),
                 'chooseImage'  => L_('TXT:LINKIMG_BROWSE'),
                 'style'        => L_('TXT:LINK_STYLE'),

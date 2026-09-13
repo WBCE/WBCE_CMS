@@ -246,9 +246,9 @@ $TXT['SUBJECT']              = 'Onderwerp';
 $TXT['MESSAGE']              = 'Bericht';
 $TXT['LINK_DIALOG_TITLE']    = 'Link invoegen/bewerken';
 $TXT['LINK_PAGE_ITEM']       = 'Of een specifiek item op deze pagina';
-$TXT['LINKIMG_TAB']          = 'Afbeelding';
-$TXT['LINKIMG_URL']          = 'Afbeeldings-URL';
-$TXT['LINKIMG_BROWSE']       = 'Afbeelding kiezen…';
+$TXT['LINKIMG_TAB']          = 'Media';
+$TXT['LINKIMG_URL']          = 'Bestands-URL';
+$TXT['LINKIMG_BROWSE']       = 'Bestand kiezen…';
 $TXT['LINK_STYLE']           = 'Stijl (inline CSS)';
 
 // ── Editor plugin: wbdroplets ────────────────────────────────────────────────

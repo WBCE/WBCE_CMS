@@ -274,6 +274,7 @@ if (!function_exists('tinymce_wbce_render_editor')) {
             // elfinder_tinymce.php (window-global-callback protocol) stays as
             // it is for modules/ves/fee_canvas.js, which still depends on it.
             $elfinderUrl    = WB_URL . '/modules/elfinder/ef/elfinder_postmessage.php';
+            $mediaBaseUrl   = WB_URL . MEDIA_DIRECTORY;
             $codemirrorUrl  = $modUrl . '/codemirror_tinymce.php';
             $codesampleUrl  = $modUrl . '/codesample_tinymce.php';
             $historyUrl     = $modUrl . '/history_ajax.php';
@@ -303,6 +304,7 @@ var TINYMCE_AJAX_LINK_ITEMS = '{$ajaxLinkItems}';
 var TINYMCE_INCLUDE_URL  = '{$includeUrl}';
 var TINYMCE_CONTENT_EXTRAS = '{$extrasUrl}';
 var TINYMCE_ELFINDER     = '{$elfinderUrl}';
+var TINYMCE_MEDIA_URL    = '{$mediaBaseUrl}';
 var TINYMCE_CODEMIRROR_URL = '{$codemirrorUrl}';
 var TINYMCE_CODESAMPLE_URL = '{$codesampleUrl}';
 var TINYMCE_HISTORY_URL = '{$historyUrl}';
