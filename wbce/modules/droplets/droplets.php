@@ -45,6 +45,7 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
     // collect all droplets from document
     $droplet_tags = array();
     $droplet_replacements = array();
+    $seen = array(); // Tag-String => true, nur für die Dedupe-Prüfung
     // Special matches for FE and BE
     $match = ($position == 'backend') ? '/\[\[\[(.*?)\]\]\]/' : '/\[\[(.*?)\]\]/';
 	$openTag = ($position == 'backend') ? '[[[' : '[[';
@@ -53,8 +54,10 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
 	if( preg_match_all( $match, $wb_page_data, $found_droplets ) ) {
         // loop over all matches
 		foreach( $found_droplets[1] as $droplet ){
-			if(array_key_exists( $openTag.$droplet.$closeTag, $droplet_tags) == false) {
+			$tag = $openTag.$droplet.$closeTag;
+			if( !isset($seen[$tag]) ) {
                 // go in if same droplet with same arguments is not processed already
+                $seen[$tag] = true;
                 $varlist = array();
                 
                 // split each droplet command into droplet_name and request_string
@@ -110,7 +113,7 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                     //$newvalue = preg_replace('/<style.*>.*<\/style>/siU', '', $newvalue);
 
                     // push droplet-tag and it's replacement into Search/Replace array after executing only
-                    $droplet_tags[]         = $openTag.$droplet.$closeTag;
+                    $droplet_tags[]         = $tag;
                     $droplet_replacements[] = $newvalue;
                 }
             }
