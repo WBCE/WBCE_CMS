@@ -1,0 +1,117 @@
+{# asset_optimizer — Settings tab. Included by tool.twig. #}
+
+{% macro switchrow(sw, extra) %}
+    {% set id = 'ao_' ~ sw.const|lower %}
+    <div class="cp-setting-row">
+        <label class="cp-setting-name" for="{{ id }}">
+            {{ L_('TXT:' ~ sw.const ~ '_LABEL') }}<br><code>{{ sw.const }}</code>
+        </label>
+        <div class="cp-setting-value">
+            <input type="checkbox" switch="bool" name="ao[{{ sw.const }}]" id="{{ id }}" value="1"
+                   {{ sw.on ? 'checked'|raw : '' }} {{ (sw.locked or sw.forced) ? 'disabled'|raw : '' }}>
+            <label for="{{ id }}" class="labeled"
+                   data-on-label="{{ L_('TXT:ENABLED') }}" data-off-label="{{ L_('TXT:DISABLED') }}"></label>
+            <div class="cp-setting-hint">{{ L_('TXT:' ~ sw.const ~ '_DESC') }}</div>
+            {{ extra|raw }}
+            {% if sw.locked %}<div class="cp-setting-hint ao-locked"><em>{{ L_('TXT:LOCKED_NOTE') }}</em></div>{% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% import _self as ui %}
+
+{% if PINNED is not empty %}
+<div class="alertbox_warning">
+    <span class="signal"><i class="fa fa-exclamation-triangle"></i></span>
+    <p>
+        <b>{{ L_('TXT:PINNED_TITLE')|format(PINNED|length) }}</b>
+        {{ L_('TXT:PINNED_BODY')|format(PINNED|join(', ')) }}
+    </p>
+</div>
+{% endif %}
+
+{# <p class="ao-intro">{{ L_('TXT:SETTINGS_INTRO') }}<br>{{ L_('TXT:STORAGE_NOTE') }}</p> #}
+
+<form method="post" action="{{ BASE }}" class="cp-settings">
+    {{ FTAN|raw }}
+    <input type="hidden" name="ao_save" value="1">
+
+    {# ── Minification ─────────────────────────────────────────────────── #}
+    <div class="cp-card">
+        <div class="cp-card-head"><label><i class="fa fa-compress"></i> {{ L_('TXT:CARD_MINIFY') }}</label></div>
+        <div class="cp-card-body">
+            {% for sw in SWITCHES_MINIFY %}
+                {% if sw.const == 'ASSETS_MINIFY_DEBUG' and LEGACY_DEBUG %}
+                    {% set legacyline %}
+                        <div class="cp-setting-hint ao-status ao-status--warn">
+                            <span class="ao-dot"></span>{{ L_('TXT:LEGACY_DEBUG_NOTE')|format(LEGACY_DEBUG) }}
+                        </div>
+                    {% endset %}
+                    {{ ui.switchrow(sw, legacyline) }}
+                {% else %}
+                    {{ ui.switchrow(sw, '') }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="cp-card-foot">
+            <span class="ao-foot-note"><i class="fa fa-lock"></i> {{ L_('TXT:FOOT_INI') }}</span>
+            <button type="submit" class="button ico-save pos-right"><i class="fa fa-check"></i> {{ L_('TXT:SAVE') }}</button>
+        </div>
+    </div>
+
+    {# ── Browser cache busting ────────────────────────────────────────── #}
+    <div class="cp-card">
+        <div class="cp-card-head"><label><i class="fa fa-refresh"></i> {{ L_('TXT:CARD_BUST') }}</label></div>
+        <div class="cp-card-body">
+            <blockquote class="info">{{ L_('TXT:BUST_INTRO') }}</blockquote>
+            {% for sw in SWITCHES_BUST %}
+                {% if sw.const == 'OPF_ASSETS_CACHE_BUSTING_BE' and not sw.locked %}
+                    {% set befollow %}
+                        <div class="cp-setting-hint ao-follow-note{{ sw.forced ? '' : ' is-hidden' }}">
+                            <em>{{ L_('TXT:BUST_BE_FOLLOWS_FE') }}</em>
+                        </div>
+                    {% endset %}
+                    {{ ui.switchrow(sw, befollow) }}
+                {% else %}
+                    {{ ui.switchrow(sw, '') }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="cp-card-foot">
+            <span class="ao-foot-note"><i class="fa fa-database"></i> {{ L_('TXT:FOOT_DB') }}</span>
+            <button type="submit" class="button ico-save pos-right"><i class="fa fa-check"></i> {{ L_('TXT:SAVE') }}</button>
+        </div>
+    </div>
+
+    {# ── Advanced ────────────────────────────────────────────────────── #}
+    <div class="cp-card">
+        <div class="cp-card-head"><label><i class="fa fa-wrench"></i> {{ L_('TXT:CARD_ADVANCED') }}</label></div>
+        <div class="cp-card-body">
+            {% set editing = DIR_CUSTOM or DIR_LOCKED %}
+            <div class="cp-setting-row">
+                <label class="cp-setting-name" for="minify_assets_dir">
+                    {{ L_('TXT:MINIFY_ASSETS_DIR_LABEL') }}<br><code>MINIFY_ASSETS_DIR</code>
+                </label>
+                <div class="cp-setting-value ao-dir{{ editing ? ' is-editing' : '' }}">
+                    <input type="text" class="ao-txt" id="minify_assets_dir" name="minify_assets_dir"
+                           value="{{ DIR_VALUE|e }}" data-default="{{ DIR_DEFAULT|e }}"
+                           placeholder="{{ L_('TXT:MINIFY_ASSETS_DIR_PH')|e }}"
+                           {{ (DIR_LOCKED or not DIR_CUSTOM) ? 'readonly'|raw : '' }}>
+                    {% if not editing %}
+                    <button type="button" class="button ao-dir-edit" id="ao-dir-edit">
+                        <i class="fa fa-pencil"></i> {{ L_('TXT:DIR_OVERRIDE') }}
+                    </button>
+                    {% endif %}
+                    <div class="cp-setting-hint ao-dir-hint">{{ L_('TXT:MINIFY_ASSETS_DIR_DESC') }}</div>
+                    {% if DIR_LOCKED %}<div class="cp-setting-hint ao-locked"><em>{{ L_('TXT:LOCKED_NOTE') }}</em></div>{% endif %}
+                </div>
+            </div>
+
+            {{ ui.switchrow(QUEUE_DEBUG, '') }}
+        </div>
+        <div class="cp-card-foot">
+            <span class="ao-foot-note"><i class="fa fa-lock"></i> {{ L_('TXT:FOOT_INI') }}</span>
+            <button type="submit" class="button ico-save pos-right"><i class="fa fa-check"></i> {{ L_('TXT:SAVE') }}</button>
+        </div>
+    </div>
+</form>

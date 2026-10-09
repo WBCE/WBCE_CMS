@@ -1,0 +1,87 @@
+{# errorlogger — Settings tab. Included by tool.twig. #}
+
+{% if WBCE_DEBUG_LOCKED %}
+<div class="alertbox_warning">
+    <span class="signal"><i class="fa fa-exclamation-triangle"></i></span>
+    <p>{{ WB_DEBUG_MSG|raw }}</p>
+</div>
+{% endif %}
+
+<div class="el-settings-head">
+    <p class="el-intro">{{ L_('TXT:SETTINGS_INTRO') }}</p>
+    {% if README_URL %}
+    <a class="button el-doc" href="{{ README_URL|e }}"
+       onclick="{{ README_ONCLICK|e }}" target="_blank" rel="noopener">
+        <i class="fa fa-book"></i> {{ L_('TXT:DOCS_LINK') }}
+    </a>
+    {% endif %}
+</div>
+
+<form method="post" action="{{ BASE }}&tab=settings" class="cp-settings">
+    {{ FTAN|raw }}
+    <input type="hidden" name="el_save" value="1">
+
+    {# ── PHP error reporting level ─────────────────────────────────────────── #}
+    <div class="cp-card">
+        <div class="cp-card-head">
+            <label><i class="fa fa-bug"></i> {{ L_('TXT:ERL_CARD') }}</label>
+        </div>
+        <div class="cp-card-body">
+            <div class="cp-setting-row">
+                <label class="cp-setting-name" for="er_level">
+                    {{ L_('TXT:ERL_LABEL') }}<br><code>ER_LEVEL</code>
+                </label>
+                <div class="cp-setting-value">
+                    <select name="er_level" id="er_level" class="wbeSelect el-erl">
+                        {% for key, label in ER_LEVELS %}
+                        <option value="{{ key }}" data-right="{{ key }}"{{ key == ER_LEVEL ? ' selected'|raw : '' }}>{{ label|e }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="cp-setting-hint">{{ L_('TXT:ERL_DESC')|raw }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# ── Debug switches ───────────────────────────────────────────────────── #}
+    <div class="cp-card">
+        <div class="cp-card-head">
+            <label><i class="fa fa-terminal"></i> {{ L_('TXT:DEBUG_CARD') }}</label>
+        </div>
+        <div class="cp-card-body">
+            <blockquote class="info">{{ L_('TXT:DEBUG_DESC') }}</blockquote> 
+
+            {% for sw in DEBUG_SWITCHES %}
+            {% set id = 'dbg_' ~ sw.const|lower %}
+            <div class="cp-setting-row">
+                <label class="cp-setting-name" for="{{ id }}">
+                    {{ L_(sw.label_key) }}<br><code>{{ sw.const }}</code>
+                </label>
+                <div class="cp-setting-value">
+                    <input type="checkbox" switch="bool" name="dbg[{{ sw.const }}]" id="{{ id }}" value="1"
+                           {{ sw.on ? 'checked'|raw : '' }} {{ sw.locked ? 'disabled'|raw : '' }}>
+                    <label for="{{ id }}" class="labeled"
+                           data-on-label="{{ L_('TEXT:ENABLED') }}"
+                           data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                    <div class="cp-setting-hint">{{ L_(sw.desc_key)|raw }}</div>
+                    {% if sw.badge %}
+                    <div class="cp-setting-hint el-badge-preview">
+                        {{ L_('TXT:BADGE_PREVIEW') }}
+                        <span class="el-badge el-badge--{{ sw.badge[1] }}">{{ sw.badge[0] }}</span>
+                    </div>
+                    {% endif %}
+                    {% if sw.locked %}
+                    <div class="cp-setting-hint"><em>{{ L_('TXT:WBCE_DEBUG_LOCKED')|raw }}</em></div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="cp-card-foot">
+            <span class="el-foot-note"><i class="fa fa-lock"></i> {{ L_('TXT:FILE_BASED_NOTE')|raw }}</span>
+            <button type="submit" class="button ico-save pos-right">
+                <i class="fa fa-check"></i> {{ L_('TEXT:SAVE') }}
+            </button>
+        </div>
+    </div>
+</form>

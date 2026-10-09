@@ -20,7 +20,7 @@ new Login([
     'USERNAME_FIELDNAME'    => 'username',
     'PASSWORD_FIELDNAME'    => 'password',
     'MAX_USERNAME_LEN'      => 30,
-    'MAX_PASSWORD_LEN'      => 30,
+    'MAX_PASSWORD_LEN'      => 72, // bcrypt hard limit — must match install_save.php guard
     'LOGIN_URL'             => ADMIN_URL . '/login/index.php',
     'DEFAULT_URL'           => ADMIN_URL . '/start/index.php',
     'FORGOTTEN_DETAILS_APP' => ADMIN_URL . '/login/forgot/index.php',

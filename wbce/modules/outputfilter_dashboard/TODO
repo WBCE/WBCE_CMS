@@ -1,16 +1,19 @@
 TODO list for future releases
 =============================
 
+
+- Improve documentation
+
 - Would be good to include some more example filters
 
 - Rework the layout to mirror WBCE theming and make this tool easier to grasp.
 
-- Switch DB queries from PracticalModuleFunctions to WBCE Database class ones as
-  some of Thorn's (original author) were already implemented in the WBCE Database class.
-
-- Improve documentation
+- Go OOP and json format instead of serialize. Use better on-the-fly discovery 
+  of plugins shipped with modules at some point. Not a MUST as everything is working as-is.
 
 
 DONE already
 ============================
 - change template engine from phplib to pure php (or Twig maybe?)
+- Switch DB queries from PracticalModuleFunctions to WBCE Database class ones as
+  some of Thorn's (original author) were already implemented in the WBCE Database class.

@@ -1,0 +1,148 @@
+/* asset_optimizer — backend.css
+ * Module-specific rules only. Chrome (tabs, cards, setting rows, switches,
+ * toolbar, alertbox) comes from cp_chrome.css / cp_theme.css. Colours are
+ * always var(--…) tokens so the active backend theme wins.
+ */
+
+.asset-optimizer-tool { --ao-gap: 16px; }
+
+/* ── intro / head ──────────────────────────────────────────────────────── */
+.asset-optimizer-tool .ao-intro { margin: 4px 0 18px; color: var(--text-dim); max-width: 70ch; }
+.asset-optimizer-tool .ao-muted { color: var(--text-dim); margin: 10px 0; }
+.asset-optimizer-tool code {
+    font-family: var(--font-mono, monospace); font-size: .86em;
+    background: var(--surface3); padding: 1px 5px; border-radius: 3px;
+}
+.asset-optimizer-tool .cp-setting-name code { color: var(--accent); }
+.asset-optimizer-tool .cp-setting-name code.ao-ro { color: var(--text-dim); }
+.asset-optimizer-tool .ao-locked { color: var(--text-dim); }
+.asset-optimizer-tool .ao-follow-note { color: var(--text-dim); }
+.asset-optimizer-tool .ao-follow-note.is-hidden { display: none; }
+
+/* ── read-only / forced switch — reads as inactive ────────────────────── */
+.asset-optimizer-tool input[switch="bool"]:disabled + label.labeled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* ── status line under a control ──────────────────────────────────────── */
+.asset-optimizer-tool .ao-status {
+    display: inline-flex; align-items: center; gap: 7px;
+    margin-top: 8px; padding: 5px 10px; border-radius: var(--r, 4px);
+    font-size: 12px;
+}
+.asset-optimizer-tool .ao-status--ok   { background: var(--success-bg); color: var(--success); }
+.asset-optimizer-tool .ao-status--warn { background: var(--warning-bg); color: var(--warning); }
+.asset-optimizer-tool .ao-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* ── text input ──────────────────────────────────────────────────────── */
+.asset-optimizer-tool .ao-txt {
+    font: inherit; font-family: var(--font-mono, monospace); font-size: 12px;
+    width: 100%; max-width: 460px; padding: 7px 10px;
+    border: 1px solid var(--border); border-radius: var(--r, 4px);
+    background: var(--surface); color: var(--text);
+}
+.asset-optimizer-tool .ao-txt[readonly] { opacity: .6; }
+
+/* cache directory — default path shown read-only until "set a custom directory" */
+.asset-optimizer-tool .ao-dir-edit { margin-top: 8px; }
+.asset-optimizer-tool .ao-dir .ao-dir-hint { display: none; }
+.asset-optimizer-tool .ao-dir.is-editing .ao-dir-hint { display: block; }
+
+/* ── summary strip ───────────────────────────────────────────────────── */
+.asset-optimizer-tool .ao-strip {
+    display: flex; flex-wrap: wrap; gap: 8px 5%;
+    padding: 16px 18px; margin-bottom: 18px;
+    border: 1px solid var(--border); border-radius: var(--r, 4px);
+    background: var(--surface2);
+}
+.asset-optimizer-tool .ao-stat { display: flex; flex-direction: column; }
+.asset-optimizer-tool .ao-stat .n { font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.asset-optimizer-tool .ao-stat .n.good { color: var(--success); }
+.asset-optimizer-tool .ao-stat .l {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-dim);
+}
+
+/* ── danger button in the toolbar ───────────────────────────────────── */
+.asset-optimizer-tool .button.ao-danger { color: var(--danger); border-color: var(--border); }
+.asset-optimizer-tool .button.ao-danger:hover { background: var(--danger-bg); border-color: var(--danger); }
+
+.asset-optimizer-tool .ao-foot-note { color: var(--text-dim); }
+
+/* ── data tables ────────────────────────────────────────────────────── */
+.asset-optimizer-tool .ao-tbl-wrap { overflow-x: auto; }
+.asset-optimizer-tool .ao-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.asset-optimizer-tool .ao-table th,
+.asset-optimizer-tool .ao-table td {
+    text-align: left; vertical-align: middle; padding: 6px 10px;
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.asset-optimizer-tool .ao-table thead th {
+    background: var(--surface2); font-size: 11px; text-transform: uppercase;
+    letter-spacing: .05em; color: var(--text-dim); font-weight: 700;
+}
+.asset-optimizer-tool .ao-table tbody tr:last-child td { border-bottom: 0; }
+.asset-optimizer-tool .ao-table td.name {
+    font-family: var(--font-mono, monospace); font-size: 12px; white-space: normal; word-break: break-all;
+}
+/* right-align the numeric columns — header AND body, so they line up */
+.asset-optimizer-tool .ao-table th.num,
+.asset-optimizer-tool .ao-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.asset-optimizer-tool .ao-table td.num { color: var(--text-dim); }
+.asset-optimizer-tool .ao-table td.num.saved { color: var(--success); font-weight: 600; }
+
+.asset-optimizer-tool .ao-pill {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 1px 7px; border-radius: 999px; white-space: nowrap;
+}
+.asset-optimizer-tool .ao-pill.warn   { background: var(--warning-bg); color: var(--warning); }
+.asset-optimizer-tool .ao-pill.danger { background: var(--danger-bg); color: var(--danger); }
+
+/* bundle inspector */
+.asset-optimizer-tool tr.ao-grp:not([data-nosrc]) { cursor: pointer; }
+.asset-optimizer-tool tr.ao-grp:not([data-nosrc]):hover td { background: var(--surface2); }
+.asset-optimizer-tool tr.ao-grp:not([data-nosrc]) td.name::before {
+    content: "\25B8"; display: inline-block; width: 1.1em; color: var(--text-dim);
+    transition: transform .12s ease;
+}
+.asset-optimizer-tool tr.ao-grp.open td.name::before { transform: rotate(90deg); }
+.asset-optimizer-tool tr.ao-src { display: none; }
+.asset-optimizer-tool tr.ao-src.show { display: table-row; }
+.asset-optimizer-tool tr.ao-src td { background: var(--surface2); }
+.asset-optimizer-tool tr.ao-src td.name { padding-left: 38px; color: var(--text-dim); }
+.asset-optimizer-tool tr.ao-src td.name.gone { color: var(--danger); text-decoration: line-through; }
+.asset-optimizer-tool tr.ao-has-missing td.name { box-shadow: inset 3px 0 0 var(--danger); }
+
+/* ── health checks ──────────────────────────────────────────────────── */
+.asset-optimizer-tool .ao-checks { list-style: none; margin: 0; padding: 0; }
+.asset-optimizer-tool .ao-checks li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+}
+.asset-optimizer-tool .ao-checks li:last-child { border-bottom: 0; }
+.asset-optimizer-tool .ao-checks .mark {
+    flex: none; font-size: 16px; line-height: 1.35; margin-top: 1px;
+}
+.asset-optimizer-tool .ao-checks .mark.ok   { color: var(--success); background-color: transparent; border: none;}
+.asset-optimizer-tool .ao-checks .mark.warn { color: var(--warning); background-color: transparent; border: none;}
+.asset-optimizer-tool .ao-checks .c-body b { display: block; }
+.asset-optimizer-tool .ao-checks .c-body span { color: var(--text-dim); font-size: 13px; }
+
+
+/* ── Documentation tab ────────────────────────────────────────────────────
+   The rendered doc, its TOC sidebar and all markdown styling come from
+   MarkdownWbce (layout/markdown.css + layout/markdown-embed.css, loaded via
+   MdReaderHelper::embedAssets()). Only the "source" line at the top of the
+   document is ours. */
+.asset-optimizer-tool .markdown-body .ao-doc-source {
+    margin: 0 0 2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid var(--mdr-border, var(--border));
+    font-size: 12px;
+    color: var(--mdr-fg-muted, var(--text-dim));
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: .5em; flex-wrap: wrap;
+}
+.asset-optimizer-tool .markdown-body .ao-doc-source code {
+    font-size: 100%;
+}

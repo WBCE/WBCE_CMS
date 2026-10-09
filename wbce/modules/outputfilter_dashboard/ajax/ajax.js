@@ -143,11 +143,53 @@ $(document).ready(function() {
         oReplacement = $(sRowID).replaceWith(new_row);
     });
 
+
+    $('tr').on("click", ".convert-item", function(event) {
+        event.preventDefault();
+        var $link  = $(this);
+        var ID     = $link.closest('tr').attr('id');
+        var sRowID = '#' + ID;
+        var HREF   = $link.attr('href');
+
+        var SWITCH = $(sRowID).find('td:eq(0)').html();
+        var FILTER_NAME = $(sRowID).find('td:eq(1)').text();
+        var MSG      = $link.data('question');
+        var sCANCEL  = $link.data('cancel');
+        var sCONFIRM = $link.data('confirm');
+
+        var height = $(sRowID).height() + 'px !important';
+        var new_row = `
+            <tr class="row-on-transform" id="`+ ID +`">
+                <td class="low-opac">` + SWITCH + `</td>
+                <td>` + FILTER_NAME + `</td>
+                <td colspan="4">` + MSG + `</td>
+                <td colspan="5" style="height: `+ height +`;">
+                    <a href="javascript:void(0);" id="conv-confirm" data-href="`+ HREF +`" class="btn-inline green">` + sCONFIRM + `</a>
+                    <a href="javascript:void(0);" id="conv-cancel" data-row="`+ sRowID +`" class="btn-inline red">` + sCANCEL + `</a>
+                </td>
+            </tr>`;
+
+        // apply replacement
+        // the object oReplacementConvert will be used by the #conv-cancel handler below
+        oReplacementConvert = $(sRowID).replaceWith(new_row);
+    });
+
  });
 
 $(document).on("click", "#reset", function() {
    // reset row to original
    $(this).parent().parent().replaceWith(oReplacement);
+   return false;
+});
+$(document).on("click", "#conv-cancel", function() {
+   // reset row to original
+   $(this).parent().parent().replaceWith(oReplacementConvert);
+   return false;
+});
+$(document).on("click", "#conv-confirm", function() {
+   // Submit the outputfilter form to the convert URL -- an FTAN-protected
+   // POST, same as the old opf_message() confirm dialog used to trigger.
+   $('#outputfilter').attr('action', $(this).data('href')).submit();
    return false;
 });
 $(document).on("click", "#del", function() {

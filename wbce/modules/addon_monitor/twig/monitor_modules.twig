@@ -78,7 +78,8 @@
       <td class="addon_version">{{ addon.version }}</td>
 
       <td class="addon_description">
-        <div class="am-desc">{{ addon.description }}</div>        
+        <div class="am-desc">{{ addon.description }}
+        {% if addon.readme_link_html %} {{ addon.readme_link_html|raw }}{% endif %}</div>
       </td>
 
       <td class="addon_author">

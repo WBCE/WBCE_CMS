@@ -113,7 +113,7 @@ $TXT['log_installing_languages']= 'Instalowanie języków';
 $TXT['log_required_mod_missing']= 'Brak wymaganych modułów: ';
 $TXT['log_finalizing']          = 'Finalizowanie instalacji';
 
-$TXT['log_done']                = '✓ Gotowe';
+$TXT['log_done']                = 'Gotowe';
 $TXT['log_complete']            = '━━━ Instalacja zakończona ━━━';
 $TXT['log_failed']              = 'Instalacja nieudana – zobacz błędy powyżej';
 

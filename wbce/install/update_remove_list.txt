@@ -112,6 +112,11 @@
 [MODULES]/menu_link/backend.css                                // 1.7.0 cleanup
 [MODULES]/menu_link/functions.pageTree.php
 [MODULES]/wrapper/modify.htt
+[MODULES]/outputfilter_dashboard/CHANGELOG
+[MODULES]/outputfilter_dashboard/FTAN_SUPPORTED
+[MODULES]/outputfilter_dashboard/README.txt
+[MODULES]/outputfilter_dashboard/backend.css
+[MODULES]/outputfilter_dashboard/backend_body.js
 
 
 # Templates (Themes)
@@ -173,6 +178,8 @@
 [MODULES]/ckeditordev/ckeditor/plugins/flash/
 [MODULES]/ckeditordev/ckeditor/plugins/oembed/
 [MODULES]/ckeditor_dev/
+[MODULES]/outputfilter_dashboard/dialog/
+[MODULES]/outputfilter_dashboard/images/
 [MODULES]/el_finder/
 [MODULES]/output_filter/
 [MODULES]/user_search/

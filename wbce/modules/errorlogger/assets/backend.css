@@ -1,0 +1,373 @@
+/* ================================================================
+   errorlogger — backend.css
+   Module-specific rules only. Chrome (tabs, toolbar, cards, table,
+   switches, alertboxes) comes from cp_chrome.css / cp_theme.css.
+   Colours go through var(--…) so the active theme wins.
+   ================================================================ */
+
+#contentarea { max-width: 100%; }
+
+.adminModuleWrapper.legacy { padding: 0; } /* argos theme fix */
+
+/* ── Settings tab ──────────────────────────────────────────────── */
+
+.errorlogger-tool .el-intro,
+.errorlogger-tool .el-card-lead {
+    font-size: .82rem;
+    line-height: 1.5;
+    color: var(--text-dim);
+}
+.errorlogger-tool .el-intro { margin: 0 0 1rem; }
+.errorlogger-tool .el-card-lead { margin: .2rem 1rem .6rem; }
+
+/* Intro row: text left, documentation button right */
+.errorlogger-tool .el-settings-head {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.errorlogger-tool .el-settings-head .el-intro { flex: 1 1 20rem; }
+.errorlogger-tool .button.el-doc {
+    flex-shrink: 0;
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    text-decoration: none;
+}
+.errorlogger-tool .button.el-doc:hover { background: var(--surface3); color: var(--text); }
+
+.errorlogger-tool .cp-setting-name code {
+    display: inline-block;
+    margin-top: .2rem;
+    font-size: .72rem;
+    background: var(--surface3);
+}
+.errorlogger-tool .cp-setting-hint code { background: var(--surface3); }
+
+.errorlogger-tool .el-foot-note {
+    font-size: .72rem;
+    color: var(--text-dim);
+}
+
+/* Live badge sample under a debug switch */
+.errorlogger-tool .el-badge-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+    margin-top: .1rem;
+}
+
+/* ── ER_LEVEL wbeSelect ───────────────────────────────────────── */
+/* Give the widget a sensible width (base .ws-el is inline-block → collapses)
+   and make the closed-state "E0" badge blue like the dropdown option badge
+   (base .ws--single rule leaves it transparent without a customSelector). */
+.errorlogger-tool .cp-setting-value .ws-el { width: 100%; max-width: 460px; }
+.errorlogger-tool .ws--single .ws-tags .ws-tag .ws-tag-r {
+    background-color: var(--ws-accent, var(--accent));
+    border-radius: 5px;
+    padding: 2px 7px;
+    margin-right: 8px;
+}
+/* Closed state: keep the description on one line */
+.errorlogger-tool .ws--single .ws-tags .ws-tag .ws-tag-ttl {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Log View toolbar buttons ─────────────────────────────────── */
+
+.errorlogger-tool .button.el-refresh {
+    background: var(--accent);
+    color: #fff;
+}
+.errorlogger-tool .button.el-refresh:hover { background: var(--accent-h); }
+
+.errorlogger-tool .button.el-danger {
+    background: var(--danger);
+    color: #fff;
+}
+.errorlogger-tool .button.el-danger:hover { filter: brightness(.93); }
+
+/* ── Segmented view switcher ──────────────────────────────────── */
+
+.errorlogger-tool .el-seg {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    background: var(--surface2);
+}
+.errorlogger-tool .el-seg a {
+    padding: .38rem .8rem;
+    font-size: .75rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-dim);
+    border-left: 1px solid var(--border);
+    white-space: nowrap;
+    transition: background .12s, color .12s;
+}
+.errorlogger-tool .el-seg a:first-child { border-left: none; }
+.errorlogger-tool .el-seg a:hover { background: var(--surface3); color: var(--text); }
+.errorlogger-tool .el-seg a.sel {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ── Log output ───────────────────────────────────────────────── */
+
+.errorlogger-tool .logviewWrapper {
+    overflow: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    max-height: calc(100vh - 340px);
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.errorlogger-tool .logline {
+    padding: 1px 6px 1px 10px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    letter-spacing: .3px;
+    margin-bottom: 1px;
+    border-radius: 2px;
+    color: var(--text);
+    font-family: var(--font-mono);
+}
+.errorlogger-tool .logline.even { background: var(--surface3); }
+.errorlogger-tool .logline.newline { background: var(--warning-bg); }
+
+/* Colour view — only active when .color is on the wrapper */
+.errorlogger-tool .color .lognotice     { color: var(--text-dim); }
+.errorlogger-tool .color .logwarning    { color: var(--warning); }
+.errorlogger-tool .color .logerror      { color: var(--danger); font-weight: bold; }
+.errorlogger-tool .color .logdeprecated { color: #9b59b6; }
+.errorlogger-tool .color .usedurl       { color: var(--accent); }
+.errorlogger-tool .color .newline       { background: var(--warning-bg); }
+
+/* Search: hide non-matching rows/lines */
+.errorlogger-tool .logline.el-hidden,
+.errorlogger-tool .el-logtable tr.el-hidden { display: none; }
+
+/* ── Table view ───────────────────────────────────────────────── */
+
+.errorlogger-tool .el-logtable {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .78rem;
+    color: var(--text);
+}
+.errorlogger-tool .el-logtable thead th {
+    position: sticky;
+    top: -8px;                 /* cancels .logviewWrapper padding */
+    background: var(--surface3);
+    color: var(--text-dim);
+    text-align: left;
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    padding: .45rem .7rem;
+    z-index: 1;
+}
+.errorlogger-tool .el-logtable td {
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+    padding: .55rem .7rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    text-align: left;
+    font-family: inherit;
+    white-space: normal;
+}
+.errorlogger-tool .el-logtable tbody tr:last-child td { border-bottom: none; }
+.errorlogger-tool .el-logtable tbody tr:nth-child(even) td { background: rgba(128, 128, 128, .06); }
+.errorlogger-tool .el-logtable tbody tr.el-new td {
+    background: var(--warning-bg);
+    box-shadow: inset 3px 0 0 var(--warning);
+}
+
+/* Type cell */
+.errorlogger-tool .el-c-type { white-space: nowrap; }
+.errorlogger-tool .el-badge {
+    display: inline-block;
+    padding: .1em .5em;
+    border-radius: 999px;
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .01em;
+    white-space: nowrap;
+}
+.errorlogger-tool .el-badge--fatal      { background: var(--danger-bg);  color: var(--danger); }
+.errorlogger-tool .el-badge--warning    { background: var(--warning-bg); color: var(--warning); }
+.errorlogger-tool .el-badge--notice     { background: var(--success-bg); color: var(--success); }
+.errorlogger-tool .el-badge--deprecated { background: var(--surface3);   color: var(--text-dim); }
+.errorlogger-tool .el-badge--pdo        { background: #d6efe9;           color: #0d7d6f; }
+.errorlogger-tool .el-badge--sql        { background: #ede7f6;           color: #6a3fb5; }
+.errorlogger-tool .el-badge--muted      { background: var(--surface3);   color: var(--text-dim); }
+.errorlogger-tool .el-count {
+    display: inline-block;
+    margin-left: .3em;
+    padding: .05em .4em;
+    border-radius: 999px;
+    background: var(--surface3);
+    color: var(--text-dim);
+    font-size: .66rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Time cell */
+.errorlogger-tool .el-c-time { white-space: nowrap; }
+.errorlogger-tool .el-ago { display: block; }
+.errorlogger-tool .el-c-time time {
+    display: block;
+    margin-top: .1rem;
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    color: var(--text-dim);
+}
+
+/* Message cell */
+.errorlogger-tool .el-msg {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .74rem;
+    color: var(--text);
+}
+.errorlogger-tool .el-call {
+    display: block;
+    margin-top: .15rem;
+    font-size: .68rem;
+    color: var(--text-dim);
+}
+
+/* File / line cells */
+.errorlogger-tool .el-file,
+.errorlogger-tool .el-from {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .7rem;
+}
+.errorlogger-tool .el-file { color: var(--accent); }
+.errorlogger-tool .el-from { color: var(--text-dim); margin-top: .1rem; }
+.errorlogger-tool td.el-c-line {
+    text-align: right;
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+}
+.errorlogger-tool .el-fline {
+    display: block;
+    font-size: .68rem;
+    opacity: .7;
+    margin-top: .1rem;
+}
+
+/* ── CodeVet tab ──────────────────────────────────────────────── */
+
+.errorlogger-tool .cv-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem .9rem;
+    font-size: .78rem;
+    color: var(--text-dim);
+    margin: .2rem 0 .6rem;
+}
+.errorlogger-tool .cv-summary b { color: var(--text); font-weight: 600; }
+.errorlogger-tool .cv-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .35em;
+    padding: .12em .55em;
+    border-radius: 999px;
+    background: var(--surface3);
+    font-size: .72rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Profile badges — reuse the .el-badge shape */
+.errorlogger-tool .el-badge--droplet      { background: #e0e7ff; color: #4338ca; }
+.errorlogger-tool .el-badge--outputfilter { background: #ccfbf1; color: #0f766e; }
+.errorlogger-tool .el-badge--code2        { background: #f3e8ff; color: #7e22ce; }
+.errorlogger-tool .el-badge--addon        { background: #ffedd5; color: #c2410c; }
+.errorlogger-tool .el-badge--other        { background: var(--surface3); color: var(--text-dim); }
+
+/* Severity marker: coloured bar on the row + a small pill in the Type cell */
+.errorlogger-tool .cv-table tr.cv-block td { box-shadow: inset 3px 0 0 var(--danger); }
+.errorlogger-tool .cv-table tr.cv-warn  td { box-shadow: inset 3px 0 0 var(--warning); }
+.errorlogger-tool .cv-table tr.el-new td   { box-shadow: inset 3px 0 0 var(--warning); }
+
+.errorlogger-tool .cv-sev {
+    display: inline-block;
+    margin-left: .3em;
+    padding: .05em .45em;
+    border-radius: 999px;
+    font-size: .62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+.errorlogger-tool .cv-sev--block { background: var(--danger-bg);  color: var(--danger); }
+.errorlogger-tool .cv-sev--warn  { background: var(--warning-bg); color: var(--warning); }
+
+.errorlogger-tool .cv-action { font-weight: 500; }
+
+/* Findings cell */
+.errorlogger-tool .cv-finding {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .73rem;
+}
+.errorlogger-tool .cv-finding + .cv-finding { margin-top: .15rem; }
+.errorlogger-tool .cv-rule {
+    display: inline-block;
+    margin-right: .4em;
+    padding: .02em .4em;
+    border-radius: 3px;
+    background: var(--surface3);
+    color: var(--text-dim);
+    font-size: .64rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.errorlogger-tool .cv-fline { color: var(--text-dim); }
+.errorlogger-tool .cv-more {
+    display: inline-block;
+    margin-top: .25rem;
+    font-size: .68rem;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+}
+.errorlogger-tool .cv-hidden-findings { display: none; }
+.errorlogger-tool tr.cv-expanded .cv-hidden-findings { display: block; }
+.errorlogger-tool tr.cv-expanded .cv-more { display: none; }
+
+/* Where cell */
+.errorlogger-tool .cv-where {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    color: var(--text-dim);
+}
+.errorlogger-tool .cv-where b { color: var(--accent); font-weight: 600; }
+
+.errorlogger-tool .cv-foot {
+    margin-top: .8rem;
+    font-size: .74rem;
+    color: var(--text-dim);
+}
+
+@media (max-width: 720px) {
+    .errorlogger-tool .el-logtable { table-layout: auto; }
+    .errorlogger-tool .el-logtable colgroup { display: none; }
+}

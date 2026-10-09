@@ -80,6 +80,18 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     }
 
     // install filter
+    // Settings::Set() must run BEFORE the return below -- a `return $a && $b;`
+    // makes any statement after it unreachable, so these two calls used to
+    // never execute at all. Harmless on a fresh install (Settings::Get()'s
+    // own `true` default silently covers the missing row), but fatal on an
+    // upgrade that already carries an opf_droplets/_be row from an older
+    // WBCE version with a falsy stored value: Settings::Get() then returns
+    // that stored value instead of the default, and opff_droplets() gates
+    // itself off for good -- droplet calls are left as literal [[name]] text
+    // on every page, since nothing ever re-enables the setting.
+    Settings::Set('opf_droplets', 1, false);
+    Settings::Set('opf_droplets_be', 1, false);
+
     return opf_register_filter(array(
         'name'      => 'Droplets Injector',
         'type'      => OPF_TYPE_PAGE,
@@ -94,10 +106,7 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
         'allowedit' => 0,
         'pages_parent' => 'all, backend, search'
     ))
-    && opf_move_up_before('Droplets');  // move up to the top
-        
-    Settings::Set('opf_droplets', 1, false);
-    Settings::Set('opf_droplets_be', 1, false);
+    && opf_move_up_before('Droplets Injector');  // move up to the top
 }
 
 

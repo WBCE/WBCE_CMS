@@ -1,16 +1,21 @@
 <?php
 /**
- * OutputFilter Dashboard — AJAX save endpoint for CSS files
  *
- * Receives CSS content from the editor and writes it directly to the
- * filter's CSS file on disk (resolving SYSVAR placeholders from DB).
+ * @category        tool
+ * @package         Outputfilter Dashboard
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
+ * @link            https://github.com/mrbaseman/outputfilter_dashboard
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
+ * @link            https://forum.wbce.org/viewtopic.php?id=176
+ * @license         GNU General Public License, Version 3
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
- * POST fields:
- *   code_area_text  — raw editor content (sent by CodeEditorToolbar)
- *   idKey           — IDKEY created with $admin->getIDKEY($filter_id) in tool_edit_css.php
- *
- * @package  outputfilter_dashboard
- */
+ **/
 
 require_once '../../config.php';
 require_once __DIR__ . '/functions.php';
@@ -38,8 +43,8 @@ $filter_id = (int) $filter_id;
 $css = $_POST['code_area_text'] ?? '';
 
 // ── Resolve file path from DB ─────────────────────────────────────────────────
-$csspath = opf_db_query_vars("SELECT `csspath` FROM `{TP_OPFD}` WHERE `id`=%d", $filter_id);
-$plugin  = opf_db_query_vars("SELECT `plugin`  FROM `{TP_OPFD}` WHERE `id`=%d", $filter_id);
+$csspath = $database->fetchValue("SELECT `csspath` FROM `{TP_OPFD}` WHERE `id`=?", [$filter_id]);
+$plugin  = $database->fetchValue("SELECT `plugin`  FROM `{TP_OPFD}` WHERE `id`=?", [$filter_id]);
 
 if (!$csspath) {
     http_response_code(404);

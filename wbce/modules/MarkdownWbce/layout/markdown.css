@@ -1,0 +1,309 @@
+/* ── MarkdownWbce — rendered Markdown body + theme tokens ──────────────────
+   Self-contained: defines the --mdr-* colour tokens (light default, dark via
+   prefers-color-scheme, and an explicit [data-theme] override for the reader's
+   own toggle) AND the `.markdown-body` typography that reads them.
+
+   Load this anywhere a MdReaderHelper::renderFile() / renderForEmbed() result
+   is shown — the reader popup (layout/style.css adds its chrome on top) and
+   inline backend embeds (layout/markdown-embed.css adds the sidebar layout).
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --mdr-bg:          #fff;
+    --mdr-bg-subtle:   #f8fbff;
+    --mdr-bg-inset:    #e8eaed;
+    --mdr-fg:           #24292f;
+    --mdr-fg-strong:   #1f2328;
+    --mdr-fg-muted:    #57606a;
+    --mdr-fg-faint:    #8c959f;
+    --mdr-border:      #e1e4e8;
+    --mdr-border-strong: #accae4;
+    --mdr-accent:      #0969da;
+    --mdr-accent-bg:   #eaf5ff;
+    --mdr-accent-fg:   #fff;
+    --mdr-seg-track-bg: #e8eaed;
+    --mdr-seg-track-border: #d0d4d9;
+    --mdr-seg-fg:      #5f6368;
+    --mdr-seg-fg-hover: #333;
+    --mdr-seg-active-1: #4a90e2;
+    --mdr-seg-active-2: #3a7bc8;
+    --mdr-badge-fg:    #9a6700;
+    --mdr-badge-bg:    #fff8c5;
+    --mdr-badge-border: #eac54f;
+    --mdr-green:       #2da44e;
+    --mdr-green-hover: #2c974b;
+    --mdr-done:        #2da44e;
+    --mdr-shadow-soft: rgba(0,0,0,.06);
+    --mdr-shadow-med:  rgba(0,0,0,.08);
+    /* Reader chrome surfaces (header / sidebar / footer) — a small neutral
+       offset from --mdr-bg so the content area reads as "the page". */
+    --mdr-panel:        #eef1f4;
+    --mdr-panel-border: #dfe3e8;
+    /* Default typeface for the reader + its embeds — scoped to .markdown-body
+       here and to the reader chrome in style.css, so the surrounding backend
+       (its own font) is never touched. System stack, "Segoe UI" first. */
+    --mdr-font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --mdr-bg:          #0d1117;
+        --mdr-bg-subtle:   #161b22;
+        --mdr-bg-inset:    #21262d;
+        --mdr-fg:           #e6edf3;
+        --mdr-fg-strong:   #f0f6fc;
+        --mdr-fg-muted:    #8b949e;
+        --mdr-fg-faint:    #6e7681;
+        --mdr-border:      #30363d;
+        --mdr-border-strong: #3d444d;
+        --mdr-accent:      #58a6ff;
+        --mdr-accent-bg:   rgba(56,139,253,.15);
+        --mdr-accent-fg:   #fff;
+        --mdr-seg-track-bg: #21262d;
+        --mdr-seg-track-border: #30363d;
+        --mdr-seg-fg:      #8b949e;
+        --mdr-seg-fg-hover: #e6edf3;
+        --mdr-seg-active-1: #388bfd;
+        --mdr-seg-active-2: #1f6feb;
+        --mdr-badge-fg:    #e3b341;
+        --mdr-badge-bg:    rgba(187,128,9,.15);
+        --mdr-badge-border: #9e6a03;
+        --mdr-green:       #2ea043;
+        --mdr-green-hover: #3fb950;
+        --mdr-done:        #3fb950;
+        --mdr-shadow-soft: rgba(0,0,0,.35);
+        --mdr-shadow-med:  rgba(0,0,0,.45);
+        --mdr-panel:        #161b22;
+        --mdr-panel-border: #30363d;
+    }
+}
+
+:root[data-theme="dark"] {
+    --mdr-bg:          #0d1117;
+    --mdr-bg-subtle:   #161b22;
+    --mdr-bg-inset:    #21262d;
+    --mdr-fg:           #e6edf3;
+    --mdr-fg-strong:   #f0f6fc;
+    --mdr-fg-muted:    #8b949e;
+    --mdr-fg-faint:    #6e7681;
+    --mdr-border:      #30363d;
+    --mdr-border-strong: #3d444d;
+    --mdr-accent:      #58a6ff;
+    --mdr-accent-bg:   rgba(56,139,253,.15);
+    --mdr-accent-fg:   #fff;
+    --mdr-seg-track-bg: #21262d;
+    --mdr-seg-track-border: #30363d;
+    --mdr-seg-fg:      #8b949e;
+    --mdr-seg-fg-hover: #e6edf3;
+    --mdr-seg-active-1: #388bfd;
+    --mdr-seg-active-2: #1f6feb;
+    --mdr-badge-fg:    #e3b341;
+    --mdr-badge-bg:    rgba(187,128,9,.15);
+    --mdr-badge-border: #9e6a03;
+    --mdr-green:       #2ea043;
+    --mdr-green-hover: #3fb950;
+    --mdr-done:        #3fb950;
+    --mdr-shadow-soft: rgba(0,0,0,.35);
+    --mdr-shadow-med:  rgba(0,0,0,.45);
+    --mdr-mono-color: #4172b5;
+    --mdr-panel:        #161b22;
+    --mdr-panel-border: #30363d;
+}
+
+.markdown-body {
+    font-family: var(--mdr-font);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--mdr-fg);
+    max-width: 860px;
+}
+
+/* Self-contained: don't rely on a page-level reset (style.css has one, an
+   inline embed does not). Zero the leading/trailing block margins so content
+   sits flush against its container — even when a buildToc() <a class="h-anchor">
+   precedes the first real element. */
+.markdown-body > :first-child,
+.markdown-body > .h-anchor:first-child + * { margin-top: 0; }
+.markdown-body > :last-child { margin-bottom: 0; }
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    margin-top: 1.5em;
+    margin-bottom: .5em;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--mdr-fg-strong);
+}
+
+.markdown-body h1 { font-size: 2em;    border-bottom: 1px solid var(--mdr-border); padding-bottom: .3em; }
+.markdown-body h2 { font-size: 1.5em;  border-bottom: 1px solid var(--mdr-border); padding-bottom: .3em; }
+.markdown-body h3 { font-size: 1.25em; }
+.markdown-body h4 { font-size: 1em; }
+.markdown-body h5 { font-size: .875em; }
+.markdown-body h6 { font-size: .85em;  color: var(--mdr-fg-muted); }
+
+.markdown-body p       { margin: 0 0 1em; }
+.markdown-body strong  { font-weight: 600; }
+.markdown-body em      { font-style: italic; }
+
+.markdown-body a       { color: var(--mdr-accent); text-decoration: none; }
+.markdown-body a:hover { text-decoration: underline; }
+
+.markdown-body ul,
+.markdown-body ol      { padding-left: 2em; margin: 0 0 1em; }
+.markdown-body li      { margin: .25em 0; }
+.markdown-body li + li { margin-top: .1em; }
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid var(--mdr-border);
+    margin: 1.5em 0;
+}
+
+/* ── Blockquote ──────────────────────────────────────────────────────────── */
+.markdown-body blockquote {
+    margin: 1em 0;
+    padding: .5em 1em;
+    color: var(--mdr-fg-muted);
+    border-left: 4px solid var(--mdr-border-strong);
+    background: var(--mdr-bg-subtle);
+    border-radius: 0 6px 6px 0;
+}
+.markdown-body blockquote > :first-child { margin-top: 0; }
+.markdown-body blockquote > :last-child  { margin-bottom: 0; }
+
+/* ── Inline code ─────────────────────────────────────────────────────────── */
+.markdown-body code {
+    font-size: 99%;
+    font-family: monospace;
+    padding: .15em .4em;
+    background: var(--mdr-bg-subtle);
+    border: 1px solid var(--mdr-border);
+    border-radius: 4px;
+    color: var(--mdr-mono-color, #4172b5);
+}
+
+/* ── Code blocks (non-CM) ────────────────────────────────────────────────── */
+.markdown-body pre {
+    padding: 1rem;
+    overflow-x: auto;
+    background: var(--mdr-bg-subtle);
+    border: 1px solid var(--mdr-border);
+    border-radius: 6px;
+    margin: 0 0 1em;
+    line-height: 1.5;
+}
+.markdown-body pre code {
+    font-size: 100% !important;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 12px;
+}
+
+/* ── Code blocks (highlight.js — trial) ─────────────────────────────────── */
+/* highlight.js's own theme stylesheet (light or dark, swapped by
+   reader.js's applyTheme()) supplies the actual syntax colors — this just
+   keeps the block's own padding/radius consistent with the rest of the
+   page regardless of which hljs theme is active. */
+.markdown-body pre code.hljs {
+    border-radius: 6px;
+    padding: .1em;
+}
+
+/* ── Code block toolbar (language badge + copy button) —
+   injected by layout/highlight.js / reader.js on hljs-highlighted blocks ── */
+.mdr-code-wrapped { position: relative; }
+/* Reserve the top strip for the toolbar. Needs the same specificity as
+   `.markdown-body pre` above (0,1,1) — plain `.mdr-code-wrapped` (0,1,0)
+   loses to it and the toolbar then overlaps the first code line. */
+.markdown-body pre.mdr-code-wrapped { padding-top: 2.6rem; }
+.mdr-code-toolbar {
+    position: absolute;
+    top: .4rem;
+    right: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    z-index: 1;
+    /* opaque backing so a long first line scrolling underneath never
+       shows through the gaps between the badge and the button */
+    background: var(--mdr-bg-subtle);
+    border-radius: 5px;
+}
+.mdr-code-lang {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--mdr-fg-muted);
+    background: var(--mdr-bg);
+    border: 1px solid var(--mdr-border);
+    border-radius: 4px;
+    padding: .15em .5em;
+    line-height: 1.4;
+    user-select: none;
+}
+.mdr-code-copy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    background: var(--mdr-bg);
+    border: 1px solid var(--mdr-border);
+    border-radius: 4px;
+    color: var(--mdr-fg-muted);
+    cursor: pointer;
+}
+.mdr-code-copy svg { width: 14px; height: 14px; }
+.mdr-code-copy:hover { background: var(--mdr-bg-subtle); color: var(--mdr-fg); }
+.mdr-code-copy--done { color: var(--mdr-done); border-color: var(--mdr-done); }
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    font-size: 14px;
+}
+.markdown-body th,
+.markdown-body td {
+    padding: .5em .75em;
+    border: 1px solid var(--mdr-border-strong);
+    text-align: left;
+}
+.markdown-body th          { background: var(--mdr-bg-subtle); font-weight: 600; }
+.markdown-body tr:nth-child(even) td { background: var(--mdr-bg-subtle); }
+
+/* ── Images ──────────────────────────────────────────────────────────────── */
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    margin: 1em 0;
+}
+
+/* The rule above is written for screenshots — a standalone block with air
+   around it. Inside a table cell that is wrong: an inline icon next to its
+   label would break onto its own line and stretch the row by 2em. Renderers
+   that ship no image styling at all (GitHub among them) already treat these
+   as inline, so this only brings the reader in line with everywhere else. */
+.markdown-body td img,
+.markdown-body th img {
+    display: inline-block;
+    margin: 0;
+    border-radius: 0;
+    vertical-align: -0.15em;
+}
+
+/* ── Definition lists ────────────────────────────────────────────────────── */
+.markdown-body dl { margin-bottom: 1em; }
+.markdown-body dt { font-weight: 600; margin-top: .5em; }
+.markdown-body dd { margin-left: 1.5em; color: var(--mdr-fg-muted); }

@@ -776,3 +776,4 @@ $SIGNAL['RM_PATH_NOT_FOUND']         = 'Der Pfad `%s` existiert nicht.';
 $SIGNAL['RM_PATH_NOT_READABLE']      = 'Das Verzeichnis `%s` existiert, ist aber nicht lesbar.';
 $SIGNAL['RM_PATH_COULD_NOT_REMOVE']  = '`%s` konnte nicht entfernt werden (Berechtigung, gesperrt oder anderer Fehler).';
 $SIGNAL['RM_PATH_PERMISSION_DENIED'] = 'Zugriff auf `%s` verweigert.';
+$SIGNAL['RM_DIR_COULD_NOT_REMOVE']   = 'Das Verzeichnis `%s` oder eine Datei darin konnte nicht entfernt werden.';

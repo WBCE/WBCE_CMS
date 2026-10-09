@@ -1,0 +1,111 @@
+{# errorlogger — CodeVet tab. Included by tool.twig.
+   Shows framework/CodeVet.php's audit log (var/code_vet/codevet.log): every
+   Droplet / Outputfilter / Code2 save and Addon ZIP upload that was blocked
+   or flagged. See CodeVetLog.php for the row shape. #}
+
+{% set profiles = {'droplet':'Droplet','outputfilter':'Outputfilter','code2':'Code2','addon':'Addon','other':'?'} %}
+
+<div class="cp-toolbar">
+    <a class="button el-refresh" href="{{ BASE }}&tab=codevet{{ CV_WITH_ALL ? '&cv_all=1' : '' }}">
+        <i class="fa fa-refresh"></i> {{ L_('TXT:RELOAD') }}
+    </a>
+    <a class="button el-danger"
+       href="javascript:confirm_link('{{ L_('TXT:CV_ARCHIVE_CONFIRM') }}','{{ BASE }}&tab=codevet&cv_archive=1');">
+        <i class="fa fa-archive"></i> {{ L_('TXT:CV_ARCHIVE') }}
+    </a>
+
+    <div class="cp-search pull-right">
+        <input class="cp-table-filter" id="errlogFilter" type="text"
+               placeholder="{{ L_('TXT:CV_SEARCH_PLACEHOLDER')|e }}"
+               data-empty="{{ L_('TXT:NO_RESULTS')|e }}">
+        <button class="cp-search-clear" type="button"
+                onclick="this.previousElementSibling.value='';
+                         this.previousElementSibling.dispatchEvent(new Event('input'));
+                         this.previousElementSibling.focus();">&#10005;</button>
+    </div>
+</div>
+
+{% if CV_ROWS is not empty %}
+<div class="cv-summary">
+    <span><b>{{ CV_SUMMARY.total }}</b>&nbsp;{{ L_('TXT:CV_EVENTS') }}</span>
+    {% for key, label in profiles %}
+        {% if CV_SUMMARY.per_profile[key] is defined %}
+        <span class="cv-chip"><span class="el-badge el-badge--{{ key }}">{{ label }}</span> {{ CV_SUMMARY.per_profile[key] }}</span>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="no-filter-results" id="errlogNoResults" style="display:none">{{ L_('TXT:NO_RESULTS') }}</div>
+
+{% if CV_ROWS is empty %}
+
+    <div class="alertbox_success">
+        <span class="signal"><i class="fa fa-check-circle"></i></span>
+        <p>{{ L_('TXT:CV_EMPTY') }}</p>
+    </div>
+
+{% else %}
+
+    <div class="logviewWrapper">
+    <table class="el-logtable cv-table" data-locale="{{ LOCALE|e }}">
+        <colgroup>
+            <col style="width:8rem"><col style="width:9.5rem"><col style="width:11rem"><col><col style="width:12rem">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{{ L_('TXT:COL_TYPE') }}</th>
+                <th>{{ L_('TXT:COL_TIME') }}</th>
+                <th>{{ L_('TXT:CV_COL_ACTION') }}</th>
+                <th>{{ L_('TXT:CV_COL_FINDINGS') }}</th>
+                <th>{{ L_('TXT:CV_COL_WHERE') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in CV_ROWS %}
+            <tr class="cv-{{ row.severity }}{{ row.is_new ? ' el-new' : '' }}">
+                <td class="el-c-type">
+                    <span class="el-badge el-badge--{{ row.profile }}" title="{{ row.profile|e }}">{{ profiles[row.profile] }}</span>
+                    <span class="cv-sev cv-sev--{{ row.severity }}">{{ L_('TXT:CV_SEV_' ~ row.severity|upper) }}</span>
+                    {% if row.count > 1 %}<span class="el-count" title="{{ row.count }}×">×{{ row.count }}</span>{% endif %}
+                </td>
+                <td class="el-c-time">
+                    <span class="el-ago" data-ts="{{ row.unix }}">{{ row.ts[:16]|replace({'T': ' '})|e }}</span>
+                    {% if row.exact %}<time datetime="{{ row.ts|e }}">{{ row.exact|e }}</time>{% endif %}
+                </td>
+                <td><span class="cv-action">{{ L_('TXT:CV_ACT_' ~ row.profile|upper) }}</span></td>
+                <td class="cv-c-findings">
+                    {% for f in row.findings %}
+                        {% if loop.index == 4 %}<span class="cv-hidden-findings">{% endif %}
+                        <span class="cv-finding">
+                            <span class="cv-rule">{{ f.rule|e }}</span>{{ f.message|e }}{% if f.line > 0 %} <span class="cv-fline">· {{ L_('TXT:CV_LINE') }} {{ f.line }}</span>{% endif %}
+                        </span>
+                        {% if loop.last and loop.length > 3 %}</span>{% endif %}
+                    {% endfor %}
+                    {% if row.findings|length > 3 %}
+                    <span class="cv-more" onclick="this.closest('tr').classList.add('cv-expanded')">
+                        + {{ row.findings|length - 3 }} {{ L_('TXT:CV_MORE_FINDINGS') }}
+                    </span>
+                    {% endif %}
+                </td>
+                <td class="cv-c-where">
+                    {% for w in row.where %}
+                    <span class="cv-where">{% if w.label %}{{ w.label|e }} {% endif %}<b>{{ w.value|e }}</b></span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+{% endif %}
+
+<p class="cv-foot">
+    {% if not CV_WITH_ALL and CV_SUMMARY.archives > 0 %}
+    <a href="{{ BASE }}&tab=codevet&cv_all=1">{{ L_('TXT:CV_LOAD_ARCHIVES') }} ({{ CV_SUMMARY.archives }})</a> ·
+    {% elseif CV_WITH_ALL %}
+    <a href="{{ BASE }}&tab=codevet">{{ L_('TXT:CV_CURRENT_ONLY') }}</a> ·
+    {% endif %}
+    <span class="el-foot-note"><i class="fa fa-folder-o"></i> <code>var/code_vet/</code></span>
+</p>

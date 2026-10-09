@@ -185,8 +185,14 @@ if (!isset($_POST['admin_repassword']) || $_POST['admin_repassword'] === '') {
         // Allow all 95 printable ASCII characters — matches class.wb.php password_chars
         set_error(d('e19: ') . 'Invalid password characters', 'admin_password');
         $_isError = true;
-    } elseif (strlen($admin_password) < 8) {
-        set_error(d('e20: ') . 'Password too short (min 8 characters)', 'admin_password');
+    } elseif (strlen($admin_password) < 12) {
+        set_error(d('e20: ') . 'Password too short (min 12 characters)', 'admin_password');
+        $_isError = true;
+    } elseif (strlen($admin_password) > 72) {
+        // bcrypt (password_hash default) silently truncates at 72 bytes, and the
+        // backend login form caps input at MAX_PASSWORD_LEN — keep both in sync so
+        // the installer can never create a password that cannot be entered later.
+        set_error(d('e21: ') . 'Password too long (max 72 characters)', 'admin_password');
         $_isError = true;
     }
 }
@@ -242,6 +248,27 @@ try {
         ]);
     }
     $dbtest->query("SELECT 1");
+
+    // ── Table prefix collision ───────────────────────────────────────────────
+    // install_prepare.sql starts with DROP TABLE IF EXISTS `{TP}...`, so a
+    // prefix that is already in use means an existing site is about to be
+    // wiped. The AJAX test warns about this and asks for a tick box; here we
+    // enforce it, because a tampered or stale form must not slip past.
+    $existingTables = find_prefixed_tables($dbtest, $database_type, $table_prefix);
+    if ($existingTables && empty($_POST['prefix_confirm'])) {
+        unset($dbtest);
+        set_error(
+            d('e31: ') . sprintf(
+                $MSG['db_prefix_in_use'],
+                _h($table_prefix),
+                count($existingTables)
+            ) . ' ' . $MSG['db_prefix_unconfirmed'],
+            'table_prefix',
+            true
+        );
+        exit;
+    }
+
     unset($dbtest);
 } catch (PDOException $e) {
     $msg = $e->getMessage();
@@ -283,6 +310,14 @@ set_error_handler(function (int $errno, string $errstr, string $errfile, int $er
 });
 
 log_sep("INSTALL WBCE CMS: ".addslashes($wb_url));
+
+// Machine-readable marker for install_stream.js — the post-install action button
+// derives the admin login URL from here (the actual submitted WB_URL), not from
+// the URL guessed at page-load time.
+echo '<div class="install-meta" style="display:none"'
+   . ' data-wb-url="'    . _h($wb_url)            . '"'
+   . ' data-admin-url="' . _h($wb_url . '/admin') . '"></div>' . "\n";
+flush();
 
 // =============================================================================
 // 1. WRITE config.php FROM TEMPLATE
@@ -369,7 +404,7 @@ if (is_readable($_vFile)) {
 
 try {
     $database = new Database();
-    log_ok($TXT['log_done'] ?? '✓ Done');
+    log_ok($TXT['log_done'] ?? 'Done');
 } catch (Throwable $e) {
     log_err('Database connection failed: ' . $e->getMessage());
 }

@@ -25,7 +25,7 @@
 $module_directory   = 'show_menu2';
 $module_name        = 'show_menu2';
 $module_function    = 'snippet';
-$module_version     = '4.16.0';
+$module_version     = '4.16.1';
 $module_platform    = '1.7.0';
 $module_author      = 'Brodie Thiesfield, WBCE Dev Team';
 $module_license     = 'GNU General Public License v2';
@@ -34,6 +34,12 @@ $module_level       = 'core';
 
 /* LATEST CHANGES (see HISTORY.md for a reconstruction attempt of the CHANGELOG)
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ * v. 4.16.1   2026-09-06  Christian M. Stefan
+ *             Fixed a PHP 8.1+ deprecation notice ("Using null as the key
+ *             parameter for array_key_exists() is deprecated") that was
+ *             logged on every request for menus declared in the template
+ *             but not assigned any pages. 
  *
  * v. 4.16.0   2026-08-05  Christian M. Stefan
  *             show_menu() is now available as a plain alias for show_menu2()

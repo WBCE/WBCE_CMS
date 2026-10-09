@@ -1,0 +1,524 @@
+/* ── MarkdownWbce — reader popup chrome ───────────────────────────────────
+   Full-page stylesheet for the standalone reader (reader.php / reader.htt):
+   layout wrapper, header, sidebar/TOC, tabs, footer, edit panel, theme toggle.
+   Do NOT load this into an embed — it carries a global reset.
+
+   The --mdr-* colour tokens it uses now live in layout/markdown.css (loaded
+   right after this file on the reader page). Keep the two in sync only there.
+   ───────────────────────────────────────────────────────────────────────── */
+
+
+/* ── Reset / base ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    /* --mdr-font / --mdr-panel* are declared in markdown.css (loaded right
+       after this file); custom props resolve regardless of sheet order. */
+    font-family: var(--mdr-font, "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--mdr-fg);
+    background: var(--mdr-bg);
+}
+
+/* ── Scrollbars — themed, everywhere on this page ────────────────────────
+   scrollbar-color on :root is Firefox's mechanism and inherits into every
+   scrollable descendant automatically (sidebar, code blocks, the edit
+   textarea/CodeMirror, PlainMDE's preview pane, filetree). Chrome/Edge/
+   Safari have no inheritance model for scrollbars at all — each scrollable
+   element needs its own ::-webkit-scrollbar rule, so `*` here is load-
+   bearing, not just a shortcut, and covers PlainMDE's internals too
+   without needing a rule inside plainmde.css itself. */
+:root {
+    scrollbar-color: var(--mdr-border-strong) transparent;
+    scrollbar-width: thin;
+    /* Sidebar width — reader.js overrides this on <html> from localStorage
+       and while dragging the resize handle (same pattern as the FEE shell). */
+    --mdr-sidebar-w: 260px;
+}
+*::-webkit-scrollbar { width: 12px; height: 12px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+    background-color: var(--mdr-border-strong);
+    border-radius: 8px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background-color: var(--mdr-fg-faint); }
+*::-webkit-scrollbar-corner { background: transparent; }
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+/* Fixed-viewport shell: header and footer are flex:none and always on screen;
+   the middle row (.mdr-body) is the only thing that scrolls, and it does so
+   inside .mdr-content / .mdr-sidebar-wrap independently — the page itself
+   never scrolls. That keeps the footer static and lets the sidebar panel
+   stretch the full height between header and footer even when its TOC is
+   short. */
+.mdr-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.mdr-header {
+    position: relative;
+    z-index: 100;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .6rem 1.25rem;
+    background: var(--mdr-panel);
+    border-bottom: 1px solid var(--mdr-panel-border);
+    min-height: 52px;
+}
+
+.mdr-header-left  { display: flex; align-items: center; gap: 1.25rem; flex: 1; min-width: 0; }
+.mdr-header-right { display: flex; align-items: center; gap: .75rem; flex-shrink: 0; }
+
+.mdr-title {
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--mdr-fg);
+}
+
+/* ── Theme toggle ────────────────────────────────────────────────────────── */
+.mdr-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: 1px solid var(--mdr-border-strong);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--mdr-fg-muted);
+    line-height: 1;
+}
+.mdr-theme-toggle:hover { background: var(--mdr-bg-subtle); color: var(--mdr-fg); }
+.mdr-theme-toggle svg { width: 16px; height: 16px; }
+/* Two icons in the DOM, CSS shows the one for the theme NOT currently
+   active (click target reads as "switch to X"), toggled by reader.js
+   setting data-theme on <html>. */
+.mdr-theme-toggle .icon-sun  { display: none; }
+.mdr-theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .mdr-theme-toggle .icon-sun  { display: block; }
+:root[data-theme="dark"] .mdr-theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .mdr-theme-toggle .icon-sun  { display: block; }
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .mdr-theme-toggle .icon-moon { display: none; }
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.mdr-tabs { display: flex; gap: .25rem; }
+
+.mdr-tab {
+    padding: .3rem .75rem;
+    font-size: 13px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--mdr-fg-muted);
+    white-space: nowrap;
+    transition: background .15s, color .15s;
+}
+.mdr-tab:hover     { background: var(--mdr-bg-subtle); color: var(--mdr-fg); }
+.mdr-tab--active   { background: var(--mdr-accent-bg); color: var(--mdr-accent); font-weight: 500; }
+
+/* ── Language flags — segmented control (df-segmented look, as links) ─────
+   Same visual language as DynamicFields' df-segmented widget
+   (modules/DynamicFields/…/_publish_schedule_fields.twig): a pill-shaped
+   track, each option a rounded label, the active one raised on a gradient.
+   No radio inputs here (these are navigation links, not a form control),
+   so the "checked" state is a plain .mdr-lang-flag--active class instead
+   of :checked — everything else (padding, shadows, transitions) matches. */
+.mdr-langs {
+    display: inline-flex;
+    width: fit-content;
+    background: var(--mdr-seg-track-bg);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+    box-shadow: inset 0 1px 2px var(--mdr-shadow-soft), 0 1px 2px rgba(255,255,255,.8);
+    border: 1px solid var(--mdr-seg-track-border);
+}
+
+.mdr-lang-flag {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--mdr-seg-fg);
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    transition: all .18s ease;
+    white-space: nowrap;
+}
+.mdr-lang-flag:hover { color: var(--mdr-seg-fg-hover); }
+.mdr-lang-flag:focus-visible {
+    outline: 2px solid var(--mdr-seg-active-1);
+    outline-offset: 2px;
+}
+
+.mdr-lang-flag img {
+    display: block;
+    border-radius: 2px;
+}
+
+.mdr-lang-code {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+
+.mdr-lang-flag--active {
+    background: linear-gradient(180deg, var(--mdr-seg-active-1) 0%, var(--mdr-seg-active-2) 100%);
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(58,123,200,.35), inset 0 1px 0 rgba(255,255,255,.25);
+    text-shadow: 0 1px 1px rgba(0,0,0,.15);
+}
+.mdr-lang-flag--active:hover { color: #fff; }
+
+/* ── Edit mode badge ─────────────────────────────────────────────────────── */
+.mdr-edit-badge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--mdr-badge-fg);
+    background: var(--mdr-badge-bg);
+    border: 1px solid var(--mdr-badge-border);
+    border-radius: 4px;
+    padding: .15em .5em;
+    margin-left: .6rem;
+    vertical-align: middle;
+}
+
+/* ── Mobile toggle button (header) ──────────────────────────────────────── */
+.mdr-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--mdr-border-strong);
+    border-radius: 6px;
+    padding: .3rem .5rem;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--mdr-fg-muted);
+    line-height: 1;
+}
+.mdr-toggle:hover { background: var(--mdr-bg-subtle); }
+
+/* ── Edit mode ────────────────────────────────────────────────────────────── */
+.mdr-edit-toggle {
+    background: none;
+    border: 1px solid var(--mdr-border-strong);
+    border-radius: 6px;
+    padding: .3rem .7rem;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--mdr-fg);
+    line-height: 1;
+    white-space: nowrap;
+}
+.mdr-edit-toggle:hover { background: var(--mdr-bg-subtle); }
+
+/* Wider + centered — the sidebar is hidden in edit mode (see reader.htt's
+   enterEdit()), so .mdr-content has the full page width to itself; without
+   margin:auto the capped-width panel just pinned to the left, leaving a
+   large empty gap on the right. */
+.mdr-edit-panel { max-width: 1300px; margin: 0 auto; }
+.mdr-edit-panel textarea { width: 100%; min-height: 640px; }
+.mdr-edit-actions {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-top: .75rem;
+}
+.mdr-edit-save, .mdr-edit-cancel {
+    border: 1px solid var(--mdr-border-strong);
+    border-radius: 6px;
+    padding: .4rem .9rem;
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--mdr-bg);
+    color: var(--mdr-fg);
+}
+.mdr-edit-save {
+    background: var(--mdr-green);
+    border-color: var(--mdr-green);
+    color: #fff;
+    margin-left: auto;
+    position: relative;
+    min-width: 84px;
+    transition: background .15s ease, border-color .15s ease;
+}
+.mdr-edit-save:hover { background: var(--mdr-green-hover); }
+.mdr-edit-cancel:hover { background: var(--mdr-bg-subtle); }
+.mdr-edit-status { font-size: 12px; color: var(--mdr-fg-muted); margin-left: auto; }
+.mdr-edit-status.is-error { color: var(--mdr-red, #d1242f); }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mdr-edit-status.is-error { color: #ff7b72; }
+}
+:root[data-theme="dark"] .mdr-edit-status.is-error { color: #ff7b72; }
+/* an error pushes the status text to the right, next to Save; the plain
+   .mdr-edit-status keeps the same slot so nothing jumps. */
+.mdr-edit-status.is-error + .mdr-edit-save { margin-left: .6rem; }
+
+/* ── Save feedback ───────────────────────────────────────────────────────
+   The button reports its own outcome: "Saving…" while the request is out,
+   then a checkmark that draws itself once before the label comes back. */
+.mdr-edit-save .mdr-save-label::after { content: ''; }
+.mdr-edit-save.is-saving .mdr-save-label::after { content: '…'; }
+.mdr-edit-save:disabled { cursor: default; }
+
+.mdr-save-check {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    pointer-events: none;
+}
+.mdr-save-check-ring { stroke-opacity: .45; }
+.mdr-save-check-mark { stroke-dasharray: 18; stroke-dashoffset: 18; }
+
+.mdr-edit-save.is-done { background: var(--mdr-green-hover); border-color: var(--mdr-green-hover); }
+.mdr-edit-save.is-done .mdr-save-label { opacity: 0; }
+.mdr-edit-save.is-done .mdr-save-check { opacity: 1; animation: mdr-check-pop .28s ease-out; }
+.mdr-edit-save.is-done .mdr-save-check-mark { animation: mdr-check-draw .32s .08s ease-out forwards; }
+
+@keyframes mdr-check-draw { to { stroke-dashoffset: 0; } }
+@keyframes mdr-check-pop  {
+    0%   { transform: scale(.55); }
+    70%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mdr-edit-save.is-done .mdr-save-check,
+    .mdr-edit-save.is-done .mdr-save-check-mark { animation: none; }
+    .mdr-save-check-mark { stroke-dashoffset: 0; }
+}
+
+/* ── Body layout ─────────────────────────────────────────────────────────── */
+.mdr-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;      /* let the flex row shrink so children can scroll */
+    overflow: hidden;
+}
+
+/* ── Sidebar wrap — full-height panel, its own scroll ───────────────────── */
+.mdr-sidebar-wrap {
+    flex: none;
+    width: var(--mdr-sidebar-w, 260px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--mdr-panel);
+    border-right: 1px solid var(--mdr-panel-border);
+    transition: width .12s ease;
+}
+
+.mdr-sidebar-wrap--collapsed {
+    width: 32px;
+}
+.mdr-sidebar-wrap--collapsed .mdr-sidebar { overflow: hidden; }
+.mdr-sidebar-wrap--collapsed ul          { display: none; }
+.mdr-sidebar-wrap--collapsed + .mdr-resize-handle { display: none; }
+
+/* ── Sidebar (inner — position:relative for absolute children) ───────────── */
+.mdr-sidebar {
+    position: relative;
+    padding: 1.25rem 1rem 1.25rem 1rem;
+    font-size: 13px;
+    min-height: 100%;
+}
+
+/* ── Sidebar collapse toggle ─────────────────────────────────────────────── */
+.mdr-sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    background: var(--mdr-bg-subtle);
+    border: 1px solid var(--mdr-border-strong);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--mdr-fg-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .12s, color .12s;
+    z-index: 10;
+    flex-shrink: 0;
+}
+.mdr-sidebar-toggle:hover { background: var(--mdr-accent-bg); color: var(--mdr-accent); }
+
+/* Arrow flips when collapsed */
+.mdr-sidebar-wrap--collapsed .mdr-sidebar-toggle {
+    right: 5px;
+    transform: rotate(180deg);
+}
+
+/* ── TOC list ────────────────────────────────────────────────────────────── */
+.mdr-sidebar ul      { list-style: none; padding-left: 0; margin-top: 2rem; }
+.mdr-sidebar ul ul   { padding-left: 1rem; margin-top: .1rem; }
+.mdr-sidebar li      { margin: .15rem 0; }
+.mdr-sidebar a       { color: var(--mdr-fg-muted); text-decoration: none; display: block;
+                        padding: .2rem .4rem; border-radius: 4px;
+                        border-left: 2px solid transparent;
+                        transition: background .12s, color .12s, border-color .12s; }
+.mdr-sidebar a:hover { background: var(--mdr-bg-subtle); color: var(--mdr-fg); }
+
+/* Size / weight by heading depth (li.mdr-toc-l1 … l6 from buildToc). No colour
+   here — the active rule below has to win it. */
+.mdr-sidebar .mdr-toc-l1 > a { font-size: 1.04em; font-weight: 700; }
+.mdr-sidebar .mdr-toc-l2 > a { font-weight: 600; }
+.mdr-sidebar .mdr-toc-l3 > a { font-size: .95em; }
+.mdr-sidebar .mdr-toc-l4 > a,
+.mdr-sidebar .mdr-toc-l5 > a,
+.mdr-sidebar .mdr-toc-l6 > a { font-size: .9em; color: var(--mdr-fg-faint); }
+
+/* Active section link — last, so its colour beats the l4–l6 faint rule. */
+.mdr-sidebar a.mdr-nav--active {
+    background: var(--mdr-accent-bg); color: var(--mdr-accent);
+    border-left-color: var(--mdr-accent);
+}
+
+/* ── Resize handle ───────────────────────────────────────────────────────── */
+/* A flex item between the sidebar and the content (same structure as the
+   FEE/VES shell), 6px wide with a negative margin so it straddles the
+   sidebar's right border. Wide enough to grab; a permanent pill-shaped grip
+   (::after) near the top makes it discoverable without hovering first.
+   touch-action:none so the pointer-events drag in reader.js isn't stolen by
+   touch scrolling. */
+.mdr-resize-handle {
+    flex: none;
+    position: relative;
+    width: 6px;
+    margin: 0 -3px;
+    z-index: 20;
+    cursor: col-resize;
+    touch-action: none;
+}
+.mdr-resize-handle::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+    background: var(--mdr-panel-border);
+    transition: background .12s;
+}
+.mdr-resize-handle::after {
+    content: '⋮';
+    position: absolute;
+    left: 50%;
+    top: 64px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--mdr-bg-subtle);
+    border: 1px solid var(--mdr-border-strong);
+    color: var(--mdr-fg-faint);
+    font-size: 15px;
+    line-height: 1;
+    box-shadow: 0 1px 2px var(--mdr-shadow-med);
+    transition: background .12s, border-color .12s, color .12s;
+}
+.mdr-resize-handle:hover::before,
+.mdr-resize-handle.mdr-resizing::before { background: var(--mdr-accent); }
+.mdr-resize-handle:hover::after,
+.mdr-resize-handle.mdr-resizing::after {
+    background: var(--mdr-accent-bg);
+    border-color: var(--mdr-accent);
+    color: var(--mdr-accent);
+}
+
+/* ── Content — the scrollable column ────────────────────────────────────── */
+.mdr-content {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    scroll-padding-top: 1.5rem;   /* clearance for #hash jumps to headings */
+    padding: 2rem 2.5rem;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.mdr-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: .5rem 1.25rem;
+    font-size: 12px;
+    color: var(--mdr-fg-faint);
+    background: var(--mdr-panel);
+    border-top: 1px solid var(--mdr-panel-border);
+}
+.mdr-footer strong { color: var(--mdr-fg-muted); font-weight: 600; }
+.mdr-footer-path {
+    font-family: monospace;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* ── Anchor targets ─────────────────────────────────────────────────────────
+   The header is outside the scroll container now, so no negative-offset hack
+   is needed — .mdr-content's scroll-padding-top gives the #hash-jump clearance. */
+.h-anchor {
+    display: block;
+    visibility: hidden;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .mdr-toggle           { display: inline-block; }
+    .mdr-title            { font-size: 14px; }
+    .mdr-content          { padding: 1.25rem 1rem; }
+    .mdr-sidebar-wrap {
+        position: fixed;
+        top: 52px;
+        left: 0;
+        bottom: 0;
+        width: 240px !important;
+        z-index: 90;
+        background: var(--mdr-panel);
+        box-shadow: 2px 0 8px var(--mdr-shadow-med);
+    }
+    .mdr-body--collapsed .mdr-sidebar-wrap { display: none; }
+    .mdr-resize-handle { display: none; }
+}
+
+@media (max-width: 540px) {
+    .mdr-tabs   { display: none; }
+    .mdr-langs  { display: none; }
+}

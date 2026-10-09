@@ -1,0 +1,78 @@
+{#
+    errorlogger/twig/tool.twig — layout only, all data comes from tool.php.
+
+    Common:
+      MODULE_NAME   tool title (shown in the tab bar)
+      BASE          tool URL (…/tool.php?tool=errorlogger)
+      TAB           'log' | 'codevet' | 'settings'
+      WARNINGS      [ {type: 'warning'|'info', text}, … ]
+
+    CodeVet tab:
+      CV_ROWS      [ {ts, unix, exact, profile, severity, count, is_new,
+                      findings:[{rule,message,line,file}], where:[{label,value,file}]}, … ]
+      CV_SUMMARY   {total, per_profile:{profile:n}, last_unix, archives}
+      CV_WITH_ALL  bool — archives folded in
+      LOCALE       language for Intl.RelativeTimeFormat
+
+    Settings tab:
+      FTAN                hidden FTAN input (raw HTML)
+      WBCE_DEBUG_LOCKED   bool — WB_DEBUG still in config.php
+      WB_DEBUG_MSG        deprecation notice HTML (only when locked)
+      ER_LEVEL            current level key ('E0'…'E3')
+      ER_LEVELS           { key: label }
+      DEBUG_SWITCHES      [ {const, label_key, desc_key, on, locked, badge:[label,mod]|null}, … ]
+
+    Log tab:
+      VIEW         0 plain | 1 colour | 2 table
+      COLOR_MODE   bool (VIEW == 1)
+      LOCALE       BCP-47-ish language for Intl.RelativeTimeFormat
+      HAS_LOG      bool
+      PLAIN_ROWS   [ {cls, text}, … ]           (VIEW 0/1)
+      TABLE_ROWS   [ {badge_label, badge_mod, type, count, ts, exact, unix, is_new,
+                      msg, call, file, from, fline, line_label}, … ]   (VIEW 2)
+
+    Language strings are pulled with L_('TXT:KEY') directly in the template.
+#}
+<section class="cp-main errorlogger-tool">
+    <div id="message-area"></div>
+
+    <nav class="cp-tabs tabs-right">
+        <ul>
+            <li class="area-title"><span><label>{{ TOOL_ICON|raw }} &nbsp;<span>{{ TOOL_NAME|e }}</span></label></span></li>
+            <li{{ TAB == 'log' ? ' class="actionSel"'|raw : '' }}>
+                <a class="tab{{ TAB == 'log' ? ' sel' : '' }}" href="{{ BASE }}">
+                    <i class="fa fa-list-alt"></i> {{ L_('TXT:TAB_LOG') }}
+                </a>
+            </li>
+            <li{{ TAB == 'codevet' ? ' class="actionSel"'|raw : '' }}>
+                <a class="tab{{ TAB == 'codevet' ? ' sel' : '' }}" href="{{ BASE }}&tab=codevet">
+                    <i class="fa fa-shield"></i> {{ L_('TXT:TAB_CODEVET') }}
+                </a>
+            </li>
+            <li{{ TAB == 'settings' ? ' class="actionSel"'|raw : '' }}>
+                <a class="tab{{ TAB == 'settings' ? ' sel' : '' }}" href="{{ BASE }}&tab=settings">
+                    <i class="fa fa-sliders"></i> {{ L_('TXT:TAB_SETTINGS') }}
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="cp-pane-inlay">
+
+        {% for w in WARNINGS %}
+        <div class="alertbox_{{ w.type }}">
+            <span class="signal"><i class="fa fa-{{ w.type == 'info' ? 'info-circle' : 'exclamation-triangle' }}"></i></span>
+            <p>{{ w.text|e }}</p>
+        </div>
+        {% endfor %}
+
+    {% if TAB == 'settings' %}
+        {% include 'settings.twig' %}
+    {% elseif TAB == 'codevet' %}
+        {% include 'codevet.twig' %}
+    {% else %}
+        {% include 'logview.twig' %}
+    {% endif %}
+
+    </div>{# /.cp-pane-inlay #}
+</section>{# /.cp-main #}

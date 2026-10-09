@@ -100,6 +100,13 @@ $MSG['db_unknown_db']         = 'Database bestaat niet. Maak deze eerst aan of c
 $MSG['db_connection_refused'] = 'Kon geen verbinding maken met de host. Controleer hostnaam en poort.';
 $MSG['db_connection_failed']  = 'Verbinding mislukt: %s';
 
+// ─── Controle op reeds gebruikte tabelprefix ─────────────────────────────────
+$MSG['db_prefix_in_use']      = 'Let op: de tabelprefix <b>%1$s</b> wordt in deze database al gebruikt door %2$d tabel(len)';
+$MSG['db_prefix_more']        = ' … en nog %d meer';
+$MSG['db_prefix_warning']     = 'Installeren met deze prefix <b>verwijdert die tabellen en al hun inhoud</b> — ook een bestaande WBCE-website. Kies een andere prefix of bevestig hieronder.';
+$MSG['db_prefix_confirm']     = 'Ja, de bestaande tabellen overschrijven. Ik weet dat hun gegevens verloren gaan.';
+$MSG['db_prefix_unconfirmed'] = 'De tabelprefix is in deze database al in gebruik. Kies een andere prefix of vink het bevestigingsvakje aan om de bestaande tabellen te overschrijven.';
+
 // ─── Streaming Progress Log (reduced & multilingual) ─────────────────────────
 $TXT['log_writing_config']      = 'config.php schrijven';
 $TXT['log_connecting_db']       = 'Verbinden met database';
@@ -113,7 +120,8 @@ $TXT['log_installing_languages']= 'Talen installeren';
 $TXT['log_required_mod_missing']= 'Vereiste modules ontbreken: ';
 $TXT['log_finalizing']          = 'Installatie afronden';
 
-$TXT['log_done']                = '✓ Gereed';
+$TXT['btn_download_log']     = 'Log downloaden';
+$TXT['log_done']                = 'Gereed';
 $TXT['log_complete']            = '━━━ Installatie voltooid ━━━';
 $TXT['log_failed']              = 'Installatie mislukt – zie fouten hierboven';
 

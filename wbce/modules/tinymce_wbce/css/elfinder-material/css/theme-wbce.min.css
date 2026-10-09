@@ -1,0 +1,348 @@
+/* === Font + Icons from Material Theme === */
+@font-face{font-family:material;src:url(../font/material.eot?3.0.1);src:url(../font/material.eot?3.0.1#iefix) format("embedded-opentype"),url(../font/material.woff2?3.0.1) format("woff2"),url(../font/material.woff?3.0.1) format("woff"),url(../font/material.ttf?3.0.1) format("truetype"),url(../font/material.svg?3.0.1#material) format("svg");font-weight:400;font-style:normal}
+.elfinder-button-icon-spinner,.elfinder-info-spinner,.elfinder-navbar-spinner,.elfinder-spinner{font-size:16px;background:0 0}
+.elfinder-button-icon-spinner:before,.elfinder-info-spinner:before,.elfinder-navbar-spinner:before,.elfinder-spinner:before{display:inline-block;animation:rotate-animation 1s linear infinite}
+.elfinder-button-icon,.elfinder-contextmenu-arrow,.elfinder-cwd-icon,.elfinder-dialog-icon,.elfinder-navbar .ui-resizable-handle,.elfinder-navbar-arrow,.elfinder-navbar-icon,.elfinder-quicklook-navbar-icon{font-family:material;font-size:14px;text-indent:0}
+.elfinder-button-icon:before,.elfinder-contextmenu-arrow:before,.elfinder-cwd-icon:before,.elfinder-dialog-icon:before,.elfinder-navbar .ui-resizable-handle:before,.elfinder-navbar-arrow:before,.elfinder-navbar-icon:before,.elfinder-quicklook-navbar-icon:before{display:inline-block}
+.elfinder-cwd-icon:before{font-family:material}
+.elfinder-button-icon-home:before{content:'\e800'}
+.elfinder-button-icon-back:before{content:'\e802';rotate:180deg}
+.elfinder-button-icon-forward:before{content:'\e802'}
+.elfinder-button-icon-up:before{content:'\e802';rotate:-90deg}
+.elfinder-button-icon-dir:before{content:'\e804'}
+.elfinder-button-icon-opendir:before{content:'\e805'}
+.elfinder-button-icon-reload:before{content:'\e806'}
+.elfinder-button-icon-open:before{content:'\e807'}
+.elfinder-button-icon-mkdir:before{content:'\e808'}
+.elfinder-button-icon-mkfile:before{content:'\e809'}
+.elfinder-button-icon-rm:before{content:'\e80a'}
+.elfinder-button-icon-trash:before{content:'\e80b'}
+.elfinder-button-icon-restore:before{content:'\e80c'}
+.elfinder-button-icon-copy:before{content:'\e80d'}
+.elfinder-button-icon-cut:before{content:'\e80e'}
+.elfinder-button-icon-paste:before{content:'\e80f'}
+.elfinder-button-icon-getfile:before{content:'\e810'}
+.elfinder-button-icon-duplicate:before{content:'\e811'}
+.elfinder-button-icon-rename:before{content:'\e812'}
+.elfinder-button-icon-edit:before{content:'\e813'}
+.elfinder-button-icon-quicklook:before{content:'\e814'}
+.elfinder-button-icon-upload:before{content:'\e815'}
+.elfinder-button-icon-download:before{content:'\e816'}
+.elfinder-button-icon-info:before{content:'\e817'}
+.elfinder-button-icon-extract:before{content:'\e818'}
+.elfinder-button-icon-archive:before{content:'\e819'}
+.elfinder-button-icon-view:before{content:'\e81a'}
+.elfinder-button-icon-view-list:before{content:'\e81b'}
+.elfinder-button-icon-help:before{content:'\e81c'}
+.elfinder-button-icon-resize:before{content:'\e81d'}
+.elfinder-button-icon-link:before{content:'\e81e'}
+.elfinder-button-icon-search:before{content:'\e81f'}
+.elfinder-button-icon-sort:before{content:'\e820'}
+.elfinder-button-icon-rotate-r:before{content:'\e821'}
+.elfinder-button-icon-rotate-l:before{content:'\e821';transform:scaleX(-1)}
+.elfinder-button-icon-netmount:before{content:'\e823'}
+.elfinder-button-icon-netunmount:before{content:'\e824'}
+.elfinder-button-icon-places:before{content:'\e825'}
+.elfinder-button-icon-chmod:before{content:'\e826'}
+.elfinder-button-icon-accept:before{content:'\e827'}
+.elfinder-button-icon-menu:before{content:'\e828'}
+.elfinder-button-icon-colwidth:before{content:'\e829'}
+.elfinder-button-icon-fullscreen:before{content:'\e82a'}
+.elfinder-button-icon-unfullscreen:before{content:'\e82b'}
+.elfinder-button-icon-empty:before{content:'\e82c'}
+.elfinder-button-icon-undo:before{content:'\e82d'}
+.elfinder-button-icon-redo:before{content:'\e82d';transform:scaleX(-1)}
+.elfinder-button-icon-preference:before{content:'\e82f'}
+.elfinder-button-icon-mkdirin:before{content:'\e830'}
+.elfinder-button-icon-selectall:before{content:'\e831'}
+.elfinder-button-icon-selectnone:before{content:'\e832'}
+.elfinder-button-icon-selectinvert:before{content:'\e833'}
+.elfinder-button-icon-opennew:before{content:'\e85b'}
+.elfinder-button-icon-hide:before{content:'\e85d'}
+.elfinder-button-icon-text:before{content:'\e859'}
+.elfinder-button-icon-spinner,.elfinder-info-spinner,.elfinder-navbar-spinner,.elfinder-spinner{background-image:none;font-family:material}
+.elfinder-button-icon-spinner:before,.elfinder-info-spinner:before,.elfinder-navbar-spinner:before,.elfinder-spinner:before{content:'\e846'}
+.elfinder-navbar-icon:before{content:'\e804'}
+.elfinder-navbar-icon:before,.elfinder .ui-state-hover .elfinder-navbar-icon:before,.elfinder-droppable-active .elfinder-navbar-icon:before{content:'\e805'}
+.elfinder-cwd-icon,.elfinder-cwd-view-list [class*=elfinder-navbar-root-] td .elfinder-cwd-icon,[class*=elfinder-navbar-root-] .elfinder-cwd-icon{background-image:none}
+.elfinder-cwd-icon:before,.elfinder-cwd-view-list [class*=elfinder-navbar-root-] td .elfinder-cwd-icon:before,[class*=elfinder-navbar-root-] .elfinder-cwd-icon:before{font-family:material;font-size:55px;top:-10px}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-local .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-local .elfinder-navbar-icon:before{content:'\e83d'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-ftp .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-ftp .elfinder-navbar-icon:before{content:'\e801'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-sql .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-sql .elfinder-navbar-icon:before{content:'\e83e'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-dropbox .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-dropbox .elfinder-navbar-icon:before{content:'\e83f'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-googledrive .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-googledrive .elfinder-navbar-icon:before{content:'\e840'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-onedrive .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-onedrive .elfinder-navbar-icon:before{content:'\e841'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-box .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-box .elfinder-navbar-icon:before{content:'\e842'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-trash .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-trash .elfinder-navbar-icon:before{content:'\e80b'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-zip .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-zip .elfinder-navbar-icon:before{content:'\e85c'}
+.elfinder-cwd-icon:before,.elfinder-navbar-root-network .elfinder-cwd-icon:before,.elfinder-tree .elfinder-navbar-root-network .elfinder-navbar-icon:before{content:'\e823'}
+.elfinder-navbar-icon:before{content:'\e825'}
+.elfinder-cwd-icon{color:#0d47a1}
+.elfinder-cwd-icon:not(.elfinder-cwd-bgurl):before{content:'\e803'}
+.elfinder-cwd-icon.elfinder-cwd-bgurl:after{content:none!important}
+.elfinder .ui-icon,.elfinder .ui-state-active,.elfinder .ui-state-active .ui-icon,.elfinder .ui-state-default,.elfinder .ui-state-default .ui-icon,.elfinder .ui-state-focus,.elfinder .ui-state-focus .ui-icon,.elfinder .ui-state-hover,.elfinder .ui-state-hover .ui-icon,.elfinder .ui-widget-content,.elfinder .ui-widget-content .ui-icon,.elfinder .ui-widget-content .ui-state-active,.elfinder .ui-widget-content .ui-state-default,.elfinder .ui-widget-content .ui-state-focus,.elfinder .ui-widget-content .ui-state-hover,.elfinder .ui-widget-header,.elfinder .ui-widget-header .ui-icon,.elfinder .ui-widget-header .ui-state-active,.elfinder .ui-widget-header .ui-state-default,.elfinder .ui-widget-header .ui-state-focus,.elfinder .ui-widget-header .ui-state-hover,.elfinder .ui-widget-overlay,.elfinder .ui-widget-shadow{background-image:none}
+.elfinder .ui-icon,.elfinder-button-icon,.elfinder-contextmenu-arrow,.elfinder-cwd-icon,.elfinder-dialog-icon,.elfinder-navbar .ui-resizable-handle,.elfinder-navbar-arrow,.elfinder-navbar-icon,.elfinder-quicklook-navbar-icon{font-family:material;font-size:14px;text-indent:0}
+.elfinder .ui-icon:before,.elfinder-button-icon:before,.elfinder-contextmenu-arrow:before,.elfinder-cwd-icon:before,.elfinder-dialog-icon:before,.elfinder-navbar .ui-resizable-handle:before,.elfinder-navbar-arrow:before,.elfinder-navbar-icon:before,.elfinder-quicklook-navbar-icon:before{display:inline-block}
+.elfinder .ui-icon{background-image:none}
+.elfinder .ui-icon-search:before{content:'\e81f'}
+.elfinder .ui-icon-close:before,.elfinder .ui-icon-closethick:before{content:'\e839'}
+.elfinder .ui-icon-circle-close:before{content:'\e84c'}
+.elfinder .ui-icon-gear:before{content:'\e82f'}
+.elfinder .ui-icon-gripsmall-diagonal-se:before{content:'\e838'}
+.elfinder .ui-icon-locked:before{content:'\e834'}
+.elfinder .ui-icon-unlocked:before{content:'\e836'}
+.elfinder .ui-icon-arrowrefresh-1-n:before{content:'\e821'}
+.elfinder .ui-icon-plusthick:before{content:'\e83a'}
+.elfinder .ui-icon-arrowreturnthick-1-s:before{content:'\e83b'}
+.elfinder .ui-icon-minusthick:before{content:'\e83c'}
+.elfinder .ui-icon-pin-s:before{content:'\e84d'}
+.elfinder .ui-icon-check:before{content:'\e84e'}
+.elfinder .ui-icon-arrowthick-1-s:before{content:'\e850';rotate:180deg}
+.elfinder .ui-icon-arrowthick-1-n:before{content:'\e850'}
+.elfinder .ui-icon-triangle-1-s:before{content:'\e851'}
+.elfinder .ui-icon-triangle-1-n:before{content:'\e851';rotate:180deg}
+.elfinder .ui-icon-grip-dotted-vertical:before,.elfinder .ui-resizable-handle.ui-resizable-e:before{content:'\e853'}/*!
+ * elFinder Theme — theme-wbce
+ * Custom theme for WBCE CMS backend (tinymce_wbce module).
+ * Colors based on WBCE_Flat backend theme.
+ * @author  SC-Peet
+ * @license GNU GPL2
+ */
+
+/* ── Reset jQuery UI backgrounds ───────────────────────────────────────── */
+.elfinder .ui-button,
+.elfinder .ui-icon,
+.elfinder .ui-state-active, .elfinder .ui-state-active .ui-icon,
+.elfinder .ui-state-default, .elfinder .ui-state-default .ui-icon,
+.elfinder .ui-state-focus, .elfinder .ui-state-focus .ui-icon,
+.elfinder .ui-state-hover, .elfinder .ui-state-hover .ui-icon,
+.elfinder .ui-widget-content, .elfinder .ui-widget-content .ui-icon,
+.elfinder .ui-widget-content .ui-state-active,
+.elfinder .ui-widget-content .ui-state-default,
+.elfinder .ui-widget-content .ui-state-focus,
+.elfinder .ui-widget-content .ui-state-hover,
+.elfinder .ui-widget-header, .elfinder .ui-widget-header .ui-icon,
+.elfinder .ui-widget-header .ui-state-active,
+.elfinder .ui-widget-header .ui-state-default,
+.elfinder .ui-widget-header .ui-state-focus,
+.elfinder .ui-widget-header .ui-state-hover,
+.elfinder .ui-widget-overlay,
+.elfinder .ui-widget-shadow { background-image: none; }
+
+/* ── Root ────────────────────────────────────────────────────────────────  */
+.elfinder.ui-widget.ui-widget-content {
+    font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    box-shadow: 0 1px 8px rgba(0,0,0,.35);
+    border-radius: 0;
+    border: 0;
+    color: #333;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────  */
+.elfinder-toolbar {
+    background: #46505f;
+    border-bottom: 2px solid #3c4150;
+    border-radius: 0;
+    padding: 3px 8px;
+}
+.elfinder-buttonset {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    margin: 0 2px;
+    height: unset;
+}
+.elfinder .elfinder-button:not(.elfinder-button-search) {
+    background: transparent;
+    padding: 4px 3px 2px;
+    overflow: visible;
+}
+.elfinder .elfinder-button:not(.elfinder-button-search):hover,
+.elfinder .elfinder-button:not(.elfinder-button-search).ui-state-hover {
+    background: rgba(255,255,255,.15);
+    border-radius: 3px;
+}
+.elfinder .elfinder-button:not(.elfinder-button-search).ui-state-active {
+    background: rgba(255,255,255,.25);
+    border-radius: 3px;
+}
+.elfinder-button-icon {
+    background: none;
+    color: #fff;
+    font-size: 18px;
+    overflow: visible;
+}
+.elfinder-button-text { color: #fff; }
+.elfinder-toolbar-button-separator { border: 0; }
+
+/* Search field */
+.elfinder .elfinder-button-search { margin: 2px 0; }
+.elfinder .elfinder-button-search input[type=text] {
+    background: rgba(255,255,255,.15);
+    border: 0;
+    border-radius: 3px;
+    color: #fff;
+    font-size: .82em;
+    padding: 2px 18px;
+}
+.elfinder .elfinder-button-search .ui-icon { color: rgba(255,255,255,.7); }
+
+/* ── Navbar (left panel) ──────────────────────────────────────────────── */
+.elfinder .elfinder-navbar {
+    background: #e8eaee;
+    border-right: 1px solid #d5dde7;
+    border-radius: 0;
+}
+.elfinder-navbar-dir {
+    color: #333;
+    border-radius: 3px;
+    border: 0;
+    padding: 4px 6px;
+    cursor: pointer;
+}
+.elfinder-navbar-dir.ui-state-hover,
+.elfinder-navbar-dir.ui-state-active {
+    background: #5683b2;
+    color: #fff;
+    border: 0;
+}
+.elfinder-navbar-icon { background-image: none; font-size: 14px; }
+.elfinder-navbar-arrow { background-image: none; font-size: 10px; }
+
+/* ── Workzone / file area ─────────────────────────────────────────────── */
+.elfinder-workzone { background: #fff; }
+.elfinder-cwd { background: #fff; }
+
+/* File items */
+.elfinder-cwd-file { color: #333; }
+.elfinder-cwd-file .elfinder-cwd-filename { color: #333; background: transparent; }
+.elfinder-cwd-file.ui-state-hover,
+.elfinder-cwd-file.ui-selected.ui-state-hover {
+    background: #5683b2;
+    color: #fff;
+}
+.elfinder-cwd-file.ui-state-hover .elfinder-cwd-filename,
+.elfinder-cwd-file.ui-selected.ui-state-hover .elfinder-cwd-filename { color: #fff; }
+.elfinder-cwd-file.ui-selected { background: #5c8dc0; }
+.elfinder-cwd-file.ui-selected .elfinder-cwd-filename { color: #fff; }
+
+/* ── File icons ──────────────────────────────────────────────────────── */
+.elfinder-cwd-icon {
+    background-image: none;
+    position: relative;
+    color: #5683b2;
+}
+.elfinder-cwd-icon:not(.elfinder-cwd-bgurl):before { content: '\e803'; }
+.elfinder-cwd-icon.elfinder-cwd-icon-directory:before { content: '\e804'; color: #5683b2; }
+.elfinder-cwd-icon.elfinder-cwd-icon-directory:after  { content: none !important; display: none !important; }
+
+/* Icon sizes */
+.elfinder-cwd-icon:before {
+    font-family: material;
+    font-size: 48px;
+    line-height: 1;
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+}
+.elfinder-cwd-icon:after {
+    font-family: material;
+    color: #fff;
+    font-size: 22px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+.elfinder-cwd-view-list td .elfinder-cwd-icon:before {
+    font-size: 16px; width: 16px; height: 16px;
+}
+.elfinder-cwd-view-list td .elfinder-cwd-icon:after {
+    font-size: 8px;
+}
+
+/* ── Status bar ──────────────────────────────────────────────────────── */
+.elfinder .elfinder-statusbar {
+    background: #46505f;
+    color: #ddd;
+    border-top: 1px solid #3c4150;
+    border-radius: 0;
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+/* ── Dialogs ─────────────────────────────────────────────────────────── */
+.elfinder-dialog, .elfinder-quicklook {
+    background: #fff;
+    color: #333;
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+.elfinder-dialog .ui-dialog-titlebar {
+    background: #46505f;
+    color: #fff;
+    border-radius: 0;
+    border: 0;
+}
+.elfinder-dialog .ui-widget-content { background: transparent; color: #333; border: 0; }
+
+/* ── Context menu ────────────────────────────────────────────────────── */
+.elfinder .elfinder-contextmenu,
+.elfinder .elfinder-contextmenu-sub {
+    background: #fff;
+    border: 1px solid #d5dde7 !important;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.elfinder .elfinder-contextmenu-item { color: #333; }
+.elfinder .elfinder-contextmenu-item.ui-state-hover,
+.elfinder .elfinder-contextmenu-item.ui-state-active {
+    background: #5683b2;
+    color: #fff;
+}
+.elfinder .elfinder-contextmenu-item .elfinder-button-icon { color: #555; font-size: 14px; }
+.elfinder .elfinder-contextmenu-item.ui-state-hover .elfinder-button-icon { color: #fff; }
+
+/* ── List view table header ──────────────────────────────────────────── */
+.elfinder-cwd table thead td {
+    background: #5683b2;
+    color: #fff;
+    padding: 5px 14px;
+}
+.elfinder-cwd table thead td.ui-state-hover,
+.elfinder-cwd table thead td.ui-state-active {
+    background: #456c96;
+    color: #fff;
+}
+
+/* ── Buttons (dialogs) ───────────────────────────────────────────────── */
+.elfinder .ui-button,
+.elfinder button {
+    background: #5683b2;
+    color: #fff;
+    border: 0;
+    border-radius: 3px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+.elfinder .ui-button:hover,
+.elfinder .ui-button.ui-state-hover { background: #456c96; color: #fff; }
+
+/* ── Resizable handle ────────────────────────────────────────────────── */
+.elfinder .elfinder-navbar .ui-resizable-handle {
+    background-image: none;
+    color: #aaa;
+    font-size: 12px;
+}
+
+/* ── Notify/progress ─────────────────────────────────────────────────── */
+.elfinder-notify-progressbar {
+    background: rgba(0,0,0,.5);
+    border: 0; border-radius: 0;
+}
+.elfinder-notify-progress {
+    background-color: #5683b2;
+    height: 1rem; border: 0; border-radius: 0;
+}

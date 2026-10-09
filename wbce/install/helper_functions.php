@@ -413,4 +413,49 @@ function arrayFromTextFile(string $filename): array
     }
 
     return $paths;
-}        
+}
+
+/**
+ * Lists existing tables in the target database whose name starts with $prefix.
+ *
+ * A prefix collision is not a cosmetic problem: install_prepare.sql runs
+ * `DROP TABLE IF EXISTS {TP}...` for the eight core tables, so installing over
+ * a prefix that is already in use silently destroys the existing site. The
+ * installer therefore has to look before it leaps.
+ *
+ * Table names are filtered in PHP rather than via `LIKE`, because the default
+ * prefix (`wbce_`) contains an underscore — a LIKE wildcard that would also
+ * match `wbceX`.
+ *
+ * @param PDO    $pdo     Live connection to the target database
+ * @param string $dbType  'mysql' or 'sqlite'
+ * @param string $prefix  Table prefix as typed by the user
+ * @return string[]       Matching table names (empty when the prefix is free)
+ */
+function find_prefixed_tables(PDO $pdo, string $dbType, string $prefix): array
+{
+    if ($prefix === '') {
+        return [];
+    }
+
+    try {
+        $sql   = $dbType === 'sqlite'
+               ? "SELECT name FROM sqlite_master WHERE type = 'table'"
+               : 'SHOW TABLES';
+        $names = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
+    } catch (PDOException $e) {
+        // Never let the collision check itself break the connection test —
+        // a missing SHOW privilege is not a reason to abort the install.
+        return [];
+    }
+
+    $hits = [];
+    foreach ($names as $name) {
+        if (str_starts_with((string)$name, $prefix)) {
+            $hits[] = (string)$name;
+        }
+    }
+    sort($hits);
+
+    return $hits;
+}

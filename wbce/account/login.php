@@ -63,7 +63,7 @@ $oLogin = new Login(
         "MIN_USERNAME_LEN" => "2",
         "MIN_PASSWORD_LEN" => "3",
         "MAX_USERNAME_LEN" => "30",
-        "MAX_PASSWORD_LEN" => "30",
+        "MAX_PASSWORD_LEN" => "72", // bcrypt hard limit
         "LOGIN_URL" => LOGIN_URL . (!empty($sRedirect) ? '?redirect=' . $_SESSION['HTTP_REFERER'] : ''),
         "DEFAULT_URL" => WB_URL . PAGES_DIRECTORY . "/index.php",
         "FRONTEND" => true,

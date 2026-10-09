@@ -36,6 +36,19 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     }
 
     // install filter
+    // Settings::set() must run BEFORE the return below -- `return $a && $b;`
+    // makes any statement after it unreachable, so these two calls used to
+    // never execute. That's exactly why this only breaks upgraded installs:
+    // an install carrying an opf_droplets/_be row from an older WBCE version
+    // with a falsy stored value never gets it reset to 1 here, so
+    // Settings::Get('opf_droplets', true) returns that stale falsy value
+    // instead of falling back to its `true` default, and opff_droplets()
+    // gates droplet processing off for good -- every [[droplet]] call is
+    // left as literal text on the page. A fresh install has no such row, so
+    // the `true` default silently covered for the dead code and masked the bug.
+    Settings::set('opf_droplets', 1, false);
+    Settings::set('opf_droplets_be', 1, false);
+
     return opf_register_filter(array(
         'name'     => 'Droplets',
         'type'     => OPF_TYPE_PAGE,
@@ -47,9 +60,6 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
         'pages_parent' => 'all, backend, search'
     ))
     && opf_move_up_before('Droplets');  // move up to the top
-        
-    Settings::set('opf_droplets', 1, false);
-    Settings::set('opf_droplets_be', 1, false);
  }
  
  // remove files and directories that are not needed any longer
@@ -61,7 +71,12 @@ $obsoleteFilesAndDirs = [
     '/backend_body.js',  
 ];
 foreach ($obsoleteFilesAndDirs as $rec) {
-    $path = __DIR__ . $rec;
-    $signal = removePath($path, 0, 0);
-    echo(sprintf($SIGNAL[$signal], $rec)) . '<br>';
+    $path   = __DIR__ . $rec;
+    $signal = removePath($path);
+    // Read the signal through L_(), not the raw $SIGNAL array: upgrade.php is
+    // require'd from inside upgrade_module(), so it runs in function scope,
+    // where that global is not visible -- sprintf() was being handed null and
+    // printed nothing at all. L_() reads the Lang registry and works in any
+    // scope, and falls back to a readable string if a signal is ever untranslated.
+    echo L_("SIGNAL['$signal']", $rec) . '<br>';
 }

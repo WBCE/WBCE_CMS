@@ -1,0 +1,163 @@
+/**
+ * tinymce_wbce — css/preset-accordion.css
+ * Accordion chrome for the preset list (one tab, one panel open at a time).
+ * Chip / configurator styles live in css/toolbar-configurator.css.
+ * @license GNU GPL2
+ */
+
+.tmce-preset-accordion { margin: 4px 0 16px; }
+
+/* ── Preset row ── */
+.tmce-preset {
+  border: 1px solid #d4d9e0;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+.tmce-preset.open { border-color: #b7c6e6; box-shadow: 0 2px 10px rgba(30,60,120,.07); }
+
+/* ── Header ── */
+.tmce-preset-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  cursor: pointer;
+  background: #f6f8fb;
+  user-select: none;
+  transition: background .15s;
+}
+.tmce-preset-head:hover { background: #eef2f8; }
+.tmce-preset.open .tmce-preset-head { background: #fff; border-bottom: 1px solid #e6eaf0; }
+.tmce-preset-head:focus-visible { outline: 2px solid #1a73e8; outline-offset: -2px; }
+
+.tmce-chev {
+  width: 22px; flex-shrink: 0;
+  color: #7a8699; font-size: 1.6rem; line-height: 1; text-align: center;
+}
+/* Fixed-width name column so every preview toolbar starts at the same x */
+.tmce-preset-name {
+  font-weight: 700; font-size: .95rem; color: #253044;
+  flex: 0 0 220px; width: 220px; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Collapsed toolbar preview — a faithful mini-toolbar with the real icons,
+   one line per non-empty toolbar row. */
+.tmce-preset-preview {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 4px;
+  overflow: hidden;
+    overflow: hidden;
+    border: 2px solid #698db6;
+    border-radius: 5px;
+    padding: 5px;
+    background: #ffffff;
+}
+.tmce-preset.open .tmce-preset-preview { opacity: 0; }
+.tmce-pv-row {
+  display: flex; align-items: center; gap: 2px;
+  flex-wrap: nowrap; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, #000 92%, transparent);
+          mask-image: linear-gradient(to right, #000 92%, transparent);
+}
+.tmce-pv-icon {
+  width: 21px; height: 21px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #eef1f6; border: 1px solid #dde2ea; border-radius: 3px;
+  color: #5b6676;
+}
+.tmce-pv-icon svg { width: 15px; height: 15px; display: block; fill: currentColor; }
+.tmce-pv-dd, .tmce-pv-txt {
+  height: 21px; box-sizing: border-box; flex-shrink: 0;
+  display: inline-flex; align-items: center;
+  background: #eef1f6; border: 1px solid #dde2ea; border-radius: 3px;
+  color: #5b6676; font-size: .66rem; padding: 0 6px; white-space: nowrap;
+}
+.tmce-pv-sep { width: 1px; height: 15px; background: #c9d0da; flex-shrink: 0; margin: 0 2px; }
+
+/* ── Badges (Default / Only me) ── */
+.tmce-badges { display: flex; gap: 6px; flex-shrink: 0; }
+.tmce-badge {
+  font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+  padding: 3px 11px; border-radius: 999px; cursor: pointer;
+  border: 1px solid #c7cdd8; background: #fff; color: #6b7688;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tmce-badge:hover { border-color: #9aa5b6; color: #3a4658; background-color: #d6f0f2;}
+.tmce-badge-default.on { background: #1a73e8; border-color: #1a73e8; color: #fff; }
+.tmce-badge-local.on   { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+
+/* ── Panel body ── */
+.tmce-panel-body { padding: 14px 16px 18px; background: #fbfcfe; }
+.tmce-panel-body[hidden] { display: none; }
+
+/* Actions row inside a panel: left group + right save group */
+.tkfg .tkfg-actions { justify-content: space-between; }
+.tkfg .tkfg-actions-right { display: flex; gap: 8px; align-items: center; }
+
+/* Reuse existing button styling from css/tool.css for .tmce-btn-save */
+
+/* ── Inline (FEE) presets — the second, lightweight list ── */
+.tmce-inline-title  { 
+    margin: 22px 0 2px; 
+    font-size: 1.02rem; 
+    color: #253044; 
+}
+.tmce-inline-subhint{ margin: 0 0 10px; font-size: .82rem; color: #6b7688; max-width: 760px; }
+.tmce-inline-accordion { margin: 4px 0 16px; }
+
+.tmce-inline-preset {
+  border: 1px solid #d4d9e0; border-radius: 8px; margin-bottom: 8px;
+  background: #fff; overflow: hidden;
+}
+.tmce-inline-preset.open { border-color: #b7c6e6; box-shadow: 0 2px 10px rgba(30,60,120,.07); }
+
+.tmce-inline-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; cursor: pointer; background: #f6f8fb;
+  user-select: none; transition: background .15s;
+}
+.tmce-inline-head:hover { background: #eef2f8; }
+.tmce-inline-preset.open .tmce-inline-head { background: #fff; border-bottom: 1px solid #e6eaf0; }
+.tmce-inline-head:focus-visible { outline: 2px solid #1a73e8; outline-offset: -2px; }
+
+.tmce-inline-name {
+  font-weight: 700; font-size: .95rem; color: #253044;
+  flex: 0 0 200px; width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* Icon mini-toolbar preview (same chips as the config preset preview). */
+.tmce-inline-tb-preview {
+  flex: 1; min-width: 0; overflow: hidden;
+  border: 2px solid #698db6; border-radius: 5px; padding: 5px; background: #fff;
+}
+.tmce-inline-preset.open .tmce-inline-tb-preview { opacity: 0; }
+
+.tmce-inline-body { padding: 14px 16px 18px; background: #fbfcfe; }
+.tmce-inline-body[hidden] { display: none; }
+.tmce-inline-cfg .section-label { font-weight: 700; font-size: .8rem; color: #46536a; margin-bottom: 6px; }
+.tmce-inline-cfg .toolbar-row { min-height: 40px; }
+.tmce-inline-cfg-hint { font-size: .78rem; color: #777; margin: -4px 0 8px; }
+
+.tmce-inline-add-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 12px; padding-top: 12px; border-top: 1px dashed #d4d9e0;
+}
+
+/* ── Responsive: narrow admin viewports ──────────────────────────────────────
+   Both accordion headers are a single flex row: chevron + fixed-width name +
+   flex-1 toolbar preview + badges. Below ~900px that no longer fits — wrap the
+   row and let the preview drop to its own full-width line (badges follow). */
+@media (max-width: 900px) {
+  .tmce-preset-head,
+  .tmce-inline-head { flex-wrap: wrap; row-gap: 6px; }
+
+  .tmce-preset-name,
+  .tmce-inline-name { flex: 1 1 auto; width: auto; min-width: 0; }
+
+  .tmce-preset-preview,
+  .tmce-inline-tb-preview { flex-basis: 100%; }
+
+  .tmce-badges { flex-wrap: wrap; }
+  .tmce-inline-add-row { flex-wrap: wrap; }
+}

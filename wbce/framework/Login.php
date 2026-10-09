@@ -39,7 +39,7 @@ class Login extends Admin
     private int    $timeframe             = 600;
     private int    $login_delay           = 60;
     private int    $max_username_len      = 30;
-    private int    $max_password_len      = 30;
+    private int    $max_password_len      = 72; // bcrypt hard limit
     private bool   $frontend              = false;
 
     // Runtime
@@ -70,7 +70,7 @@ class Login extends Admin
         $this->timeframe             = (int) ($config['TIMEFRAME']           ?? 600);
         $this->login_delay           = (int) ($config['LOGIN_DELAY']         ?? 60);
         $this->max_username_len      = (int) ($config['MAX_USERNAME_LEN']    ?? 30);
-        $this->max_password_len      = (int) ($config['MAX_PASSWORD_LEN']    ?? 30);
+        $this->max_password_len      = (int) ($config['MAX_PASSWORD_LEN']    ?? 72);
         $this->frontend              = (bool) ($config['FRONTEND']           ?? false);
 
         // Determine target URL

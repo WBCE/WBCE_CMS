@@ -348,6 +348,21 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                                 </div>
                             </div>
 
+                            <!-- Table prefix collision warning — filled by install.js
+                                 from the db_conn_check.php response. Hidden unless the
+                                 prefix is actually taken. -->
+                            <div class="field-row" id="prefix-warning" style="display:none">
+                                <div></div><!-- keep 2-col grid alignment -->
+                                <div class="prefix-warning-box" role="alert">
+                                    <p id="prefix-warning-msg"></p>
+                                    <p><?= $MSG['db_prefix_warning'] ?></p>
+                                    <label class="prefix-confirm">
+                                        <input type="checkbox" id="prefix_confirm" name="prefix_confirm" value="1">
+                                        <span><?= $MSG['db_prefix_confirm'] ?></span>
+                                    </label>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -382,7 +397,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                                 <label for="admin_password"><?= $TXT['lbl_admin_pass'] ?></label>
                                 <input <?= field_error('admin_password') ?> type="password" id="admin_password"
                                                                            tabindex="14" name="admin_password"
-                                                                           minlength="12" value="<?= $sAdminPassword ?>" required
+                                                                           minlength="12" maxlength="72" value="<?= $sAdminPassword ?>" required
                                                                            autocomplete="new-password">
                             </div>
 
@@ -395,7 +410,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                                 <label for="admin_repassword"><?= $TXT['lbl_admin_repass'] ?></label>
                                 <input <?= field_error('admin_repassword') ?> type="password" id="admin_repassword"
                                                                              tabindex="15" name="admin_repassword"
-                                                                             minlength="12" value="<?= $sAdminRepassword ?>" required
+                                                                             minlength="12" maxlength="72" value="<?= $sAdminRepassword ?>" required
                                                                              autocomplete="new-password">
                             </div>
 
@@ -483,6 +498,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                 pwMismatch: <?= json_encode($MSG['val_pw_mismatch']) ?>,
                 pwShort: <?= json_encode($MSG['val_pw_short']) ?>,
                 dbUntested: <?= json_encode($MSG['val_db_untested']) ?>,
+                prefixUnconfirmed: <?= json_encode($MSG['db_prefix_unconfirmed']) ?>,
                 dbTesting: <?= json_encode($TXT['db_testing']) ?>,
                 dbRetest: <?= json_encode($TXT['db_retest']) ?>,
                 btnTest: <?= json_encode($TXT['btn_test_db']) ?>,
@@ -505,10 +521,21 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                 logInstallingTemplates:<?= json_encode($TXT['log_installing_templates'] ?? 'Installing templates') ?>,
                 logInstallingLanguages:<?= json_encode($TXT['log_installing_languages'] ?? 'Installing languages') ?>,
                 logFinalizing: <?= json_encode($TXT['log_finalizing'] ?? 'Finalizing installation') ?>,
-                logDone: <?= json_encode($TXT['log_done'] ?? '✓ Done') ?>,
+                logDone: <?= json_encode($TXT['log_done'] ?? 'Done') ?>,
                 logComplete: <?= json_encode($TXT['log_complete'] ?? '━━━ Installation complete ━━━') ?>,
                 logFailed: <?= json_encode($TXT['log_failed'] ?? 'Installation failed – see errors above') ?>
             };
+        </script>
+        <script src="./assets/log_export.js" type="text/javascript"></script>
+        <script>
+            WbceLogExport.init({
+                logSelector: '#install-log',
+                filePrefix:  'wbce-install-log',
+                title:       'WBCE CMS — Installation log',
+                version:     <?= json_encode(NEW_WBCE_VERSION) ?>,
+                label:       <?= json_encode($TXT['btn_download_log']) ?>
+
+            });
         </script>
         <script src="./assets/install.js" type="text/javascript"></script>
         <script src="./assets/install_stream.js" type="text/javascript"></script>

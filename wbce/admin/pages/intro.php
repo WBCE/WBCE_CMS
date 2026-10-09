@@ -12,8 +12,6 @@
 
 // Create new admin object
 require('../../config.php');
-
-require_once(WB_PATH . '/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_intro');
 $content = '';
 
@@ -25,14 +23,20 @@ if (file_exists($filename) && filesize($filename) > 0) {
     $content = file_get_contents(ADMIN_PATH . '/pages/html.php');
 }
 
-include_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
-echo registerEditArea('content', 'html', true, 'both', true, true, 600, 450, $toolbar = 'default');
+// CodeMirror editor
+CodeEditor::init('content', 'php', [
+    'height'    => 500,
+    'toolbar'   => true,
+    'line_wrap' => true,
+]);
+
 function show_wysiwyg_editor($name, $id, $content, $width, $height)
 {
     echo '<textarea name="' . $name . '" id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';">' . $content . '</textarea>';
 }
 
 ?>
+<h1><?=$HEADING['MODIFY_INTRO_PAGE']?></h1>
     <form action="intro2.php" method="post">
         <?php print $admin->getFTAN(); ?>
         <input type="hidden" name="page_id" value="{PAGE_ID}"/>

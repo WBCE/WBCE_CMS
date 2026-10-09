@@ -105,6 +105,13 @@ $MSG['db_unknown_db']         = 'Database does not exist. Please create it first
 $MSG['db_connection_refused'] = 'Could not connect to host. Please check hostname and port.';
 $MSG['db_connection_failed']  = 'Connection failed: %s';
 
+// ─── Table Prefix Collision Check ────────────────────────────────────────────
+$MSG['db_prefix_in_use']      = 'Careful: the table prefix <b>%1$s</b> is already used by %2$d table(s) in this database';
+$MSG['db_prefix_more']        = ' … and %d more';
+$MSG['db_prefix_warning']     = 'Installing with this prefix will <b>delete those tables and all their content</b> — including an existing WBCE site. Choose a different prefix, or confirm below.';
+$MSG['db_prefix_confirm']     = 'Yes, overwrite the existing tables. I know their data will be lost.';
+$MSG['db_prefix_unconfirmed'] = 'The table prefix is already in use in this database. Choose a different prefix, or tick the confirmation box to overwrite the existing tables.';
+
 // ─── SQLite Connection Test Messages (only shown when SQLite is allowed) ────
 $MSG['db_sqlite_disallowed']  = 'SQLite is not enabled on this installer.';
 $MSG['db_sqlite_pdo_missing'] = 'The pdo_sqlite PHP extension is not available on this server.';
@@ -128,7 +135,10 @@ $TXT['log_required_mod_missing']= 'Required modules missing: ';
 $TXT['log_finalizing']          = 'Finalizing installation';
 $TXT['log_export_snapshot']     = 'Export `var/sys_constants.php` Snapshot';
 
-$TXT['log_done']                = '✓ Done';
+$TXT['btn_download_log']     = 'Download log';
+$TXT['log_done']                = 'Done';
+$TXT['log_not_found']           = 'not found';
+$TXT['log_cannot_remove']       = 'could not be removed';
 $TXT['log_complete']            = '━━━ Installation complete ━━━';
 $TXT['log_failed']              = 'Installation failed – see errors above';
 

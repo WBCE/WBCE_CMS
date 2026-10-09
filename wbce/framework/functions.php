@@ -1291,15 +1291,19 @@ function wbceSafeRelativePath(string $baseDir, string $relative, bool $mustExist
 /**
  * Recursively removes a file or a non-empty directory.
  *
- * Returns a machine-readable status signal only, but all the
- * signals are within the system wide $MESSAGE array. 
- * This means caller can translate the signal using
- * sprintf($MESSAGE[$signal], $file);
- * or the new L_() function, see code sample below: 
+ * Returns a machine-readable status signal only. The signals are translated
+ * under the SIGNAL namespace (languages/EN.php and friends), and the caller
+ * turns one into a sentence with L_(), passing the path as the %s argument:
  * <code>
- * $signal = removePath($somePath, false);
- * echo L_($MESSAGE[$signal], $somePath);
+ * $signal = removePath($somePath);
+ * echo L_("SIGNAL['$signal']", $somePath);
  * </code>
+ * Read them through L_() rather than the raw $SIGNAL array: install.php,
+ * upgrade.php and uninstall.php are require'd from inside functions, where a
+ * global array is only visible if that function happened to import it, while
+ * L_() reads the Lang registry and works in any scope.
+ * (Not $MESSAGE -- only the German file ever carried RM_* entries in it;
+ * SIGNAL is the array that is complete in every language.)
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * @author    Christian M. Stefan  (https://www.wbEasy.de)
  * @license   http://www.gnu.org/licenses/gpl-2.0.html

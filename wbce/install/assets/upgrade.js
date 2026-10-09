@@ -123,17 +123,22 @@
   function showActions(success) {
     if (!actionsEl) return;
     actionsEl.style.display = 'block';
+    // Offered in both branches — a failed update is exactly when the log matters most.
+    var logBtn = (window.WbceLogExport ? window.WbceLogExport.buttonHtml() : '');
+
     if (success) {
       actionsEl.innerHTML =
         '<p class="inst-done-msg inst-done-ok">' + (I18N.upgradeComplete || 'Update complete!') + '</p>' +
         '<a href="update.php" class="inst-btn inst-btn-sec">' + (I18N.runAgain || 'Run again') + '</a>' +
         (typeof ADMIN_URL !== 'undefined' && ADMIN_URL
           ? '<a href="' + esc(ADMIN_URL) + '/login/index.php" class="inst-btn inst-btn-primary">' + (I18N.loginToBackend || 'Login to Backend') + '</a>'
-          : '');
+          : '') +
+        logBtn;
     } else {
       actionsEl.innerHTML =
         '<p class="inst-done-msg inst-done-err">' + (I18N.updateFailed || 'Update had errors \u2014 check the log above.') + '</p>' +
-        '<a href="update.php" class="inst-btn inst-btn-sec">' + (I18N.runAgain || 'Run again') + '</a>';
+        '<a href="update.php" class="inst-btn inst-btn-sec">' + (I18N.runAgain || 'Run again') + '</a>' +
+        logBtn;
     }
   }
 

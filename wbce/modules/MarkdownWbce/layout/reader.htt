@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="[TEXT.LANGUAGE|lower]">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[TITLE]</title>
+    <script>
+    // Applied before first paint so a saved manual theme choice never
+    // flashes the "wrong" theme on load — prefers-color-scheme alone
+    // (handled in CSS) already covers the no-override case fine, this only
+    // needs to run for the override. Kept in sync with reader.js's
+    // toggle handler (same storage key).
+    (function () {
+        var saved = localStorage.getItem('mdr_theme');
+        if (saved === 'light' || saved === 'dark') {
+            document.documentElement.setAttribute('data-theme', saved);
+        }
+    })();
+    </script>
+    <link rel="stylesheet" href="[DIR_URL]/layout/style.css?v=[STYLE_V]">
+    <link rel="stylesheet" href="[DIR_URL]/layout/markdown.css?v=[MARKDOWN_V]">
+    <script src="[WB_URL]/include/jquery/jquery-min.js"></script>
+
+    {if NEEDS_HLJS}
+    <!-- Self-hosted highlight.js (layout/vendor/hljs/). reader.js swaps the
+         href between the light/dark theme via the data-hljs-* attributes. -->
+    <link rel="stylesheet" id="mdr-hljs-theme"
+          href="[DIR_URL]/layout/vendor/hljs/github.min.css?v=[HLJS_CSS_V]"
+          data-hljs-light="[DIR_URL]/layout/vendor/hljs/github.min.css?v=[HLJS_CSS_V]"
+          data-hljs-dark="[DIR_URL]/layout/vendor/hljs/github-dark.min.css?v=[HLJS_CSS_V]">
+    <script src="[DIR_URL]/layout/vendor/hljs/highlight.min.js?v=[HLJS_JS_V]"></script>
+    {/if}
+
+    {if NEEDS_FILETREE}
+    <link rel="stylesheet" href="[DIR_URL]/layout/filetree.css?v=[FILETREE_CSS_V]">
+    {/if}
+</head>
+<body data-doc-dir="[DOC_DIR_REL]">
+
+<div class="mdr-wrapper">
+
+    <header class="mdr-header">
+        <div class="mdr-header-left">
+            <h1 class="mdr-title">[TITLE]</h1>
+            {if HAS_EDIT}
+            <span class="mdr-edit-badge" id="mdr-edit-badge" hidden>Edit Mode</span>
+            {/if}
+
+            {if HAS_TABS}
+            <nav class="mdr-tabs" aria-label="Documents">
+                {foreach TABS as TAB}
+                <a href="[TAB.URL]" class="mdr-tab{if TAB.ACTIVE} mdr-tab--active{/if}">[TAB.LABEL]</a>
+                {/foreach}
+            </nav>
+            {/if}
+        </div>
+
+        <div class="mdr-header-right">
+            {if HAS_LANGS}
+            <div class="mdr-langs" aria-label="Language versions">
+                {foreach LANG_VARIANTS as LV}
+                <a href="[LV.URL]" class="mdr-lang-flag{if LV.ACTIVE} mdr-lang-flag--active{/if}" title="[LV.CODE]">
+                    <img src="[LV.FLAG]" alt="[LV.CODE]" width="20" height="14">
+                    <span class="mdr-lang-code">[LV.CODE]</span>
+                </a>
+                {/foreach}
+            </div>
+            {/if}
+
+            {if HAS_EDIT}
+            <button type="button" class="mdr-edit-toggle" id="mdr-edit-toggle">&#9998; Edit</button>
+            {/if}
+
+            <button type="button" class="mdr-theme-toggle" id="mdr-theme-toggle" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
+                </svg>
+            </button>
+
+            <button type="button" class="mdr-toggle" aria-label="Toggle navigation">&#9776;</button>
+        </div>
+    </header>
+
+    <div class="mdr-body" id="mdr-body">
+
+        <div class="mdr-sidebar-wrap" id="mdr-sidebar-wrap">
+            <nav class="mdr-sidebar" id="mdr-sidebar" aria-label="Table of contents">
+                <button type="button" class="mdr-sidebar-toggle" id="mdr-sidebar-toggle" aria-label="Sidebar zuklappen" title="Sidebar zuklappen">&#8249;</button>
+                [TOC|raw]
+            </nav>
+        </div>
+
+        <div class="mdr-resize-handle" id="mdr-resize-handle" title="Breite anpassen" role="separator" aria-orientation="vertical"></div>
+
+        <main class="mdr-content" id="mdr-content">
+            <article class="markdown-body" id="mdr-article">
+                [CONTENT|raw]
+            </article>
+
+            {if HAS_EDIT}
+            <div class="mdr-edit-panel mdr-pmde-theme" id="mdr-edit-panel" hidden>
+                <form id="mdr-edit-form" data-save-url="[SAVE_URL]">
+                    [FTAN_TAG|raw]
+                    <input type="hidden" name="rel_path" value="[REL_PATH]">
+                    <textarea id="mdr-edit-textarea" name="content">[RAW_MARKDOWN]</textarea>
+                    <div class="mdr-edit-actions">
+                        <button type="button" class="mdr-edit-cancel" id="mdr-edit-cancel">Back</button>
+                        <span class="mdr-edit-status" id="mdr-edit-status" role="status" aria-live="polite"></span>
+                        <button type="submit" class="mdr-edit-save" id="mdr-edit-save">
+                            <span class="mdr-save-label">Save</span>
+                            <svg class="mdr-save-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle class="mdr-save-check-ring" cx="12" cy="12" r="10"/>
+                                <path class="mdr-save-check-mark" d="M7 12.5l3.2 3.2L17 9"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {/if}
+        </main>
+
+    </div>
+
+    <footer class="mdr-footer">
+        <span>WBCE CMS <strong>MarkdownWbce</strong></span>
+        <span class="mdr-footer-path" title="[DOC_PATH]">[DOC_PATH]</span>
+    </footer>
+
+</div>
+
+{if NEEDS_HLJS}
+<script src="[DIR_URL]/layout/highlight.js?v=[HIGHLIGHT_JS_V]"></script>
+{/if}
+
+{if HAS_EDIT}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var toggleBtn   = document.getElementById('mdr-edit-toggle');
+    var cancelBtn   = document.getElementById('mdr-edit-cancel');
+    var saveBtn     = document.getElementById('mdr-edit-save');
+    var saveTimer   = null;
+    var panel       = document.getElementById('mdr-edit-panel');
+    var article     = document.getElementById('mdr-article');
+    var form        = document.getElementById('mdr-edit-form');
+    var textarea    = document.getElementById('mdr-edit-textarea');
+    var statusEl    = document.getElementById('mdr-edit-status');
+    var sidebarWrap = document.getElementById('mdr-sidebar-wrap');
+    var editBadge   = document.getElementById('mdr-edit-badge');
+    var editor      = null;
+
+    function enterEdit() {
+        article.hidden      = true;
+        panel.hidden        = false;
+        toggleBtn.hidden    = true;
+        if (sidebarWrap) sidebarWrap.hidden = true;
+        if (editBadge)   editBadge.hidden   = false;
+
+        if (!editor) {
+            PlainMDEDecorations.enableChecklistContinuation();
+
+            // Relative image src (![x](docs/foo.gif)) resolves against
+            // reader.php's own URL by default — wrong, since the markdown
+            // source lives elsewhere. Rewrite against the doc's own
+            // directory, same as MdReaderHelper::_rewriteImagePaths() does
+            // for the rendered viewer.
+            var docDirUrl = '[DOC_DIR_URL]';
+            function resolvePreviewImages(html) {
+                if (!docDirUrl) return html;
+                return html.replace(/(<img\b[^>]*\ssrc=")([^"]+)(")/gi, function (m, pre, src, post) {
+                    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|data:)/i.test(src)) {
+                        return m; // already absolute / protocol-relative / data URI
+                    }
+                    return pre + docDirUrl + '/' + src + post;
+                });
+            }
+
+            editor = new PlainMDE({
+                element: textarea,
+                toolbar: PlainMDE.defaultToolbar,
+                lineWrapping: true,
+                maxHeight: '640px',
+                previewRender: function (text) {
+                    return resolvePreviewImages(PlainMDE.markdown(text));
+                }
+            });
+            PlainMDEDecorations.attach(editor.codemirror);
+            PlainMDESync.attach(editor);
+        }
+        editor.codemirror.refresh();
+    }
+
+    // Cancel leaves edit mode via a full reload rather than a local DOM
+    // toggle — if a Save happened earlier in this session the on-screen
+    // article is still the pre-edit version, and a reload is the simplest
+    // way to make a completed save visible without extra bookkeeping here.
+    function leaveEdit() {
+        window.location.reload();
+    }
+
+    toggleBtn.addEventListener('click', enterEdit);
+    cancelBtn.addEventListener('click', leaveEdit);
+
+    // Save feedback lives on the Save button itself: it flips to a drawn
+    // checkmark for a moment and goes back to "Save". Only failures put text
+    // next to it — a success needs no words.
+    function showSaved() {
+        clearTimeout(saveTimer);
+        statusEl.textContent = '';
+        statusEl.classList.remove('is-error');
+        saveBtn.classList.remove('is-saving');
+        saveBtn.classList.add('is-done');
+        saveBtn.disabled = true;
+        saveTimer = setTimeout(function () {
+            saveBtn.classList.remove('is-done');
+            saveBtn.disabled = false;
+        }, 1600);
+    }
+
+    function showError(message) {
+        clearTimeout(saveTimer);
+        saveBtn.classList.remove('is-saving', 'is-done');
+        saveBtn.disabled = false;
+        statusEl.textContent = message;
+        statusEl.classList.add('is-error');
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearTimeout(saveTimer);
+        statusEl.textContent = '';
+        statusEl.classList.remove('is-error');
+        saveBtn.classList.remove('is-done');
+        saveBtn.classList.add('is-saving');
+        saveBtn.disabled = true;
+
+        fetch(form.dataset.saveUrl, {
+            method: 'POST',
+            body: new FormData(form),
+            credentials: 'same-origin'
+        })
+        .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+        .then(function (result) {
+            if (result.ok && result.data && result.data.success) {
+                showSaved();
+            } else {
+                showError((result.data && result.data.message) || 'Save failed.');
+            }
+        })
+        .catch(function () {
+            showError('Save failed (network error).');
+        });
+    });
+});
+</script>
+{/if}
+
+{if NEEDS_FILETREE}
+<script src="[DIR_URL]/layout/filetree.js?v=[FILETREE_JS_V]"></script>
+{/if}
+
+<script src="[DIR_URL]/layout/reader.js?v=[READER_JS_V]"></script>
+
+</body>
+</html>

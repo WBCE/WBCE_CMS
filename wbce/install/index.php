@@ -265,11 +265,14 @@ if (is_writable('../temp/')) {
  * Absolute URL
  *****************************/
 
-// Try to guess installation URL
-$scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
-$guessed_url = $scheme . '://' . $_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"];
-$guessed_url = rtrim(dirname($guessed_url), 'install');
-$sWbUrl = $guessed_url;
+// Try to guess installation URL.
+// HTTP_HOST carries the port (e.g. localhost:8080); SERVER_NAME does not — use
+// HTTP_HOST when present so a non-default port survives into the guessed WB_URL.
+$scheme = ((($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
+$host   = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
+$guessed_url = $scheme . '://' . $host . ($_SERVER['SCRIPT_NAME'] ?? '');
+$guessed_url = preg_replace('~/install/[^/]*$~', '', $guessed_url);
+$sWbUrl = rtrim($guessed_url, '/');
 
 // is there is one set in session choose that
 if (isset($_SESSION['wb_url'])) {

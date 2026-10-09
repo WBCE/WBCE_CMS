@@ -1,0 +1,346 @@
+/**
+ * tinymce_wbce — css/toolbar-configurator.css
+ * Styling for the drag&drop toolbar configurator (tab "Custom toolbar").
+ * Prototype: Christian M. Stefan, integration: Slugger & Claude KI
+ * @license GNU GPL2
+ */
+
+.tkfg * { box-sizing: border-box; }
+.tkfg { margin: 0; }
+
+.tkfg .section-label {
+  font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:#777;margin:16px 0 8px;
+}
+.tkfg .section-label:first-child { margin-top:4px; }
+
+/* Palette */
+.tkfg .palette {
+  background:#fff;border:1px solid #ddd;border-radius:8px;
+  padding:8px 10px;margin-bottom:4px;
+  display:flex;flex-wrap:wrap;gap:3px;align-items:center;min-height:52px;
+}
+.tkfg .palette-divider { width:1px;height:26px;background:#e0e0e0;margin:0 3px;flex-shrink:0; }
+.tkfg .palette-loading { color:#aaa;font-size:.82rem;font-style:italic; }
+
+/* Chips base */
+.tkfg .chip {
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:4px;user-select:none;cursor:grab;
+  border:1px solid transparent;
+  transition:opacity .15s,background .15s,border-color .15s;flex-shrink:0;
+}
+.tkfg .chip:active { cursor:grabbing; }
+.tkfg .chip.dragging { opacity:.3; }
+.tkfg .chip.icon-chip { width:30px;height:28px; }
+.tkfg .chip.icon-chip svg { width:18px;height:18px;display:block;pointer-events:none;flex-shrink:0;overflow:visible; }
+/* Icons are extracted raw (no fill) — take the chip's text colour */
+.tkfg .chip svg { fill:currentColor; }
+.tkfg .chip.text-chip { height:28px;padding:0 8px;font-size:.74rem;white-space:nowrap; }
+.tkfg .chip.dropdown-chip { height:28px;padding:0 6px 0 8px;gap:3px;font-size:.74rem;white-space:nowrap; }
+.tkfg .chip.dropdown-chip .dd-chevron { opacity:.55;flex-shrink:0; }
+.tkfg .chip.sep-chip { width:26px;height:28px;font-size:.95rem;font-weight:700;letter-spacing:1px; }
+
+/* Palette chip colours */
+.tkfg .palette .chip.icon-chip,
+.tkfg .palette .chip.text-chip,
+.tkfg .palette .chip.dropdown-chip { background:#e8f0fe;border-color:#c5d4f8;color:#1a55cc; }
+.tkfg .palette .chip.icon-chip:hover,
+.tkfg .palette .chip.text-chip:hover,
+.tkfg .palette .chip.dropdown-chip:hover { background:#d2e3fc; }
+.tkfg .palette .chip.sep-chip { background:#fff8e1;border-color:#ffd54f;color:#7a5700;cursor:copy; }
+.tkfg .palette .chip.sep-chip:hover { background:#fff0c0; }
+.tkfg .palette .chip.used { opacity:.28;cursor:not-allowed;pointer-events:none; }
+
+/* Row chip colours */
+.tkfg .toolbar-row .chip.icon-chip,
+.tkfg .toolbar-row .chip.text-chip,
+.tkfg .toolbar-row .chip.dropdown-chip { background:#e8f5e9;border-color:#a5d6a7;color:#1b5e20; }
+.tkfg .toolbar-row .chip.icon-chip:hover,
+.tkfg .toolbar-row .chip.text-chip:hover,
+.tkfg .toolbar-row .chip.dropdown-chip:hover { background:#c8e6c9; }
+.tkfg .toolbar-row .chip.sep-chip { background:#fff8e1;border-color:#ffd54f;color:#7a5700; }
+.tkfg .toolbar-row .chip.icon-chip { width:auto;padding:0 3px 0 5px;gap:2px; }
+.tkfg .toolbar-row .chip.text-chip { padding:0 3px 0 8px;gap:3px; }
+.tkfg .toolbar-row .chip.dropdown-chip { padding:0 3px 0 8px;gap:3px; }
+.tkfg .toolbar-row .chip.sep-chip { width:auto;padding:0 3px 0 6px;gap:2px; }
+
+/* Chip X button */
+.tkfg .chip-x {
+  width:14px;height:14px;border-radius:50%;
+  background:transparent;border:none;cursor:pointer; color: grey;
+  font-size:14px;display:inline-flex;align-items:center;
+  justify-content:center;line-height:1;flex-shrink:0;margin-left:1px;
+}
+.tkfg .chip-x:hover { font-weight: bold; color:red; }
+
+/* Toolbar rows */
+.tkfg .row-wrapper { display:flex;align-items:center;margin-bottom:8px;gap:10px; }
+.tkfg .row-label { font-size:.8rem;color:#666;width:58px;flex-shrink:0; }
+.tkfg .toolbar-row {
+  flex:1;min-height:42px;background:#fff;
+  border:2px dashed #ccc;border-radius:6px;
+  padding:5px 8px;display:flex;flex-wrap:wrap;gap:4px;
+  align-items:center;transition:border-color .15s,background .15s;
+}
+.tkfg .toolbar-row.drag-over { border-color:#4285f4;background:#f0f4ff; }
+.tkfg .placeholder { 
+    color:#bbb;font-size:.78rem;pointer-events:none;     
+}
+
+/* Drop ghost — preview slot at the target insert position.
+   Deliberately large and prominent so the landing spot is clearly visible.
+   pointer-events:none is mandatory: the ghost must not intercept dragover/drop. */
+.tkfg .tkfg-drop-ghost {
+  width:38px;height:26px;flex-shrink:0;box-sizing:border-box;
+  border:3px solid #1a73e8;border-radius:6px;
+  background:rgba(66,133,244,.22);
+  box-shadow:0 0 0 3px rgba(66,133,244,.20), 0 2px 6px rgba(26,115,232,.35);
+  pointer-events:none;
+  animation:tkfg-ghost-pulse .9s ease-in-out infinite;
+}
+@keyframes tkfg-ghost-pulse {
+  0%,100% { opacity:.7;  transform:scaleY(.94); }
+  50%     { opacity:1;   transform:scaleY(1); }
+}
+
+/* Preset buttons */
+.tkfg .preset-btns { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px; }
+.tkfg .preset-btn {
+  padding:5px 18px;border-radius:20px;
+  border:1px solid #c5d4f8;background:#e8f0fe;
+  color:#1a55cc;font-size:.82rem;cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s;
+}
+.tkfg .preset-btn:hover { background:#d2e3fc; }
+.tkfg .preset-btn.active { background:#1a73e8;color:#fff;border-color:#1a73e8; }
+
+/* Settings block */
+.tkfg .settings-block {
+  background:#fff;border:1px solid #ddd;border-radius:8px;
+  padding:12px 16px;margin-bottom:4px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.tkfg .setting-row { display:flex;align-items:center;gap:12px; }
+.tkfg .setting-row label {
+    font-size: .8rem;
+    color: var(--text);
+    width: 220px;
+    text-align: right;
+    flex-shrink: 0;
+    font-weight: 600;
+    line-height: normal;
+}
+.setting-row label::after {
+    content: ":";
+    margin-left: 1px; 
+}
+.tkfg .setting-control { display:flex;align-items:center;gap:7px;flex:1; }
+/* Opt-in modifier for rows that pack more than one control + hint pair and need
+   a real line break between them (see .tkfg-break below) — scoped narrowly so
+   the dozens of plain single-control setting-rows are unaffected. */
+.tkfg .setting-control--wrap { flex-wrap:wrap; }
+.tkfg .tkfg-break { flex-basis:100%;height:0; }
+.tkfg .tkfg-editorcss-filter { width:100%;max-width:320px; }
+/* A hint too long to share a line with its control: give it the full row width
+   on its own line (same flex-basis:100% trick as .tkfg-break) instead of
+   squeezing it into whatever space is left, where it wraps unreadably. */
+.tkfg .tkfg-hint-block { flex-basis:100%;margin-top:2px; }
+.tkfg .setting-control input[type="number"] {
+  width:80px;padding:4px 8px;border:1px solid #ccc;
+  border-radius:4px;font-size:.82rem;color:#333;
+}
+.tkfg .setting-control input[type="checkbox"] {
+  width:15px;height:15px;cursor:pointer;flex-shrink:0;accent-color:#1a73e8;
+}
+.tkfg .setting-control select {
+  padding:4px 24px 4px 5px;border:1px solid #ccc;border-radius:4px;
+  font-size:.82rem;color:#333;background:#fff;cursor:pointer;
+}
+.tkfg .setting-control .unit { font-size:.78rem;color:#888; }
+.tkfg .setting-control .hint { font-size:.78rem;color:#777; }
+
+/* Actions */
+.tkfg .tkfg-actions {
+  display:flex;gap:10px;margin:12px 0;align-items:center;
+  justify-content:space-between;
+}
+.tkfg .tkfg-actions-left { display:flex;gap:10px;align-items:center; }
+.tkfg .btn-refresh, .tkfg .btn-save {
+  padding:8px 22px;background:#1a73e8;color:#fff;
+  border:none;border-radius:6px;font-size:.88rem;cursor:pointer;font-weight:500;
+}
+.tkfg .btn-save {background:#446899; }
+.tkfg .btn-refresh:hover { background:#1557b0; }
+
+.tkfg .btn-save:hover { background:#527fbb; }
+.tkfg .btn-reset-rows {
+  padding:8px 18px;background:#fff;color:#444;
+  border:1px solid #ccc;border-radius:6px;font-size:.88rem;cursor:pointer;
+}
+.tkfg .btn-reset-rows:hover { background:#f5f5f5; }
+.tkfg .liveupdate-label {
+  display:flex;align-items:center;gap:6px;cursor:pointer;
+  font-size:.78rem;color:#555;user-select:none;
+}
+
+/* Preview */
+.tkfg .preview-card { background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;margin-top:4px; }
+.tkfg .preview-header {
+  padding:9px 14px;background:#fafafa;border-bottom:1px solid #ddd;
+  font-size:.78rem;color:#666;display:flex;justify-content:space-between;align-items:center;
+}
+.tkfg .preview-header strong { font-size:.82rem;color:#333; }
+
+/* localStorage badge */
+.tkfg .local-info { margin:4px 0 8px;font-size:11px;color:#888;display:flex;align-items:center;gap:8px; }
+
+/* ── Typography sub-sections (collapsible details) ── */
+.tkfg .tkfg-sub {
+  background:#fff;border:1px solid #ddd;border-radius:8px;
+  margin-bottom:6px;overflow:hidden;
+}
+.tkfg .tkfg-sub > summary {
+  padding:9px 14px;cursor:pointer;user-select:none;
+  font-size:.82rem;font-weight:600;color:#444;
+  list-style:none;display:flex;align-items:center;gap:8px;
+}
+.tkfg .tkfg-sub > summary::-webkit-details-marker { display:none; }
+.tkfg .tkfg-sub > summary::before {
+  content:'▸';color:#98a2b0;font-size:.9rem;transition:transform .15s;
+}
+.tkfg .tkfg-sub[open] > summary::before { content:'▾'; }
+.tkfg .tkfg-sub > summary:hover { background:#f6f8fb; }
+.tkfg .tkfg-sub-icon { color:#7a8699;font-size:.85rem;width:14px;text-align:center;flex-shrink:0; margin-right: 5px; }
+.tkfg .tkfg-sub-hint { font-weight:400;font-size:.72rem;color:#999;margin-left:auto; }
+.tkfg .tkfg-sub-body { padding:10px 14px 14px;border-top:1px solid #eee; }
+/* Sub-panels have no container gap (unlike .settings-block) — space the rows
+   here, since the label no longer carries padding-bottom for that. */
+.tkfg .tkfg-sub-body .setting-row { margin-bottom:10px; }
+.tkfg .tkfg-sub-body .setting-row:last-child { margin-bottom:0; }
+.tkfg .tkfg-sub-label {
+  display:block;font-size:.72rem;font-weight:600;color:#666;
+  margin:12px 0 4px;
+}
+
+/* Fonts — checkbox grid, each label rendered in its own typeface */
+.tkfg .tkfg-font-grid {
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+  gap:2px 14px;
+}
+.tkfg .tkfg-font-item {
+  display:flex;align-items:center;gap:7px;
+  font-size:.95rem;color:#333;padding:3px 4px;border-radius:4px;cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.tkfg .tkfg-font-item:hover { background:#f2f5fa; }
+.tkfg .tkfg-font-item input { accent-color:#1a73e8;width:14px;height:14px;flex-shrink:0; }
+.tkfg .tkfg-fonts-extra {
+  display:block;margin-top:4px;
+  width:100%;max-width:560px;box-sizing:border-box;
+  padding:6px 8px;border:1px solid #ccc;border-radius:4px;
+  font-size:.78rem;font-family:monospace;color:#333;resize:vertical;
+}
+
+/* Block formats — checkbox grid */
+.tkfg .tkfg-block-grid {
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
+  gap:2px 14px;
+}
+.tkfg .tkfg-block-item {
+  display:flex;align-items:center;gap:7px;
+  font-size:.82rem;color:#333;padding:3px 4px;border-radius:4px;cursor:pointer;
+  white-space:nowrap;overflow:hidden;
+}
+.tkfg .tkfg-block-item:hover { background:#f2f5fa; }
+.tkfg .tkfg-block-item input { accent-color:#1a73e8;width:14px;height:14px;flex-shrink:0; }
+.tkfg .tkfg-block-item code { font-size:.7rem;color:#888;background:#f4f6f9;padding:0 4px;border-radius:3px; }
+
+/* Custom style rows */
+.tkfg .tkfg-styles-hint {
+  font-size:.74rem;color:#a87a1f;background:#fff8e1;
+  border:1px solid #ffd54f;border-radius:4px;
+  padding:5px 9px;margin-bottom:8px;
+}
+
+.tkfg .tkfg-style-row {
+  display:flex;align-items:center;gap:6px;margin-bottom:6px;
+}
+.tkfg .tkfg-style-row input[type="text"],
+.tkfg .tkfg-style-row select {
+  padding:4px 8px;border:1px solid #ccc;border-radius:4px;
+  font-size:.8rem;color:#333;background:#fff;
+}
+.tkfg .tkfg-style-title { flex:2;min-width:120px; }
+.tkfg .tkfg-style-element { flex:0 0 90px; }
+.tkfg .tkfg-style-class { flex:2;min-width:120px;font-family:monospace; }
+.tkfg .tkfg-style-del {
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:transparent;border:none;cursor:pointer;color:#999;
+  font-size:15px;line-height:1;
+}
+.tkfg .tkfg-style-del:hover { color:#c0392b;font-weight:bold; }
+
+/* ── Color swatch editors (forecolor / backcolor palettes) ── */
+.tkfg .tkfg-color-palette { margin-bottom:8px; }
+.tkfg .tkfg-color-row {
+  display:flex;align-items:center;gap:6px;margin-bottom:3px;
+}
+.tkfg .tkfg-color-row input[type="text"] {
+  padding:4px 8px;border:1px solid #ccc;border-radius:4px;
+  font-size:.8rem;color:#333;background:#fff;
+}
+/* .clr-field is the wrapper wbeColoris puts around the bound input */
+.tkfg .tkfg-color-row .clr-field { flex:0 0 130px; }
+.tkfg .tkfg-color-val   { width:100%;font-family:monospace; }
+.tkfg .tkfg-color-label { flex:2;min-width:120px; }
+.tkfg .tkfg-color-del {
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:transparent;border:none;cursor:pointer;color:#999;
+  font-size:15px;line-height:1;
+}
+.tkfg .tkfg-color-del:hover { color:#c0392b;font-weight:bold; }
+
+/* ── Responsive: narrow admin viewports ──────────────────────────────────────
+   Everything above assumes a wide desktop panel. Below ~900px the fixed 220px
+   label column (and a few other fixed-width flex items) stop fitting next to
+   their control and start overflowing instead of wrapping. Stack label-above-
+   control there; below ~520px also stack the toolbar-row label and let the
+   multi-field style/color rows wrap onto multiple lines. */
+@media (max-width: 900px) {
+  .tkfg .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .tkfg .setting-row label {
+    width: auto;
+    text-align: left;
+    flex-shrink: 1;
+  }
+  .tkfg .setting-control { width: 100%; flex-wrap: wrap; }
+
+  .tkfg .tkfg-sub > summary { flex-wrap: wrap; row-gap: 2px; }
+  .tkfg .tkfg-sub-hint { margin-left: 0; flex-basis: 100%; }
+
+  .tkfg .tkfg-style-row,
+  .tkfg .tkfg-color-row { flex-wrap: wrap; }
+  .tkfg .tkfg-style-title,
+  .tkfg .tkfg-style-class,
+  .tkfg .tkfg-color-label { min-width: 100px; }
+
+  .tkfg .preview-header { flex-wrap: wrap; gap: 6px; }
+}
+
+@media (max-width: 520px) {
+  .tkfg .row-wrapper { flex-direction: column; align-items: stretch; gap: 4px; }
+  .tkfg .row-label { width: auto; }
+
+  .tkfg .tkfg-actions { flex-direction: column; align-items: stretch; }
+  .tkfg .tkfg-actions-left { flex-wrap: wrap; }
+
+  .tkfg .tkfg-style-row .tkfg-style-title,
+  .tkfg .tkfg-style-row .tkfg-style-class,
+  .tkfg .tkfg-color-row .tkfg-color-label,
+  .tkfg .tkfg-color-row .clr-field { flex: 1 1 100%; }
+}

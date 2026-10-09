@@ -1,0 +1,64 @@
+/**
+ * tinymce_wbce — editor_default.css
+ * Fallback content CSS for TinyMCE editor area.
+ * Used when no editor.css is found in the active template.
+ * Override by placing editor.css in templates/{your_template}/
+ * @author  SC-Peet
+ * @license GNU GPL2
+ */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333333;
+    margin: 8px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    margin: 0.5em 0;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.6em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1.1em; }
+
+p  { margin: 0 0 0.8em 0; }
+a  { color: #0066cc; }
+
+ul, ol {
+    margin: 0 0 0.8em 1.5em;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td, table th {
+    border: 1px solid #cccccc;
+    padding: 4px 8px;
+}
+
+table th {
+    background-color: #eeeeee;
+    font-weight: bold;
+}
+
+img { max-width: 100%; height: auto; }
+
+blockquote {
+    border-left: 3px solid #cccccc;
+    margin: 0.5em 0;
+    padding: 0.2em 1em;
+    color: #666666;
+}
+
+pre, code {
+    font-family: monospace;
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+}

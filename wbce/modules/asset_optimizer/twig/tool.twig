@@ -1,0 +1,82 @@
+{#
+    asset_optimizer/twig/tool.twig — layout only, all data comes from tool.php.
+
+    Common:
+      MODULE_NAME     tool title
+      BASE            tool URL (…/tool.php?tool=asset_optimizer)
+      TAB             'settings' | 'cache' | 'docs'
+      WARNINGS        [ {type: 'warning'|'info', text}, … ]
+      FTAN            hidden FTAN <input> (raw)
+      FTAN_GET        FTAN as "formtoken=…" for GET links
+
+    Settings tab:
+      PINNED / LEGACY_DEBUG / QUEUE_DEBUG
+      DIR_VALUE / DIR_DEFAULT / DIR_CUSTOM / DIR_LOCKED
+      SWITCHES_MINIFY / SWITCHES_BUST
+                      [ {const, group, on, source, locked, forced}, … ]
+
+    Cache tab:
+      ASSETS   {bundles:[…], files:[…], totals:{…}, exists}
+      FONTS    {files:[…], count, bytes, exists}
+      PATHS / CHECKS
+
+    Docs tab:
+      MD_OK        bool — MarkdownWbce present
+      DOC_SUBTABS  [ {key, label, sel}, … ]
+      DOC_KEY      active ?doc key
+      DOC_FILE     repo-relative path of the active doc
+      DOC          {html, toc, title, langs, needsCode, needsFileTree} | null
+#}
+<section class="cp-main asset-optimizer-tool">
+    <div id="message-area"></div>
+
+    <nav class="cp-tabs tabs-right">
+        <ul>
+            <li class="area-title"><span><label>{{ TOOL_ICON|raw }} &nbsp;<span>{{ TOOL_NAME|e }}</span></label></span></li>
+            <li{{ TAB == 'settings' ? ' class="actionSel"'|raw : '' }}>
+                <a class="tab{{ TAB == 'settings' ? ' sel' : '' }}" href="{{ BASE }}">
+                    <i class="fa fa-sliders"></i> {{ L_('TXT:TAB_SETTINGS') }}
+                </a>
+            </li>
+            <li{{ TAB == 'cache' ? ' class="actionSel"'|raw : '' }}>
+                <a class="tab{{ TAB == 'cache' ? ' sel' : '' }}" href="{{ BASE }}&tab=cache">
+                    <i class="fa fa-database"></i> {{ L_('TXT:TAB_CACHE') }}
+                </a>
+            </li>
+            <li{{ TAB == 'docs' ? ' class="actionSel"'|raw : '' }}>
+                <a class="tab{{ TAB == 'docs' ? ' sel' : '' }}" href="{{ BASE }}&tab=docs">
+                    <i class="fa fa-book"></i> {{ L_('TXT:TAB_DOCS') }}
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    {% if TAB == 'docs' %}
+    <nav class="cp-subtabs">
+        <ul>
+            {% for st in DOC_SUBTABS %}
+            <li><a href="{{ BASE }}&tab=docs&doc={{ st.key }}"{{ st.sel ? ' class="sel"'|raw : '' }}>{{ st.label|e }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    <div class="cp-pane-inlay">
+
+        {% for w in WARNINGS %}
+        <div class="alertbox_{{ w.type }}">
+            <span class="signal"><i class="fa fa-{{ w.type == 'info' ? 'info-circle' : 'exclamation-triangle' }}"></i></span>
+            <p>{{ w.text|e }}</p>
+        </div>
+        {% endfor %}
+
+        {% if TAB == 'cache' %}
+            {% include 'cache.twig' %}
+        {% elseif TAB == 'docs' %}
+            {% include 'docs.twig' %}
+        {% else %}
+            {% include 'settings.twig' %}
+        {% endif %}
+
+    </div>{# /.cp-pane-inlay #}
+</section>{# /.cp-main #}

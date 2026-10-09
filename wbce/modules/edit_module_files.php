@@ -14,9 +14,6 @@
 // include configuration file
 require '../config.php';
 
-// include edit area wrapper script
-require_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
-
 // include functions to edit the optional module CSS files (frontend.css, backend.css)
 require_once WB_PATH . '/framework/module.functions.php';
 
@@ -57,6 +54,17 @@ echo registerEditArea ('code_area','css',true,'both',true,true,600,450,$toolbar 
 
 // check if action is: save or edit
 if ($_action == 'save') {
+    // CSRF protection - the display form below carries the token
+    if (!$admin->checkFTAN()) {
+        die('Invalid or expired form token - script stopped.');
+    }
+
+    // only frontend.css / backend.css may ever be written here, same
+    // whitelist the display branch already uses to offer them
+    if (!in_array($_edit_file, array('frontend.css', 'backend.css'), true)) {
+        die('Invalid arguments passed - script stopped.');
+    }
+
     // SAVE THE UPDATED CONTENTS TO THE CSS FILE
     $css_content = '';
     if (isset($_POST['css_data']) && strlen($_POST['css_data']) > 0) {
@@ -108,6 +116,7 @@ if ($_action == 'save') {
             <input type="hidden" name="mod_dir" value="<?php echo $mod_dir; ?>" />
             <input type="hidden" name="edit_file" value="<?php echo $css_file; ?>" />
             <input type="hidden" name="action" value="save" />
+            <?php echo $admin->getFTAN(); ?>
             <textarea id="code_area" name="css_data" cols="100" rows="25" wrap="VIRTUAL" style="margin:2px;width:100%;">
             <?php echo htmlspecialchars($css_content); ?>
             </textarea>

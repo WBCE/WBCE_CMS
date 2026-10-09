@@ -771,3 +771,4 @@ $SIGNAL['RM_PATH_NOT_FOUND']         = 'Pad `%s` bestaat niet.';
 $SIGNAL['RM_PATH_NOT_READABLE']      = 'Map `%s` bestaat maar is niet leesbaar.';
 $SIGNAL['RM_PATH_COULD_NOT_REMOVE']  = '`%s` kon niet worden verwijderd (rechten, vergrendeld of andere fout).';
 $SIGNAL['RM_PATH_PERMISSION_DENIED'] = 'Toegang geweigerd bij `%s`.';
+$SIGNAL['RM_DIR_COULD_NOT_REMOVE']   = 'Map `%s` of een bestand daarin kon niet worden verwijderd.';

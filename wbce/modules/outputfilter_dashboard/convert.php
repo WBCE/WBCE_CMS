@@ -1,22 +1,20 @@
 <?php
 
-/*
-convert.php
-*/
-
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU General Public License, Version 3
- * @platform        WBCE 1.x
- * @requirements    PHP 7.4 - 8.2
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -43,7 +41,7 @@ convert.php
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 
 // obtain module directory
-$mod_dir = basename(dirname(__FILE__));
+$mod_dir = basename(__DIR__);
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
 // include module.functions.php
@@ -53,7 +51,7 @@ include_once(WB_PATH . '/framework/module.functions.php');
 if (!include(get_module_language_file($mod_dir))) return;
 
 // load outputfilter-functions
-require_once(dirname(__FILE__).'/functions.php');
+require_once(__DIR__.'/functions.php');
 
 
 // This file will be included from tool.php
@@ -65,7 +63,7 @@ require_once(WB_PATH.'/framework/functions.php');
 
 global $LANG;
 $convert_ok = FALSE;
-$plugin_dir = dirname(__FILE__).'/plugins/';
+$plugin_dir = __DIR__.'/plugins/';
 
 $text_failed = $LANG['MOD_OPF']['TXT_CONVERT_FAILED_PLUGIN'];
 

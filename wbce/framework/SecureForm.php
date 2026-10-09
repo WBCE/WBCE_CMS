@@ -536,7 +536,8 @@ class SecureForm
 
                 if (preg_match('/.*(?<!\{).*(\d:\{.*;\}).*(?!\}).*/', $return_value)) {
                     // if value is a serialized array, then deserialize it
-                    $return_value = unserialize($return_value);
+                    // Hardening: block PHP Object Injection via unserialize()
+                    $return_value = unserialize($return_value, ['allowed_classes' => false]);
                 }
             }
         }

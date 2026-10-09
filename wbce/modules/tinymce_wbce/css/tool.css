@@ -1,0 +1,123 @@
+/**
+ * tinymce_wbce — css/tool.css
+ * Admin tool styling — presentation only, no logic.
+ * Configurator-specific styles live in css/toolbar-configurator.css.
+ * @author  SC-Peet
+ * @license GNU GPL2
+ */
+
+/* Panels — visibility is driven by the WBCE tab bar (see js/tool-tabs.js) */
+.tmce-tabpanel--hidden {
+    display: none;
+}
+
+/* Action bar (save / cancel buttons below the tab panels) */
+.tmce-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #dee2e6;
+    margin-top: 10px;
+}
+
+.tmce-btn-save {
+    background: #3c6ea5;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 0 22px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    height: 36px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.tmce-btn-save:hover { background: #2d5585; }
+
+.tmce-btn-cancel {
+    background: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    box-sizing: border-box;
+    line-height: 1;
+    vertical-align: middle;
+}
+.tmce-btn-cancel:hover { background: #5a6268; color: #fff; text-decoration: none; }
+
+/* ── editor.css scan list (rendered per-preset, next to editor_css_source) ── */
+.tmce-editorcss-list {
+    margin: 4px 0 0;
+    padding-left: 18px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.tmce-editorcss-list code {
+    background: rgba(127, 127, 127, .12);
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+/* Per-preset hint under the content-theme select */
+.tmce-editorcss-note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #8a6d00;
+}
+.tmce-editorcss-note .tmce-editorcss-list { color: inherit; }
+
+/* ── Preset export/import (#2) ────────────────────────────────────────────── */
+.tmce-badge-export {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+.tmce-preset-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px;
+}
+.tmce-btn-import {
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 12px;
+    border: 1px solid var(--ws-border, #ccc);
+    border-radius: 5px;
+    color: #292929;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(127, 127, 127, .08);
+}
+.tmce-btn-import:hover { background: rgba(127, 127, 127, .16); }
+
+/* Rename/Delete/Reset badges in the accordion head */
+.tmce-badge-rename, .tmce-badge-reset { cursor: pointer; }
+.tmce-badge-delete { cursor: pointer; }
+.tmce-badge-delete:hover { background: #fdecec; color: #d33; border-color: #f0b4b4; }
+
+/* Import id-collision dialog: MicroModal (include/micromodal/modal.css),
+   themed via include/wbeSelect/wbeSelect.css's --ws-* variables — same stack
+   as the tinymce_wbce link plugin's dialog. No module-specific CSS needed. */
+.tmce-cfg-section { padding: 10px 24px;}
+
+/* ── Responsive: narrow admin viewports ── */
+@media (max-width: 900px) {
+  .tmce-preset-tools { flex-wrap: wrap; }
+  .tmce-actions { flex-wrap: wrap; }
+}
+@media (max-width: 520px) {
+  .tmce-cfg-section { padding: 10px 12px; }
+}

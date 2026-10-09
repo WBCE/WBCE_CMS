@@ -1,0 +1,190 @@
+/**
+ * tinymce_wbce — tinymce_backend.css
+ * Compact toolbar for WBCE backend — calibrated to match CKEditor button size.
+ * CKE reference: ~18px icons, ~28px button height, 2px gaps
+ * @author  SC-Peet
+ * @license GNU GPL2
+ */
+
+/* Base icon variable — 16px is native, keep it for crisp rendering */
+.tox.tox-tinymce {
+    --tox-private-base-value: 16px;
+}
+
+/* Editor header */
+.tox .tox-editor-header {
+    padding: 2px 0 !important;
+}
+
+/* Toolbar rows */
+.tox .tox-toolbar,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar__primary {
+    gap: 0px !important;
+    padding: 0 2px !important;
+    min-height: unset !important;
+}
+
+/* Button groups */
+.tox .tox-toolbar__group {
+    gap: 0px !important;
+    padding: 0 3px !important;
+}
+
+/* Individual buttons — flex for proper icon centering */
+.tox .tox-tbtn {
+    width:      28px !important;
+    height:     28px !important;
+    min-width:  28px !important;
+    margin:     1px 0 !important;
+    padding:    0 !important;
+    border-radius: 2px !important;
+    display:    inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow:   visible !important;
+}
+
+/* Icon wrapper — also flex centered */
+.tox .tox-tbtn__icon-wrap {
+    display:    inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow:   visible !important;
+}
+
+/* Keep SVG at native 16px — crisp rendering 
+.tox .tox-tbtn svg {
+    width:   16px !important;
+    height:  16px !important;
+    display: block !important;
+    overflow: visible !important;
+}
+*/
+
+/* Dropdown (Paragraph/Blocks) */
+.tox .tox-tbtn--select {
+    width:     auto !important;
+    min-width: 80px !important;
+    max-width: 110px !important;
+    padding:   0 5px !important;
+    font-size: 13px !important;
+    margin: 0 2px !important;
+}
+
+.tox .tox-tbtn__select-label {
+    font-size: 13px !important;
+}
+
+/* Separator */
+.tox .tox-toolbar__group:not(:last-of-type) {
+    border-right:  1px solid rgba(34,47,62,.15) !important;
+    margin-right:  1px !important;
+}
+
+/* Fullscreen — z-index above the WBCE_Flat navigation bar (z-index: 3000) */
+.tox.tox-tinymce.tox-fullscreen {
+    z-index: 3500 !important;
+}
+.tox-fullscreen .tox.tox-tinymce-aux,
+.tox-fullscreen ~ .tox.tox-tinymce-aux {
+    z-index: 3501 !important;
+}
+
+/* Dialog backdrop — higher contrast, editor no longer shines through */
+.tox .tox-dialog-wrap__backdrop {
+    background-color: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* -------------------------------------------------------
+ * Dialog overrides for light skins only (oxide, tinymce-5)
+ * The class is set via JS in include.php (SkinLoaded)
+ * ------------------------------------------------------- */
+
+/* The dialog itself — white background, clearly readable */
+html.wbce-tmce-skin-light .tox .tox-dialog {
+    background-color: #ffffff !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,.35) !important;
+    border: 1px solid #c8cdd3 !important;
+}
+
+/* Dialog Header */
+html.wbce-tmce-skin-light .tox .tox-dialog__header {
+    background-color: #f4f6fb !important;
+    border-bottom: 1px solid #dde2ea !important;
+    padding: 12px 16px !important;
+}
+html.wbce-tmce-skin-light .tox .tox-dialog__title {
+    font-size: 15px !important;
+    font-weight: bold !important;
+    color: #222 !important;
+}
+
+/* Dialog Body */
+html.wbce-tmce-skin-light .tox .tox-dialog__body {
+    background-color: #ffffff !important;
+    color: #222 !important;
+}
+html.wbce-tmce-skin-light .tox .tox-dialog__body-nav-item {
+    color: #444 !important;
+}
+html.wbce-tmce-skin-light .tox .tox-dialog__body-nav-item--active {
+    color: #3c6ea5 !important;
+    border-bottom: 2px solid #3c6ea5 !important;
+}
+
+/* Dialog Footer */
+html.wbce-tmce-skin-light .tox .tox-dialog__footer {
+    background-color: #f4f6fb !important;
+    border-top: 1px solid #dde2ea !important;
+    padding: 10px 16px !important;
+}
+
+/* Input-Felder im Dialog */
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-textfield,
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-textarea,
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-selectfield select {
+    background-color: #fff !important;
+    border: 1px solid #c8cdd3 !important;
+    color: #222 !important;
+}
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-textfield:focus,
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-textarea:focus {
+    border-color: #3c6ea5 !important;
+    box-shadow: 0 0 0 2px rgba(60,110,165,.15) !important;
+}
+
+/* Labels im Dialog */
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-label,
+html.wbce-tmce-skin-light .tox .tox-dialog .tox-form__group label {
+    color: #444 !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+}
+
+/* -------------------------------------------------------
+ * Dark-Skin Fix: Icon-Buttons in Dialogen (z.B. Upload-
+ * Button im Media/Image-Dialog) — SVG-Icons sichtbar
+ * TinyMCE-Bug: fill:currentColor erbt falsche Farbe
+ * ------------------------------------------------------- */
+html:not(.wbce-tmce-skin-light) .tox .tox-dialog .tox-button--icon svg,
+html:not(.wbce-tmce-skin-light) .tox .tox-dialog .tox-button:has(.tox-icon:only-child) svg {
+    fill: #ffffff !important;
+}
+html:not(.wbce-tmce-skin-light) .tox .tox-dialog .tox-button--icon:hover svg,
+html:not(.wbce-tmce-skin-light) .tox .tox-dialog .tox-button:has(.tox-icon:only-child):hover svg {
+    fill: #ffffff !important;
+}
+
+/* -------------------------------------------------------
+ * Dark skin fix: format dropdown (paragraph/headings)
+ * Preview texts are too dark in dark mode
+ * ------------------------------------------------------- */
+html:not(.wbce-tmce-skin-light) .tox .tox-collection--list .tox-collection__item-label,
+html:not(.wbce-tmce-skin-light) .tox .tox-collection--list .tox-collection__item-label * {
+    color: #ffffff !important;
+}
+html:not(.wbce-tmce-skin-light) .tox .tox-collection--list .tox-collection__item--active .tox-collection__item-label,
+html:not(.wbce-tmce-skin-light) .tox .tox-collection--list .tox-collection__item--active .tox-collection__item-label * {
+    color: #ffffff !important;
+}

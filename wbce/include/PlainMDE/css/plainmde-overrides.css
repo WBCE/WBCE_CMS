@@ -1,0 +1,16 @@
+/**
+ * include/PlainMDE/css/plainmde-overrides.css
+ *
+ * Intentionally empty by default. Loaded after plainmde.css, so any rule
+ * added here wins without needing !important. The clean way to retheme is
+ * to redeclare plainmde.css's custom properties on .PlainMDE, e.g.:
+ *
+ *   .PlainMDE {
+ *       --pmde-accent: #0f766e;
+ *       --pmde-font: 'Inter', sans-serif;
+ *   }
+ *
+ * Only fall back to overriding a concrete selector here if something isn't
+ * exposed as a variable yet — and consider adding the variable to
+ * plainmde.css instead, so the next project doesn't have to repeat it.
+ */

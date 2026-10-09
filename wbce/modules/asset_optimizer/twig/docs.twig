@@ -1,0 +1,36 @@
+{# asset_optimizer — Documentation tab. Included by tool.twig.
+   MD rendered inline via MdReaderHelper::renderForEmbed() — no popup.
+   The cp-subtabs nav lives in tool.twig; this file is the content area. #}
+
+{% if not MD_OK %}
+
+    <div class="alertbox_info">
+        <span class="signal"><i class="fa fa-info-circle"></i></span>
+        <p>{{ L_('TXT:DOC_UNAVAILABLE') }}
+           <code>{{ DOC_FILE|e }}</code></p>
+    </div>
+
+{% elseif DOC is null %}
+
+    <div class="alertbox_warning">
+        <span class="signal"><i class="fa fa-exclamation-triangle"></i></span>
+        <p>{{ L_('TXT:DOC_MISSING')|format(DOC_FILE)|e }}</p>
+    </div>
+
+{% else %}
+
+    <div class="mdr-embed{{ DOC.toc ? '' : ' mdr-embed--notoc' }}">
+        {% if DOC.toc %}
+        <aside class="mdr-embed-toc">
+            <div class="mdr-embed-toc-h">{{ L_('TXT:DOC_ON_THIS_PAGE') }}</div>
+            {{ DOC.toc|raw }}
+        </aside>
+        {% endif %}
+
+        <article class="markdown-body"><p class="ao-doc-source">
+                <i class="fa fa-file-code-o"></i> {{ L_('TXT:DOC_SOURCE') }}
+                <code>{{ DOC_FILE|e }}</code>
+            </p>{{ DOC.html|raw }}</article>
+    </div>
+
+{% endif %}

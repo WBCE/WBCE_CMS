@@ -1,22 +1,19 @@
 <?php
-
-/*
-upgrade.php
-*/
-
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (https://www.wbEasy.de), Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (https://www.wbEasy.de), 2016-2023 Martin Hecht (mrbaseman)
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU General Public License, Version 3
- * @platform        WBCE 1.x
- * @requirements    PHP 7.4 - 8.2
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -41,55 +38,130 @@ upgrade.php
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 
 // obtain module directory
-$mod_dir = basename(dirname(__FILE__));
-require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
+$mod_dir = basename(__DIR__);
+require WB_PATH.'/modules/'.$mod_dir.'/info.php';
 
 // include module.functions.php
-include_once(WB_PATH . '/framework/module.functions.php');
+include_once WB_PATH . '/framework/module.functions.php';
 
 // include the module language file depending on the backend language of the current user
 if (!include(get_module_language_file($mod_dir))) return;
 
 // load outputfilter-functions
-require_once(dirname(__FILE__).'/functions.php');
+require_once __DIR__.'/functions.php';
 
 // obtain module directory
-$mod_dir = basename(dirname(__FILE__));
-require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
+$mod_dir = basename(__DIR__);
+require WB_PATH.'/modules/'.$mod_dir.'/info.php';
 
 // include module.functions.php
-include_once(WB_PATH . '/framework/module.functions.php');
+include_once WB_PATH . '/framework/module.functions.php';
 
 // load outputfilter-functions
-require_once(dirname(__FILE__)."/functions.php");
+require_once __DIR__."/functions.php";
 
 if(is_dir(WB_PATH.'/temp')){
     opf_io_mkdir(WB_PATH.'/temp/opf_plugins');
 }
 
-opf_io_unlink($mod_dir.'/debug_config.php');
-opf_io_unlink($mod_dir.'/config_init.php');
-opf_io_unlink($mod_dir.'/precheck.php');
+$database->query("DROP TABLE IF EXISTS `{TP}mod_outputfilter_dashboard_settings`");
 
-//if(file_exists(WB_PATH.'/modules/practical_module_functions/pmf.php')){
-//    // load Practical Module Functions
-//    include_once(WB_PATH.'/modules/practical_module_functions/pmf.php');
-//    $opf = pmf_init(0, basename(dirname(__FILE__)));
+
+// ── Remove what earlier versions installed and this one no longer ships ─────
 //
-//    // unregister this module since we do not use pmf anymore
-//    pmf_mod_unregister($opf, basename(dirname(__FILE__)));
+// One list, one call each, using the core's removePath() instead of this
+// module's opf_io_unlink()/opf_io_rmdir() and the older rm_full_dir(): it
+// handles a single file and a whole tree alike, and it returns a signal saying
+// what actually happened rather than a bare bool nobody looked at.
 //
-//}
+// This has to run BEFORE the plugin_install.php loop further down, which
+// executes every plugin_install.php it finds under plugins/. As long as an
+// upgraded site still had plugins/cachecontrol/ on disk, that loop re-created
+// the "Cache Control" filter the rename above had just migrated away.
+//
+// Deliberately NOT in this list: config_init.php and precheck.php. Earlier
+// versions of this file tried to delete both, but passed $mod_dir -- the bare
+// directory *name*, not a path -- so the target resolved against the admin
+// script's working directory and never matched. Both are still shipped by this
+// module; that broken path was the only thing stopping the upgrade from
+// deleting two live files.
+$obsoletePaths = [
+    // Renamed when the tool.php family was introduced (1.6.0)
+    '/debug_config.php',            // no replacement
+    '/debug_conf.php',              // no replacement
+    '/add_filter.php',              // -> tool_add_filter.php
+    '/edit_filter.php',             // -> tool_edit_filter.php
+    '/css.php',                     // -> tool_edit_css.php
+    '/ajax/ajax_dragdrop.js',       // -> ajax/ajax.js
+    '/templates',                   // -> twig/, reworked to Twig
 
-opf_db_run_query("DROP TABLE IF EXISTS `{TP}mod_outputfilter_dashboard_settings`");
+    // 1.7.0: assets collected under assets/, bundled UI libraries dropped
+    '/backend.css',                 // -> assets/backend.css
+    '/backend_body.js',             // -> assets/backend_body.js
+    '/ajax/jquery.collapser.min.js',// -> opfInitShortDescriptions()
+    '/dialog',                      // own popup dialogs -> Alerts/toasts
+    '/images',                      // -> assets/images/
 
+    // 1.7.0: "Cache Control" became the "Assets Cache Busting" plugin
+    '/plugins/cachecontrol',
 
-opf_io_rmdir(dirname(__FILE__).'/naturaldocs_txt');
+    // Superseded documentation
+    '/docs',                        // generated phpDocumentor tree -> documentation/
+    '/naturaldocs_txt',             // generator input for that tree
+    '/readme',                      // screenshots -> documentation/images/
+    '/CHANGELOG',                   // -> CHANGELOG.md
+    '/README.txt',                  // -> README.md
+    '/licenses.txt',                // -> LICENSE.md
+    '/FTAN_SUPPORTED',              // marker file; FTAN has been core for years
+];
 
+// removePath()'s signals are translated under the SIGNAL namespace. They are
+// read through L_() rather than the raw $SIGNAL array on purpose: upgrade.php is
+// require'd from inside upgrade_module() and therefore runs in function scope,
+// where a global array is only visible if it was imported -- and that function
+// imports $database, $admin and $MESSAGE, not $SIGNAL. L_() reads the Lang
+// registry, which is static and does not care about scope at all.
+foreach ($obsoletePaths as $sRelPath) {
+    $sSignal = removePath(__DIR__ . $sRelPath);
+
+    // "Not found" is the normal outcome -- on a fresh install and on every
+    // upgrade after the first. Only real removals and real problems are worth
+    // a line of output.
+    if ($sSignal === 'RM_PATH_NOT_FOUND') {
+        continue;
+    }
+
+    echo L_("SIGNAL['$sSignal']", $mod_dir . $sRelPath) . '<br />';
+}
+
+// ── WBCE 1.7.0: rename "Cache Control" -> "Assets Cache Busting" ────────────
+// Rename the existing row in place, BEFORE plugin_install.php re-registers
+// below under the new name/plugin/funcname. opf_register_filter() looks up
+// an existing row by `name` when no id is given (as is always the case from
+// plugin_install.php); renaming here first means it finds this row and takes
+// the UPDATE path, which preserves `active` and all other settings
+// automatically. A plain name change without this step would instead insert
+// a brand new row (active=1 default) and orphan the old one, silently
+// discarding whatever on/off state the admin had set.
+$database->query(
+    "UPDATE `{TP_OPFD}` SET `name`=?, `plugin`=? WHERE `name`=? AND `plugin`=?",
+    ['Assets Cache Busting', 'opf_assets_cache_busting', 'Cache Control', 'cachecontrol']
+);
+if($database->hasError()) {
+    error_log('outputfilter_dashboard upgrade: rename Cache Control -> Assets Cache Busting failed: '.$database->getError());
+}
+// The old Settings keys (opf_cache_control / opf_cache_control_be) were
+// derived from the old name and are now orphaned -- opf_register_filter()'s
+// own opf_set_active() call below will already have written fresh
+// opf_assets_cache_busting / _be keys with the preserved active value.
+if (class_exists('Settings')) {
+    Settings::delete('opf_cache_control');
+    Settings::delete('opf_cache_control_be');
+}
 
 // run install scripts of plugin filters  - they should start upgrade if already installed
-foreach( preg_grep('/\/plugin_install.php/', opf_io_filelist(dirname(__FILE__).'/plugins/')) as $installer){
-    require($installer);
+foreach( preg_grep('/\/plugin_install.php/', opf_io_filelist(__DIR__.'/plugins/')) as $installer){
+    require $installer;
 }
 
 
@@ -102,9 +174,9 @@ if(!defined('WB_INSTALLER')){
         if(strpos($installer,'outputfilter_dashboard')===FALSE){
             $contents = file_get_contents($installer);
             if(preg_match('/opf_register_filter/',$contents)){
-                                if (strpos($installer,'droplets')===FALSE) {
-                require($installer);
-                                }
+                if (strpos($installer,'droplets')===FALSE) {
+                    require $installer;
+                }
             }
         }
     }
@@ -151,18 +223,8 @@ if(is_array($filters)) {
     }
 }
 
-// Stefek, upgrade since 1.6.0
-
-# templates were reworked to Twig TE and are located in /twig/
-rm_full_dir(__DIR__ . '/templates/');
-
-# these files were renamed to be grouped with tool.php
-opf_io_unlink(__DIR__.'/debug_conf.php');        // new name: no replacement
-opf_io_unlink(__DIR__.'/add_filter.php');        // new name: tool_add_filter.php
-opf_io_unlink(__DIR__.'/edit_filter.php');       // new name: tool_edit_filter.php
-opf_io_unlink(__DIR__.'/css.php');               // new name: tool_edit_css.php
-opf_io_unlink(__DIR__.'/ajax/ajax_dragdrop.js'); // new name: ajax.js
-
+// Renaming filters, since 1.6.0 (the file and directory removals that used to
+// sit here moved up into the single $obsoletePaths pass near the top)
 
 $aFilters = array(
     // OLD name        // NEW name
@@ -183,7 +245,7 @@ foreach($aFilters as $old=>$new){
         // new filter name already in the DB
         if(in_array($new,$aFilterNames)){
             // delete the row with old filter name
-            $database->delRow('{TP_OPFD}', 'name', $old);
+            $database->deleteRow('{TP_OPFD}', 'name', $old);
         }
     }
 }
@@ -210,10 +272,12 @@ $removeOpfMods = [
 ];
 foreach ($removeOpfMods as $mod) {
     $database->deleteRow('{TP}addons', 'directory', $mod);
-    $modPath = WB_PATH . '/modules/' . $mod;
-    if (is_dir($modPath)) {
-        opf_io_rmdir($modPath);
+
+    $sSignal = removePath(WB_PATH . '/modules/' . $mod);
+    if ($sSignal === 'RM_PATH_NOT_FOUND') {
+        continue;   // never installed on this site -- nothing to report
     }
+    echo L_("SIGNAL['$sSignal']", 'modules/' . $mod) . '<br />';
 }
 
 // ── WBCE 1.7.0: migrate opf_wblink setting key → opf_pagelink ───────────────

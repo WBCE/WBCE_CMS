@@ -40,7 +40,6 @@ $remote = $settings['remote_id'];
 
 
 
-require_once WB_PATH.'/include/editarea/wb_wrapper_edit_area.php';
 require_once WB_PATH.'/framework/module.functions.php';
 
 $backlink = ADMIN_URL.'/pages/modify.php?page_id='.(int)$page_id;

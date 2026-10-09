@@ -1,0 +1,245 @@
+/* layout/filetree.css — visual FileTree renderer
+ * Vendored from modules/tiptap_editor/assets/filetree.css — keep in sync
+ * manually if the original changes (except the --ft-* dark-mode block
+ * below and the toolbar padding, which are MarkdownWbce-only — the tiptap
+ * editor has no theme switcher and no code toolbar). Load alongside
+ * layout/filetree.js. Covers FileTree and PageTree, including the page
+ * visibility icons and the inline {menulink} marker.
+ *
+ * --mdr-* tokens come from layout/style.css (always loaded first) — same
+ * light/dark source of truth as the rest of the reader.
+ */
+
+.file-tree-container {
+    --ft-color-bg:      #f8fafc;
+    --ft-color-comment: #94a3b8;
+    --ft-line-color:    #a9d6e8;
+    --ft-tree-indent:   28px;
+    --ft-line-style:    solid;
+
+    position: relative;
+    background-color: var(--mdr-bg-subtle, var(--ft-color-bg));
+    border: 1px solid var(--mdr-border, #e2e8f0);
+    border-radius: 6px;
+    /* Extra top padding clears the .mdr-code-toolbar badge/copy button
+       (see layout/filetree.js), which sits absolutely positioned at
+       top:.5rem — same toolbar the reader's regular code blocks use. */
+    padding: 44px 20px 20px;
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.treeview-root {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: monospace, courier;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.treeview-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    height: 24px;
+    position: relative;
+}
+
+.tree-indent-wrapper {
+    display: flex;
+    height: 100%;
+    align-self: stretch;
+}
+
+.tree-line-cell {
+    width: var(--ft-tree-indent);
+    height: 100%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Vertikale Linie │ */
+.line-vertical::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px var(--ft-line-style) var(--ft-line-color);
+}
+
+/* T-Stück ├── */
+.line-t::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px var(--ft-line-style) var(--ft-line-color);
+}
+.line-t::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 12px;
+    width: 14px;
+    border-top: 1px var(--ft-line-style) var(--ft-line-color);
+}
+
+/* Eck-Stück └── */
+.line-corner::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0;
+    height: 13px;
+    border-left: 1px var(--ft-line-style) var(--ft-line-color);
+}
+.line-corner::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 12px;
+    width: 14px;
+    border-top: 1px var(--ft-line-style) var(--ft-line-color);
+}
+
+/* Icons */
+.tree-icon {
+    margin-right: 8px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    user-select: none;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.tree-name {
+    font-weight: 500;
+    margin-right: 12px;
+    color: var(--mdr-fg-strong, #334155);
+}
+
+/* Dark-mode overrides for the two --ft-* vars that don't already fall back
+   to an --mdr-* token above (comment color, connector-line color) — same
+   :root[data-theme] / prefers-color-scheme sources as layout/style.css. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .file-tree-container {
+        --ft-color-comment: #6e7681;
+        --ft-line-color:    #30363d;
+    }
+}
+:root[data-theme="dark"] .file-tree-container {
+    --ft-color-comment: #6e7681;
+    --ft-line-color:    #30363d;
+}
+
+.tree-name--folder {
+    font-weight: 700;
+}
+
+.tree-comment {
+    font-style: italic;
+    color: var(--ft-color-comment);
+    white-space: pre;
+}
+
+/* Ordner (Türkis) */
+.icon-folder {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232ca58d'%3E%3Cpath d='M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a3 3 0 0 1 2.122.879l1.72 1.72a.75.75 0 0 0 .53.22h5.749A3 3 0 0 1 22.5 7v3.146a4.5 4.5 0 0 0-3-1.146h-15a4.5 4.5 0 0 0-3 1.146Z'/%3E%3C/svg%3E");
+}
+
+/* Standard-Datei (Grau) */
+.icon-file {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Cpath fill='%23f8fafc' d='M14.25 2.625a.75.75 0 0 0-1.5 0v3.75c0 .621.504 1.125 1.125 1.125h3.75a.75.75 0 0 0 0-1.5h-3.375V2.625Z'/%3E%3C/svg%3E");
+}
+
+/* PHP-Datei (Violett) */
+.icon-php {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777bb4'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Cpath fill='%23ffffff' d='M10 11.5l-2 2 2 2m4-4l2 2-2 2'/%3E%3C/svg%3E");
+}
+
+/* JavaScript-Datei (Gelb) */
+.icon-js {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eab308'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Cpath fill='%23000000' d='M13 16.5v-1h1.5v-3H13v-1h2.5v5H13z'/%3E%3C/svg%3E");
+}
+
+/* CSS-Datei (Blau) */
+.icon-css {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Cpath fill='%23ffffff' d='M9.5 12h5v1h-5v-1zm0 2h5v1h-5v-1z'/%3E%3C/svg%3E");
+}
+
+/* SQL-Datei (Orange) */
+.icon-sql {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f97316'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3C/svg%3E");
+}
+
+/* HTML-Datei (Rot/Orange) */
+.icon-html {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e44d26'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3C/svg%3E");
+}
+
+/* JSON-Datei (Grün) */
+.icon-json {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c55e'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3C/svg%3E");
+}
+
+/* MD-Datei (Grau-Blau) */
+.icon-md {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23475569'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3C/svg%3E");
+}
+
+/* TXT-Datei (Grau) */
+.icon-txt {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3C/svg%3E");
+}
+
+/* Seite — PageTree-Knoten ohne Kinder (Violett) */
+.icon-page {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237c3aed'%3E%3Cpath d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Cpath fill='%23ffffff' d='M7.5 10.5h9v1.5h-9zM7.5 13.5h9V15h-9zM7.5 16.5h6V18h-6z'/%3E%3C/svg%3E");
+}
+
+/* Seitengruppe — PageTree-Knoten mit Kindern (Violett) */
+.icon-pagegroup {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='15' width='6' height='6' rx='1.5'/%3E%3Crect x='15' y='15' width='6' height='6' rx='1.5'/%3E%3Crect x='9' y='3' width='6' height='6' rx='1.5'/%3E%3Cpath d='M6 15v-1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1M12 9v3'/%3E%3C/svg%3E");
+}
+
+/* Seiten-Sichtbarkeit — {public} {hidden} {private} {registered} {none}
+ * Same artwork and colours as the page settings dropdowns: copied from
+ * include/wbeSelect/icons/<state>.svg (Iconify wrapper attributes dropped,
+ * only viewBox + path + fill kept). Inlined on purpose — this file is meant to
+ * be vendorable (modules/MarkdownWbce/layout/ has its own copy), so it must not
+ * depend on a relative path into another component's asset folder. If those
+ * icons are ever restyled, re-copy them here.
+ */
+.icon-status-public     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1536 1792'%3E%3Cpath d='M1024 512V40q22 14 36 28l408 408q14 14 28 36h-472zm-128 32q0 40 28 68t68 28h544v1056q0 40-28 68t-68 28H96q-40 0-68-28t-28-68V96q0-40 28-68T96 0h800v544z' fill='%2359b327'/%3E%3C/svg%3E"); }
+.icon-status-hidden     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1536 1792'%3E%3Cpath d='M1024 512V40q22 14 36 28l408 408q14 14 28 36h-472zm-128 32q0 40 28 68t68 28h544v1056q0 40-28 68t-68 28H96q-40 0-68-28t-28-68V96q0-40 28-68T96 0h800v544z' fill='%23b1b1b1'/%3E%3C/svg%3E"); }
+.icon-status-private    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1792 1792'%3E%3Cpath d='M1523 1339q-22-155-87.5-257.5T1251 963q-67 74-159.5 115.5T896 1120t-195.5-41.5T541 963q-119 16-184.5 118.5T269 1339q106 150 271 237.5t356 87.5t356-87.5t271-237.5zm-243-699q0-159-112.5-271.5T896 256T624.5 368.5T512 640t112.5 271.5T896 1024t271.5-112.5T1280 640zm512 256q0 182-71 347.5t-190.5 286T1245 1721t-349 71q-182 0-348-71t-286-191t-191-286T0 896t71-348t191-286T548 71T896 0t348 71t286 191t191 286t71 348z' fill='%2303a9f4'/%3E%3C/svg%3E"); }
+.icon-status-registered { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1792 1792'%3E%3Cpath d='M896 64q-169 0-323 66T307.5 307.5T130 573T64 896t66 323t177.5 265.5T573 1662t323 66t323-66t265.5-177.5T1662 1219t66-323t-66-323t-177.5-265.5T1219 130T896 64zm0-64q182 0 348 71t286 191t191 286t71 348t-71 348t-191 286t-286 191t-348 71t-348-71t-286-191t-191-286T0 896t71-348t191-286T548 71T896 0zM496 832q16 0 16 16v480q0 16-16 16h-32q-16 0-16-16V848q0-16 16-16h32zm400 64q53 0 90.5 37.5t37.5 90.5q0 35-17.5 64t-46.5 46v114q0 14-9 23t-23 9h-64q-14 0-23-9t-9-23v-114q-29-17-46.5-46t-17.5-64q0-53 37.5-90.5T896 896zm0-768q209 0 385.5 103T1561 510.5T1664 896t-103 385.5t-279.5 279.5T896 1664t-385.5-103T231 1281.5T128 896t103-385.5T510.5 231T896 128zM544 608v96q0 14 9 23t23 9h64q14 0 23-9t9-23v-96q0-93 65.5-158.5T896 384t158.5 65.5T1120 608v96q0 14 9 23t23 9h64q14 0 23-9t9-23v-96q0-146-103-249T896 256T647 359T544 608zm864 736V832q0-26-19-45t-45-19H448q-26 0-45 19t-19 45v512q0 26 19 45t45 19h896q26 0 45-19t19-45z' fill='%23efac2a'/%3E%3C/svg%3E"); }
+.icon-status-none       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1536 1568'%3E%3Cpath d='M1312 797q0-161-87-295l-754 753q137 89 297 89q111 0 211.5-43.5T1153 1184t116-174.5t43-212.5zm-999 299l755-754q-135-91-300-91q-148 0-273 73T297 523t-73 274q0 162 89 299zm1223-299q0 157-61 300t-163.5 246t-245 164t-298.5 61t-298.5-61t-245-164T61 1097T0 797t61-299.5T224.5 252t245-164T768 27t298.5 61t245 164T1475 497.5t61 299.5z' fill='%23d49898'/%3E%3C/svg%3E"); }
+
+/* Font-Datei — woff / woff2 / ttf / otf / eot (Magenta, serifen-"A") */
+.icon-font {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23db2777' d='M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V7.875c0-.5-.2-.98-.556-1.336l-4.639-4.638A1.875 1.875 0 0 0 13.5 1.5H5.625Z'/%3E%3Ctext x='11.4' y='19' font-family='Georgia,Cambria,serif' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E");
+}
+
+/* Copy button + language-style badge now reuse .mdr-code-toolbar/
+   .mdr-code-lang/.mdr-code-copy from layout/markdown.css instead of the
+   original tiptap version's standalone .treeview-copy-btn — see
+   layout/filetree.js. */
+
+/* Inline-Marker-Icons — {menulink} & Co., gerendert an ihrer Textposition.
+ * currentColor: nimmt die Farbe der Umgebung an (Titel dunkel, Kommentar grau).
+ */
+.tree-inline-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}

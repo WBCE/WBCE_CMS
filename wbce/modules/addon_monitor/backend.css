@@ -328,6 +328,22 @@ a.am-desc-toggle {
 }
 a.am-desc-toggle:hover { text-decoration: underline; }
 
+/* ── README button ─────────────────────────────────────────────────────────── */
+a.am-readme-btn {
+  display: inline-block;
+  margin-left: .4rem;
+  padding: 1px 8px;
+  border: 1px solid var(--am-link);
+  border-radius: var(--am-radius);
+  color: var(--am-link);
+  font-size: .68rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+a.am-readme-btn:hover { background: var(--am-link); color: var(--am-bright); }
+
 /* ── Footer ────────────────────────────────────────────────────────────────── */
 table.amDashboard tfoot td {
   background: var(--am-bright);

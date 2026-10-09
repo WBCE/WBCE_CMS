@@ -347,7 +347,14 @@ function show_menu2(
     // This was needed for Language based navigation
     if ($aStart == 0) {
         reset($GLOBALS['show_menu2_data'][$aMenu]);
-        $aStart =key($GLOBALS['show_menu2_data'][$aMenu]);
+        $aStart = key($GLOBALS['show_menu2_data'][$aMenu]);
+        // key() returns null when the menu holds no (visible) pages - e.g. a
+        // menu that is defined in the template but never assigned any pages.
+        // Passing that null on to array_key_exists() below is deprecated in
+        // PHP 8.1+, so fall back to 0 (which simply yields an empty menu).
+        if ($aStart === null) {
+            $aStart = 0;
+        }
     }
 
     // echo "<pre>"; print_r($GLOBALS['show_menu2_data']); echo"</pre>";

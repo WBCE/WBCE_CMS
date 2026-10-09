@@ -3,14 +3,14 @@
  * @file       functions.php
  * @category   admintool
  * @package    addon_monitor
- * @author     Christian M. Stefan (https://www.wbeasy.de)
+ * @author     Christian M. Stefan (https://www.wbEasy.de)
  * @license    http://www.gnu.org/licenses/gpl.html
  * @platform   WBCE CMS 1.7.0
  */
 $module_directory    = 'addon_monitor';
 $module_name         = 'AddonMonitor';
 $module_function     = 'tool';
-$module_version      = '1.0.0';
+$module_version      = '1.0.1';
 $module_platform     = '1.7.0';  // !addon won't work with earlier versions of WBCE
 $module_author       = 'Christian M. Stefan';
 $module_license      = 'GNU/GPL v.2';
@@ -21,6 +21,10 @@ $module_icon         = 'fa fa-plug';
 /**
  * VERSION HISTORY
  *
+ * 1.1.0 - Make use of the newly introduced MarkdownReader class.
+ *         Each module and template that contains a README.md will show a README
+ *         Button in the Monitor overview.
+ * 
  * 1.0.0 - Total cleanup and redesign of the `AddonMonitor` Admin-Tool.
  *         - Getting rid of all jQuery Plugins and changing vor simple Javascript
  *         - Modules now show all their functions (scopes of operation) if they are

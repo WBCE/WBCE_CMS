@@ -1,97 +1,106 @@
 {% extends "_framer.twig" %}
 {% block content %}
 <!-- BEGIN main_block -->
-<div class="cpForm">
-<form name="outputfilter" class="modify_settings" action="{{ TOOL_URI }}" method="post">
-		<input type="hidden" name="id" value="{{ filter_id }}" />
-        <input type="hidden" name="save_settings" value="save_settings"/>
-        {{ FTAN }}
-    <div style="margin: 15px 26px;float:right;">
-        <input value="1" name="active" type="checkbox" id="i{{ filter_id }}" switch="bool" rel="{{ filter_id }}" {{ active_checked }} />
-        <label for="i{{ filter_id }}" class="labeled" data-on-label="{{ L_('TEXT:ENABLED') }}" data-off-label="{{ L_('TEXT:DISABLED') }}">
-        </label>
-    </div>
-    <h2>{{ L_('L:TXT_FILTER_CONF') }}</h2>           
-    <div class="formRow">
+<form name="outputfilter" class="modify_settings" action="{{ TOOL_URI }}#opfcode" method="post">
+    <input type="hidden" name="id" value="{{ filter_id }}" />
+    <input type="hidden" name="save_settings" value="save_settings"/>
+    {{ FTAN }}
+    <div class="cp-settings">
+        <div class="cp-toggle-section cp-card-body">
+            <div class="cp-card-head">
+                <label>{{ L_('L:TXT_FILTER_CONF') }}</label>
+                <span class="pull-right">
+                    <input value="1" name="active" type="checkbox" id="i{{ filter_id }}" switch="bool" rel="{{ filter_id }}" {{ active_checked }} />
+                    <label for="i{{ filter_id }}" class="labeled" data-on-label="{{ L_('TEXT:ENABLED') }}" data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                </span>
+            </div>
 
-        <div class="settingName"><label>{{ L_('L:TXT_FILTER_NAME') }}</label></div>
-        <div class="settingValue" style="margin-top: 4px;">
-            <input type="text" name="name" required value="{% if edit_filter %}{{ filter_name }}{% endif %}" {% if add_filter %} placeholder="{{ filter_name }}"{% endif %} size="40" {{ disabled_readonly }}  />
+            <section class="has-aside">
+                <div class="cp-card-main">
 
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name"><label>{{ L_('L:TXT_FILTER_NAME') }}</label></div>
+                        <div class="cp-setting-value">
+                            <input type="text" name="name" required value="{% if edit_filter %}{{ filter_name }}{% endif %}" {% if add_filter %} placeholder="{{ filter_name }}"{% endif %} size="40" {{ disabled_readonly }} />
 
-            {% if filter_config_url != '' %}
-            <a href="{{ filter_config_url }}" title="{{ L_('L:TXT_CONFIG_FILTER') }}"><img src="{{ IMAGE_URL }}/config.png" alt="[{{ L_('L:TXT_CONFIG_FILTER') }}]" border="0" /></a>
-            {% endif %}
-            {{ tpl_filter_configurl_end }}
-        </div>
-    </div>
+                            {% if filter_config_url != '' %}
+                            <a href="{{ filter_config_url }}" title="{{ L_('L:TXT_CONFIG_FILTER') }}"><img src="{{ IMAGE_URL }}/config.png" alt="[{{ L_('L:TXT_CONFIG_FILTER') }}]" border="0" /></a>
+                            {% endif %}
+                            {{ tpl_filter_configurl_end }}
+                        </div>
+                    </div>
 
-    <div class="formRow">
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">
+                            <label>{{ L_('L:TXT_DESCRIPTION') }}</label>
+                            {% if helppath != '' %}
+                            <p>
+                                <a {{ helppath }} title="{{ L_('L:TXT_FILTER_HELP') }}">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="cp-setting-value">
+                            <textarea id="desc" name="desc" cols="65" style="width: 98%;" {{ disabled_readonly }}
+                              {% if add_filter %} placeholder="{{ filter_desc }}"{% endif %}
+                                      >{% if edit_filter %}{{ filter_desc }}{% endif %}</textarea>
+                        </div>
+                    </div>
 
-        <div class="settingName">
-            <label>{{ L_('L:TXT_DESCRIPTION') }}</label>
-            {% if helppath != '' %}
-            <p>
-                <a {{ helppath }} title="{{ L_('L:TXT_FILTER_HELP') }}">
-                    <i class="fa fa-question-circle"></i>
-                </a>
-            </p>
-            {% endif %}
-        </div>
-        <div class="settingValue" style="margin-top: 4px;">
-            <textarea id="desc" name="desc" cols="65" style="width: 98%; height:auto" {{ disabled_readonly }}
-              {% if add_filter %} placeholder="{{ filter_desc }}"{% endif %}
-                      >{% if edit_filter %}{{ filter_desc }}{% endif %}</textarea>
-        </div>
-    </div>
+                </div>{# /cp-card-main #}
 
-    <div class="formHeading">{{ L_('L:TXT_FILTER_OUTPUT_SETTINGS') }}</div>
-    <div class="formRow">
-        <div class="settingName"><label>{{ L_('L:TXT_TYPE') }}</label></div>
-        <div class="settingValue" style="margin-top: 4px;">
-            <select name="type" style="width: 50%;" {tpl_filter_disabled} onchange="modules_checktree_visibility()">
-                {{ filter_type_options }}
-            </select><br />
-            <p style="display:none;" ID="OPF_ID_SEC_DESC" class="notification"><strong>{{ L_('L:TXT_MODULE_TYPE_LAST') }}</strong></p>
-            <p style="display:none;" ID="OPF_ID_PAGE_DESC" class="notification"><strong>{{ L_('L:TXT_TYPE_LAST') }}</strong></p>
+                <div class="cp-card-aside">
+                    <div class="aside-section">
+                        <div class="aside-label">{{ L_('L:TXT_FILTER_OUTPUT_SETTINGS') }}</div>
 
-        </div>
-    </div>
+                        <div class="cp-setting-row">
+                            <div class="cp-setting-name"><label>{{ L_('L:TXT_TYPE') }}</label></div>
+                            <div class="cp-setting-value">
+                                <select name="type" style="width: 100%;" {tpl_filter_disabled} onchange="modules_checktree_visibility()">
+                                    {{ filter_type_options }}
+                                </select>
+                                <p style="display:none;" ID="OPF_ID_SEC_DESC" class="notification"><strong>{{ L_('L:TXT_MODULE_TYPE_LAST') }}</strong></p>
+                                <p style="display:none;" ID="OPF_ID_PAGE_DESC" class="notification"><strong>{{ L_('L:TXT_TYPE_LAST') }}</strong></p>
+                            </div>
+                        </div>
 
-    <div class="formRow" style="display:none;" id="OPF_ID_CHECKTREE">
-        <div class="settingName">
-            <img src="{{ IMAGE_URL }}/modules_go.png" alt="" /><br>
-            <label>{{ L_('L:TXT_FILTER_MODULES') }}</label>
-        </div>
-        <div class="settingValue">
-            <p class="notificatio n">{{ L_('L:TXT_MODULE_TREE') }}:</p>
-            {{ module_tree }}
-        </div>
-    </div>
+                        <div class="cp-setting-row" style="display:none;" id="OPF_ID_CHECKTREE">
+                            <div class="cp-setting-name">
+                                <img src="{{ IMAGE_URL }}/modules_go.png" alt="" />
+                                <label>{{ L_('L:TXT_FILTER_MODULES') }}</label>
+                            </div>
+                            <div class="cp-setting-value">
+                                <p class="notification">{{ L_('L:TXT_MODULE_TREE') }}:</p>
+                                {{ module_tree }}
+                            </div>
+                        </div>
 
-    <div class="formRow" style="display:none;" id="OPF_ID_PAGECHECKTREE">
-        <div class="settingName">
-            <img src="{{ IMAGE_URL }}/pages_go.png" alt="" /><br />
-            <label>{{ L_('L:TXT_FILTER_PAGES') }}</label>
+                        <div class="cp-setting-row" style="display:none;" id="OPF_ID_PAGECHECKTREE">
+                            <div class="cp-setting-name">
+                                <img src="{{ IMAGE_URL }}/pages_go.png" alt="" />
+                                <label>{{ L_('L:TXT_FILTER_PAGES') }}</label>
+                            </div>
+                            <div class="cp-setting-value">
+                                <p class="notification" style="display:none;" ID="OPF_ID_PAGE_DESC_2">{{ L_('L:TXT_MODULE_TREE') }}:</p>
+                                <p class="notification" style="display:none;" ID="OPF_ID_SEC_DESC_2">{{ L_('L:TXT_SUB_PAGES') }}:</p>
+                                {{ page_tree }}
+                            </div>
+                        </div>
+                    </div>{# /aside-section #}
+                </div>{# /cp-card-aside #}
+            </section>{# /has-aside #}
 
-        </div>
-        <div class="settingValue">
-            <p class="notification" style="display:none;" ID="OPF_ID_PAGE_DESC_2">{{ L_('L:TXT_MODULE_TREE') }}:</p>
-            <p class="notification" style="display:none;" ID="OPF_ID_SEC_DESC_2">{{ L_('L:TXT_SUB_PAGES') }}:</p>
-            {{ page_tree }}
-        </div>
-    </div>
-
-<!--/*    The next table will contain the filter-function/-file and all optional configuration-fields for this filter. */-->
-    <div class="formHeading">{{ L_('L:TXT_FUNCTION') }}</div>
-    <div class="formRow">
-        <div class="settingName">
-            <label>{{ L_('L:TXT_FUNC_NAME') }}</label>
-        </div>
-        <div class="settingValue">
-            <input type="text" name="funcname" value="{{ funcname }}" size="40" style="widht:50%;" {{ disabled_readonly }} />
-        </div>
-    </div>
+<!--/*    The next section will contain the filter-function/-file and all optional configuration-fields for this filter. */-->
+            <div class="cp-card-head" id="opfcode">{{ L_('L:TXT_FUNCTION') }}</div>
+            <div class="cp-setting-row">
+                <div class="cp-setting-name">
+                    <label>{{ L_('L:TXT_FUNC_NAME') }}</label>
+                </div>
+                <div class="cp-setting-value">
+                    <input type="text" name="funcname" value="{{ funcname }}" size="40" style="width:50%;" {{ disabled_readonly }} />
+                </div>
+            </div>
 
 {#
     Now display either the file-area (for installed filters)
@@ -103,78 +112,64 @@
 #}
 {% for field in extra_fields %}
     {% if field.type == 'text' %}
-        <!-- BEGIN text_block -->
-        <div class="formRow">
-            <div class="settingName">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
                 <label>{{ field.text }}</label>
             </div>
-            <div class="settingValue">
+            <div class="cp-setting-value">
                 <input type="text" name="{{ field.name }}" value="{{ field.value }}" size="40" {{ field.style }} />
             </div>
         </div>
-        <!-- END text_block -->
-
 
     {% elseif field.type ==  'textarea' or field.type ==  'editarea' %}
-        <!-- BEGIN textarea_block -->
-        <div class="formRow">
-            <div class="settingName">
+
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
                 <label>{{ field.text }}</label>
             </div>
-            <div class="settingValue">
-                <textarea id="{{ field_id }}" name="{{ field.name }}" cols="40" rows="5" {{ field.style }}>{{ field.value }}</textarea>
+            <div class="cp-setting-value">
+                <textarea id="{{ field.name }}" name="{{ field.name }}" cols="40" rows="5" {{ field.style }}>{{ field.value }}</textarea>
             </div>
         </div>
-        <!-- END textarea_block -->
 
     {% elseif field.type ==  'checkbox' %}
-        <!-- BEGIN checkbox_block -->
-        <div class="formRow">
-            <div class="settingName">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
                <label>{{ field.text }}</label>
             </div>
-            <div class="settingValue">
+            <div class="cp-setting-value">
                 <input type="checkbox" value="{{ field.value }}" name="{{ field.name }}" {{ field.checked }} />
             </div>
         </div>
-        <!-- END checkbox_block -->
-
 
     {% elseif field.type ==  'radio' %}
-        <!-- BEGIN radio_block -->
-        <div class="formRow">
-            <div class="settingName">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
                <label>{{ field.text }}</label>
             </div>
-            <div class="settingValue">
+            <div class="cp-setting-value">
                 <input type="radio" value="{{ field.value }}" name="{{ field.name }}" {{ field.checked }} />
             </div>
         </div>
-        <!-- END radio_block -->
-
 
     {% elseif field.type ==  'select' %}
-        <!-- BEGIN select_block -->
-        <div class="formRow">
-            <div class="settingName">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
                 <label>{{ field.text }}</label>
             </div>
-            <div class="settingValue">
+            <div class="cp-setting-value">
                 <select name="{{ field.name }}" size="1" style="width: 50%;">
                     {{ field.options }}
                 </select>
             </div>
         </div>
-        <!-- END select_block -->
-
 
     {% elseif field.type ==  'array' %}
-        <!-- BEGIN array_row_block -->
-        <div class="formRow">
-            <div class="settingName">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
                <label>{{ field.text }}</label>
             </div>
-            <div class="settingValue">
+            <div class="cp-setting-value">
                 <table class="textfields" width="100%" cellpadding="2" cellspacing="0" border="0">
                 {% for key, val in field.values %}
                 <tr>
@@ -190,7 +185,6 @@
                 </table>
             </div>
         </div>
-        <!-- END array_row_block -->
     {% endif %}
 {% endfor %}
 
@@ -199,43 +193,44 @@
 
     {% if edit_filter is defined and edit_filter %}
         {# Edit mode: show the code area so CodeEditor can attach to it #}
-        <div class="formRow fullValue">
-            <p class="notification">{{ L_('L:TXT_FILTER_FUNC') }}</p>
-            <div class="settingValue">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name"><p class="notification">{{ L_('L:TXT_FILTER_FUNC') }}</p></div>
+            <div class="cp-setting-value">
                 <textarea id="func" name="func" cols="65" rows="6" style="width: 100%; height: 400px;">{{ func }}</textarea>
             </div>
         </div>
     {% else %}
         {# Add mode: carry default boilerplate silently; show info instead of editor #}
         <input type="hidden" name="func" value="{{ func }}" />
-        <div class="formRow">
-            <div class="settingName"></div>
-            <div class="settingValue">
+        <div class="cp-setting-row">
+            <div class="cp-setting-name"></div>
+            <div class="cp-setting-value">
                 <p class="notification"><i class="fa fa-info-circle"></i> {{ L_('L:TXT_EDITOR_AFTER_SAVE') }}</p>
             </div>
         </div>
     {% endif %}
 
 {% elseif file %}
-    <div class="formRow">
-        <div class="settingName">
+    <div class="cp-setting-row">
+        <div class="cp-setting-name">
             <label>{{ L_('L:TXT_FILTER_FILE') }}</label>
         </div>
-        <div class="settingValue">
+        <div class="cp-setting-value">
             <code style="font-size:.95em;color: grey;">{{ file_loc_readonly }}</code>
             <input type="hidden" name="file" value="{{ filter_file_loc }}" size="50" style="width: 98%;" readonly="readonly" />
         </div>
     </div>
 {% endif %}
 
-        <div class="buttonsRow">
-            <button type="submit" name="submit_return" class="button ico-save">{{ L_('TEXT:SAVE') }}</button>
-            <button type="submit" name="submit_exit" class="button ico-save-back" data-hide-on-ajax-save>{{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
-            <button class="button ico-back pos-right" type="button" data-redirect-location="{{ TOOL_URI }}&amp;last={{ filter_id }}#{{ filter_id }}">{{ L_('L:TXT_EXIT') }}</button>
-        </div>
 
-    </form>
-</div>
+            <div class="cp-buttons-row">
+                <button class="button ico-cancel" type="button" data-redirect-location="{{ TOOL_URI }}&amp;last={{ filter_id }}#{{ filter_id }}">{{ L_('TEXT:CANCEL') }}</button>
+                <button type="submit" name="submit_exit" class="button ico-save-back pos-right" data-hide-on-ajax-save>{{ L_('TEXT:SAVE') }} & {{ L_('TEXT:BACK') }}</button>
+                <button type="submit" name="submit_return" class="button ico-save pos-right">{{ L_('TEXT:SAVE') }}</button>
+            </div>
+        </div>
+    </div>
+</form>
 <script type="text/javascript">var opf_use_checktrees = true;</script>
 {% if func and edit_filter is defined and edit_filter %}
 {{ CodeEditor('func', 'x-php', {
@@ -245,7 +240,8 @@
     'readOnly':  readOnly,
     'ajax_save': ajax_url is not empty,
     'ajax_url':  ajax_url,
-    'ajax_data': {'idKey': idKey}
+    'ajax_data': {'idKey': idKey},
+    'error_line': error_line|default(0)
 }) }}
 {% endif %}
 

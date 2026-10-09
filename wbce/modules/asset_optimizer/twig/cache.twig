@@ -1,0 +1,153 @@
+{# asset_optimizer — Cache & status tab. Included by tool.twig. #}
+
+{% macro kb(b) %}{% if b >= 1048576 %}{{ (b / 1048576)|round(1) }} MB{% else %}{{ (b / 1024)|round(1) }} KB{% endif %}{% endmacro %}
+{% import _self as fmt %}
+
+<p class="ao-intro">{{ L_('TXT:CACHE_INTRO') }}</p>
+
+{% set t = ASSETS.totals %}
+<div class="ao-strip">
+    <div class="ao-stat"><span class="n">{{ t.count }}</span><span class="l">{{ L_('TXT:STAT_FILES') }}</span></div>
+    {% if t.orig > 0 %}
+    <div class="ao-stat"><span class="n">{{ fmt.kb(t.orig) }}</span><span class="l">{{ L_('TXT:STAT_ORIGINAL') }}</span></div>
+    {% endif %}
+    <div class="ao-stat"><span class="n">{{ fmt.kb(t.bytes) }}</span><span class="l">{{ L_('TXT:STAT_OPTIMISED') }}</span></div>
+    <div class="ao-stat"><span class="n">{{ fmt.kb(t.gzip) }}</span><span class="l">{{ L_('TXT:STAT_GZIP') }}</span></div>
+    {% if t.saved_pct is not null %}
+    <div class="ao-stat"><span class="n good">{{ t.saved_pct }}&thinsp;%</span><span class="l">{{ L_('TXT:STAT_SAVED') }}</span></div>
+    {% endif %}
+    {% if t.last_built %}
+    <div class="ao-stat"><span class="n">{{ t.last_built|date('Y-m-d H:i') }}</span><span class="l">{{ L_('TXT:STAT_BUILT') }}</span></div>
+    {% endif %}
+</div>
+
+{% if ASSETS.bundles is empty and ASSETS.files is empty %}
+<div class="alertbox_info">
+    <span class="signal"><i class="fa fa-info-circle"></i></span>
+    <p>{{ L_('TXT:CACHE_EMPTY') }}</p>
+</div>
+{% endif %}
+
+{% if ASSETS.bundles is not empty %}
+<div class="cp-card">
+    <div class="cp-card-head"><label><i class="fa fa-cubes"></i> {{ L_('TXT:CARD_BUNDLES') }}</label></div>
+    <div class="ao-tbl-wrap">
+        <table class="ao-table">
+            <thead>
+                <tr>
+                    <th>{{ L_('TXT:COL_FILE') }}</th>
+                    <th>{{ L_('TXT:COL_SOURCES') }}</th>
+                    <th class="num">{{ L_('TXT:COL_ORIGINAL') }}</th>
+                    <th class="num">{{ L_('TXT:COL_MINIFIED') }}</th>
+                    <th class="num">{{ L_('TXT:COL_GZIP') }}</th>
+                    <th class="num">{{ L_('TXT:COL_SAVED') }}</th>
+                    <th class="num">{{ L_('TXT:COL_BUILT') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for b in ASSETS.bundles %}
+                <tr class="ao-grp{{ b.missing > 0 ? ' ao-has-missing' : '' }}" data-grp="{{ loop.index }}"{{ b.sources ? '' : ' data-nosrc'|raw }}>
+                    <td class="name">{{ b.name|e }}
+                        {%- if not b.minified %} <span class="ao-pill warn">{{ L_('TXT:NOT_MINIFIED') }}</span>{% endif %}</td>
+                    <td>{{ b.sources ? L_('TXT:BUNDLE_SOURCES')|format(b.sources|length) : '—' }}
+                        {%- if b.missing > 0 %} <span class="ao-pill danger">{{ b.missing }}&nbsp;{{ L_('TXT:SOURCE_DELETED') }}</span>{% endif %}</td>
+                    <td class="num">{{ b.orig ? fmt.kb(b.orig) : '—' }}</td>
+                    <td class="num">{{ fmt.kb(b.bytes) }}</td>
+                    <td class="num">{{ fmt.kb(b.gzip) }}</td>
+                    <td class="num saved">{{ b.saved_pct is not null ? (b.saved_pct ~ " %") : "—" }}</td>
+                    <td class="num">{{ b.built|date('Y-m-d H:i') }}</td>
+                </tr>
+                {% if b.sources %}
+                    {% for s in b.sources %}
+                    <tr class="ao-src" data-src="{{ loop.parent.loop.index }}">
+                        <td class="name{{ s.missing ? ' gone' : '' }}" colspan="2">{{ s.ref|e }}{% if s.missing %} — {{ L_('TXT:SOURCE_DELETED') }}{% endif %}</td>
+                        <td class="num">{{ fmt.kb(s.bytes) }}</td>
+                        <td colspan="2"></td>
+                        <td class="num" colspan="2">{{ s.mtime ? s.mtime|date('Y-m-d H:i') : '—' }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="cp-card-foot">
+        <span>{{ L_('TXT:COL_SOURCES') }}: click a bundle row to expand.</span>
+    </div>
+</div>
+{% endif %}
+
+{% if ASSETS.files is not empty %}
+<div class="cp-card">
+    <div class="cp-card-head"><label><i class="fa fa-file-code-o"></i> {{ L_('TXT:CARD_MINFILES') }}</label> </div>
+    <div class="ao-tbl-wrap">
+        <table class="ao-table">
+            <thead>
+                <tr>
+                    <th>{{ L_('TXT:COL_FILE') }}</th>
+                    <th class="num">{{ L_('TXT:COL_MINIFIED') }}</th>
+                    <th class="num">{{ L_('TXT:COL_GZIP') }}</th>
+                    <th class="num">{{ L_('TXT:COL_BUILT') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for f in ASSETS.files %}
+                <tr>
+                    <td class="name">{{ f.name|e }}</td>
+                    <td class="num">{{ fmt.kb(f.bytes) }}</td>
+                    <td class="num">{{ fmt.kb(f.gzip) }}</td>
+                    <td class="num">{{ f.built|date('Y-m-d H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div><div class="cp-card-foot">        
+        <a class="button ico-cancel ao-danger pos-right"
+            href="javascript:confirm_link('{{ L_('TXT:CLEAR_ASSETS_CONFIRM') }}','{{ BASE }}&tab=cache&clear=assets&{{ FTAN_GET }}');">
+             <i class="fa fa-trash"></i> {{ L_('TXT:CLEAR_ASSETS') }}
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<div class="cp-card">
+    <div class="cp-card-head"><label><i class="fa fa-font"></i> {{ L_('TXT:CARD_FONTS') }}</label></div>
+    
+    {% if FONTS.files is empty %}
+        <div class="cp-card-body"><p class="ao-muted">{{ L_('TXT:FONTS_EMPTY') }}</p></div>
+    {% else %}
+    <div class="ao-tbl-wrap">
+        <table class="ao-table">
+            <thead>
+                <tr><th>{{ L_('TXT:COL_FILE') }}</th><th class="num">{{ L_('TXT:COL_SIZE') }}</th><th class="num">{{ L_('TXT:COL_CACHED') }}</th></tr>
+            </thead>
+            <tbody>
+            {% for f in FONTS.files %}
+                <tr><td class="name">{{ f.name|e }}</td><td class="num">{{ fmt.kb(f.bytes) }}</td><td class="num">{{ f.mtime|date('Y-m-d H:i') }}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <div class="cp-card-foot">
+        <span class="mono">{{ PATHS.fonts_rel|e }}</span> · {{ FONTS.count }} · {{ fmt.kb(FONTS.bytes) }}
+        <a class="button ico-cancel ao-danger pos-right"
+            href="javascript:confirm_link('{{ L_('TXT:CLEAR_FONTS_CONFIRM') }}','{{ BASE }}&tab=cache&clear=fonts&{{ FTAN_GET }}');">
+             <i class="fa fa-trash"></i> {{ L_('TXT:CLEAR_FONTS') }}
+        </a>
+    </div>
+</div>
+
+<div class="cp-card">
+    <div class="cp-card-head"><label><i class="fa fa-stethoscope"></i> {{ L_('TXT:CARD_HEALTH') }}</label></div>
+    <div class="cp-card-body">
+        <ul class="ao-checks">
+        {% for c in CHECKS %}
+            <li>
+                <i class="fa {{ c.ok ? 'fa-check-circle' : 'fa-exclamation-circle' }} mark {{ c.ok ? 'ok' : 'warn' }}" aria-hidden="true"></i>
+                <span class="c-body"><b>{{ c.title|e }}</b><span>{{ c.text|e }}</span></span>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>

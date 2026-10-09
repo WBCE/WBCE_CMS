@@ -256,22 +256,41 @@
   function showActions(success) {
     if (!actionsEl) return;
 
-    // Try to extract WB_URL from the log (the streaming PHP echoes the links)
-    // Fallback: read from a hidden field the PHP wrote
-    var urlField = document.getElementById('install-wb-url');
+    // Resolve the target URL, most authoritative source first:
+    //  1. the .install-meta marker install_save.php streamed (the actual WB_URL
+    //     that was submitted and written to config.php)
+    //  2. the live #wb_url form field (what the user typed this session)
+    //  3. the hidden hint fields (URL guessed at page-load — may lack the port)
+    var meta      = logEl.querySelector('.install-meta');
+    var liveField = document.getElementById('wb_url');
+    var urlField  = document.getElementById('install-wb-url');
     var adminField = document.getElementById('install-admin-url');
-    var wbUrl    = urlField    ? urlField.value    : '';
-    var adminUrl = adminField  ? adminField.value  : '';
+
+    var wbUrl = (meta && meta.getAttribute('data-wb-url'))
+      || (liveField && liveField.value)
+      || (urlField && urlField.value)
+      || '';
+    wbUrl = wbUrl.replace(/[\\/]+$/, '');
+
+    var adminUrl = (meta && meta.getAttribute('data-admin-url'))
+      || (wbUrl ? wbUrl + '/admin' : (adminField ? adminField.value : ''));
+    adminUrl = adminUrl.replace(/[\\/]+$/, '');
+
+    // Offered in both branches — a failed install is exactly when the log
+    // matters most, and install/ is often deleted right after a successful one.
+    var logBtn = (window.WbceLogExport ? window.WbceLogExport.buttonHtml() : '');
 
     if (success) {
       actionsEl.innerHTML =
         '<div class="inst-done"><p class="inst-done-msg">' + escHtml(I18N.installSuccess || 'Installation complete!') + '</p>' +
         (adminUrl ? '<a href="' + escHtml(adminUrl) + '/login/index.php" class="inst-btn inst-btn-sec">' + escHtml(I18N.goAdmin || 'Go to Admin Login') + '</a>' : '') +
+        logBtn +
         '</div>';
     } else {
       actionsEl.innerHTML =
         '<p class="inst-done-msg inst-done-err">' + escHtml(I18N.installFailed || 'Installation failed — see errors above.') + '</p>' +
-        '<a href="index.php" class="inst-btn inst-btn-sec">' + escHtml(I18N.tryAgain || '← Try again') + '</a>';
+        '<a href="index.php" class="inst-btn inst-btn-sec">' + escHtml(I18N.tryAgain || '← Try again') + '</a>' +
+        logBtn;
     }
     actionsEl.style.display = 'block';
   }

@@ -3,15 +3,17 @@
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU General Public License, Version 3
- * @platform        WBCE 1.x
- * @requirements    PHP 7.4 - 8.2
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -39,7 +41,7 @@
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 
 // obtain module directory
-$mod_dir = basename(dirname(__FILE__));
+$mod_dir = basename(__DIR__);
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
 // include module.functions.php
@@ -411,8 +413,17 @@ require_once __DIR__ .'/functions.php';
 */
 function opf_register_filter($filter, $serialized=FALSE) {
 
+    global $database;
     $now = time();
     $sql_where = '';
+    $whereVal = null;
+    // Cleared on every call so a stale rejection from an earlier, unrelated
+    // filter never leaks into this one's caller. Set below on CodeVet
+    // rejection so opf_save()/tool.php can show the specific reason instead
+    // of a generic "save failed" and preserve the admin's unsaved edit --
+    // see modules/droplets/save_droplet.php's identical $_SESSION['codevet_draft']
+    // pattern, which this mirrors.
+    $GLOBALS['opf_codevet_error'] = null;
     // get variables
     if($serialized)
         $filter = unserialize($filter);
@@ -423,6 +434,40 @@ function opf_register_filter($filter, $serialized=FALSE) {
     if(isset($filter['file']))      $file = opf_fetch_clean( $filter['file'], '', 'string'); else $file = '';
     if(isset($filter['func']))      $func = opf_fetch_clean( $filter['func'], '', 'unchanged'); else $func = '';
     if(isset($filter['funcname']))  $funcname = opf_fetch_clean( $filter['funcname'], '', 'string'); else $funcname = '';
+
+    // PHP syntax + security check -- same CodeVet gate ajax_save_filter.php
+    // already runs on this same "func" content, applied here too so the
+    // non-AJAX form-submit path (this function, reached via opf_save()) can't
+    // persist code that path never checked. Runs on the raw, just-fetched
+    // value BEFORE any of the fallback/auto-wrap logic below (funcname
+    // mismatch, missing func/file) can inject its own PHP-open/PHP-close
+    // comment wrapper into $func -- checking post-wrap fed CodeVet a nested
+    // opening tag it doesn't expect (it wraps the body itself) and produced
+    // false positives. Tags stripped first, mirroring ajax_save_filter.php's
+    // own tag-stripping step (open/close/short-open removed), since
+    // $func may contain them from a full-form textarea (unlike the AJAX code
+    // editor, which never sends them). Deliberately ignores $force -- unlike
+    // the softer validation issues below, broken/unsafe PHP must never be
+    // written to the DB at all, active or not: opf_apply_filters() eval()s
+    // this code, and $force is unconditionally TRUE from opf_save() anyway,
+    // which would otherwise make this check a no-op from the one place that
+    // actually calls it without CodeVet already having run.
+    if($func!='' && class_exists('CodeVet')) {
+        $funcClean = str_replace(['<?php', '?>', '<?'], '', $func);
+        $syntaxError = CodeVet::checkSyntax($funcClean, $syntaxLine);
+        if($syntaxError !== null) {
+            trigger_error('Invalid PHP code: '.$syntaxError.' (line '.$syntaxLine.')', E_USER_WARNING);
+            $GLOBALS['opf_codevet_error'] = ['message' => $syntaxError, 'line' => $syntaxLine];
+            return(FALSE);
+        }
+        $findings = CodeVet::scan($funcClean, CodeVetProfile::Outputfilter);
+        if($findings !== []) {
+            CodeVet::logEvent('outputfilter_save_blocked', CodeVetProfile::Outputfilter, $findings, ['name' => $name]);
+            trigger_error('Blocked by CodeVet: '.$findings[0]->message, E_USER_WARNING);
+            $GLOBALS['opf_codevet_error'] = ['message' => $findings[0]->message, 'line' => $findings[0]->line ?? -1];
+            return(FALSE);
+        }
+    }
     if(isset($filter['userfunc']))  $userfunc = opf_fetch_clean( $filter['userfunc'], 0, 'int'); else $userfunc = 0;
     if(isset($filter['plugin']))    $plugin = opf_fetch_clean( $filter['plugin'], '', 'string'); else $plugin = '';
     if(isset($filter['active']))    $active = opf_fetch_clean( $filter['active'], 0, 'int'); else $active = 1;
@@ -490,7 +535,7 @@ function opf_register_filter($filter, $serialized=FALSE) {
     $tmp = array();
     foreach($pages_parent as $page)
         $tmp[] = trim($page);
-    $pages_pages = $tmp;
+    $pages_parent = $tmp;
     $pages = serialize($pages);
     $pages_parent = serialize($pages_parent);
     if(isset($additional_fields_languages) && !empty($additional_fields_languages)) {
@@ -582,7 +627,10 @@ function opf_register_filter($filter, $serialized=FALSE) {
     // insert values into DB
 
     // get next free position for type
-    $position =    opf_db_query_vars( "SELECT MAX(`position`) FROM `{TP_OPFD}` WHERE `type`='%s'", $type);
+    $position = $database->fetchValue("SELECT MAX(`position`) FROM `{TP_OPFD}` WHERE `type`=?", [$type]);
+    if($database->hasError()) {
+        error_log('opf_register_filter(): '.$database->getError());
+    }
     if($position===NULL) $position = 0;  // NULL -> no entries
     else ++$position;
 
@@ -592,7 +640,6 @@ function opf_register_filter($filter, $serialized=FALSE) {
     else
         $update = opf_is_registered($name);
     if($update) { // update, fetch some old values from db
-        global $database;
         $sql_action = 'UPDATE';
         if($id>0) {
             $old = $database->fetchRow("SELECT * FROM `{TP_OPFD}` WHERE `id` = ?", [(int)$id]);
@@ -606,7 +653,10 @@ function opf_register_filter($filter, $serialized=FALSE) {
             $position = $old_pos;
         } else { // change of type
             // correct positions for old type
-            opf_db_run_query( "UPDATE `{TP_OPFD}` SET `position`=`position`-1 WHERE `type`='%s' AND `position`>%d", $old_type, $old_pos);
+            $database->query("UPDATE `{TP_OPFD}` SET `position`=`position`-1 WHERE `type`=? AND `position`>?", [$old_type, $old_pos]);
+            if($database->hasError()) {
+                error_log('opf_register_filter(): '.$database->getError());
+            }
         }
         if($force==FALSE) {
             // update - keep some old values
@@ -624,23 +674,23 @@ function opf_register_filter($filter, $serialized=FALSE) {
         // assigned (stayed '' from its declaration), so this UPDATE ran with
         // NO WHERE clause at all and silently overwrote every row in the
         // table with the same values -- a pre-existing bug, not SQLite-specific.
-        $sql_where = $id>0
-            ? sprintf('WHERE `id`=%d', $id)
-            : sprintf("WHERE `name`='%s'", $database->escapeString($name));
+        // The value is bound as a real PDO parameter now (appended to $vals
+        // below), not pre-escaped into the SQL text.
+        $sql_where = $id>0 ? 'WHERE `id`=?' : 'WHERE `name`=?';
+        $whereVal  = $id>0 ? (int)$id : $name;
      } else {
         $sql_action = 'INSERT INTO';
     }
-    // Column list with per-column sprintf format -- ints stay unquoted (%d),
-    // strings are single-quoted (%s is inserted already-escaped by
-    // opf_db_run_query()'s vsprintf step, same as the original template).
+    // Column list -- values are bound as real PDO parameters now, no more
+    // sprintf format specifiers ('%d' / '%s') baked into the SQL text.
     $cols = [
-        'userfunc' => '%d', 'plugin' => "'%s'", 'position' => '%d', 'active' => '%d',
-        'type' => "'%s'", 'name' => "'%s'", 'file' => "'%s'", 'func' => "'%s'",
-        'funcname' => "'%s'", 'modules' => "'%s'", 'desc' => "'%s'", 'pages' => "'%s'",
-        'pages_parent' => "'%s'", 'allowedit' => '%d', 'allowedittarget' => '%d',
-        'configurl' => "'%s'", 'csspath' => "'%s'", 'helppath' => "'%s'",
-        'additional_values' => "'%s'", 'additional_fields' => "'%s'",
-        'additional_fields_languages' => "'%s'",
+        'userfunc', 'plugin', 'position', 'active',
+        'type', 'name', 'file', 'func',
+        'funcname', 'modules', 'desc', 'pages',
+        'pages_parent', 'allowedit', 'allowedittarget',
+        'configurl', 'csspath', 'helppath',
+        'additional_values', 'additional_fields',
+        'additional_fields_languages',
     ];
     $vals = [$userfunc,$plugin,$position,$active,$type,$name,$file,$func,$funcname,
              $modules,$desc,$pages,$pages_parent,$allowedit,$allowedittarget,
@@ -651,20 +701,22 @@ function opf_register_filter($filter, $serialized=FALSE) {
         // `INSERT ... SET col=val` is MySQL-only syntax -- invalid on SQLite
         // ("near SET: syntax error"). UPDATE's own SET clause is standard SQL
         // and works on both, so only the insert path needed a real rewrite.
-        $setClause = implode(', ', array_map(fn($c, $f) => "`$c`=$f", array_keys($cols), $cols));
-        $res = opf_db_run_query("UPDATE `{TP_OPFD}` SET $setClause $sql_where", ...$vals);
+        $setClause = implode(', ', array_map(fn($c) => "`$c`=?", $cols));
+        $database->query("UPDATE `{TP_OPFD}` SET $setClause $sql_where", [...$vals, $whereVal]);
     } else {
-        $colList = '`' . implode('`, `', array_keys($cols)) . '`';
-        $ph      = implode(', ', array_values($cols));
-        $res = opf_db_run_query("INSERT INTO `{TP_OPFD}` ($colList) VALUES ($ph)", ...$vals);
+        $colList = '`' . implode('`, `', $cols) . '`';
+        $ph      = implode(', ', array_fill(0, count($cols), '?'));
+        $database->query("INSERT INTO `{TP_OPFD}` ($colList) VALUES ($ph)", $vals);
+    }
+    $res = !$database->hasError();
+    if(!$res) {
+        error_log('opf_register_filter(): '.$database->getError());
     }
 
-    if(class_exists('Settings') && defined('WBCE_VERSION')){
-        // force refresh the filter definitions
-        global $opf_FILTERS;
-        unset($opf_FILTERS);
-        opf_set_active($name, $active);
-    }
+    // force refresh the filter definitions
+    global $opf_FILTERS;
+    unset($opf_FILTERS);
+    opf_set_active($name, $active);
 
     return($res);
 }
@@ -765,6 +817,7 @@ function opf_unregister_filter($name) {
             include $file;
         }
     }
+    global $database;
     static $old_name = FALSE;
     $now = time();
     $name = opf_check_name($name);
@@ -776,7 +829,11 @@ function opf_unregister_filter($name) {
         $pos = opf_get_position($name);
         $type = opf_get_type($name);
         // delete plugin-dir if present
-        if($plugin_dir = opf_db_query_vars( "SELECT `plugin` FROM `{TP_OPFD}` WHERE `name`='%s'", $name)) {
+        $plugin_dir = $database->fetchValue("SELECT `plugin` FROM `{TP_OPFD}` WHERE `name`=?", [$name]);
+        if($database->hasError()) {
+            error_log('opf_unregister_filter(): '.$database->getError());
+        }
+        if($plugin_dir) {
             if($plugin_dir && file_exists(WB_PATH.'/modules/outputfilter_dashboard/plugins/'.$plugin_dir)) {
                 // uninstall.php present? include it
                 if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/plugins/'.$plugin_dir.'/plugin_uninstall.php'))
@@ -784,15 +841,23 @@ function opf_unregister_filter($name) {
                 opf_io_rmdir(WB_PATH.'/modules/outputfilter_dashboard/plugins/'.$plugin_dir);
             }
         }
-        $res = opf_db_run_query( "DELETE FROM `{TP_OPFD}` WHERE `name`='%s'", $name);
+        $database->query("DELETE FROM `{TP_OPFD}` WHERE `name`=?", [$name]);
+        $res = !$database->hasError();
+        if(!$res) {
+            error_log('opf_unregister_filter(): '.$database->getError());
+        }
         if($res) {
-            if(class_exists('Settings') && defined('WBCE_VERSION')){
-                Settings::Del( opf_filter_name_to_setting($name));
-                Settings::Del( opf_filter_name_to_setting($name).'_be');
-            }
+            Settings::Del( opf_filter_name_to_setting($name));
+            Settings::Del( opf_filter_name_to_setting($name).'_be');
 
-            if(opf_db_run_query( "UPDATE `{TP_OPFD}` SET `position`=`position`-1
-                      WHERE `type`='%s' AND `position`>%d", $type, $pos))
+            $database->query(
+                "UPDATE `{TP_OPFD}` SET `position`=`position`-1 WHERE `type`=? AND `position`>?",
+                [$type, $pos]
+            );
+            if($database->hasError()) {
+                error_log('opf_unregister_filter(): '.$database->getError());
+                return(FALSE);
+            }
             return(TRUE);
         }
     }
@@ -800,9 +865,27 @@ function opf_unregister_filter($name) {
 }
 
 
+// NOTE (WBCE 1.7.0): opf_register_frontend_files(), opf_register_onload_event(),
+// opf_register_onload() and opf_register_document_ready() below are deprecated
+// compatibility shims, kept for site-specific custom filters written before
+// WBCE 1.7.0 that may still call them (they had zero callers anywhere in this
+// shipped codebase). They no longer touch $opf_HEADER/$opf_BODY at all --
+// each one just delegates to the equivalent AssetQueue (I::) call. Do not use
+// them in new filters; call I::insertCssFile() / I::insertJsFile() /
+// I::insertCssCode() / I::insertJsCode() / I::insertHtmlCode() directly
+// instead (see AssetQueue.php). $opf_HEADER/$opf_BODY and
+// opf_insert_frontend_files() (in functions.php) still exist separately,
+// since the "Assets Cache Busting" core filter
+// (plugins/opf_assets_cache_busting/filter.php) reads and writes those
+// globals directly.
+
 /*
     Function: opf_register_frontend_files
-        Register JS- or CSS-files to be loaded into the page's <head>-section.
+        DEPRECATED (WBCE 1.7.0) -- compatibility shim. Delegates to AssetQueue's
+        I::insertCssFile() / I::insertJsFile() / I::insertCssCode() /
+        I::insertJsCode() instead of the old $opf_HEADER/$opf_BODY globals.
+        Kept only for site-specific custom filters written before WBCE 1.7.0 --
+        new filters should call I:: directly.
 
     Prototype:
         %bool% opf_register_frontend_files( %string% $file, %string% $type, %string% $target='head', %string% $media='screen', %string% $iehack )
@@ -812,58 +895,60 @@ function opf_unregister_filter($name) {
         $type - %(string)% Type: '!js!' or '!css!'.
         $target - %(string)% Where to insert the file: '!head!' or '!body!'.
         $media - %(string)% media, for stylesheets only, e.g.: '!screen!' or '!screen,print!'. Use '' (empty string) otherwise.
-        $iehack - %(string)% Special IE-Hack (for type !js! only).
+        $iehack - %(string)% Special IE-Hack (for type !js! only). AssetQueue has no equivalent
+            concept, so this falls back to a manually built, IE-conditional-comment-wrapped
+            tag inserted via I::insertHtmlCode() -- which AssetQueue always places in
+            !<body>!, regardless of !$target!, since arbitrary HTML is never allowed in
+            !<head>!.
 
     Returns:
-        Always !TRUE!.
-
-    Examples:
-        > // register JS-script
-        > opf_register_frontend_files(WB_URL.'modules/opf_prettify/prettify.js', 'js');
-        > // register JS-script in <body>
-        > opf_register_frontend_files(WB_URL.'modules/opf_prettify/prettify.js', 'js', 'body');
-        > // register CSS-Stylesheet
-        > opf_register_frontend_files(WB_URL.'/modules/opf_pcdtr/pcdtr/styles.css', 'css');
-        > // IE-Hack
-        > opf_register_frontend_files(WB_URL.'/modules/opf_fix_png_ie6/sl.js', 'js', 'head', '', '[if lte IE 6]');
-        > // output: <!--[if lte IE 6]><script ...></script><![endif]-->
-
-        > // usage of "inline"-script
-        > opf_register_frontend_files('
-        >   <script type="text/javascript">function do_highlight() { highlighter.highlight(); }</script>
-        >   ','js');
+        !TRUE! on success, !FALSE! for an invalid !$type!.
 */
 function opf_register_frontend_files($file, $type, $target='head', $media='screen', $iehack='') {
-    global $opf_HEADER; // global storage for all entries
-    global $opf_BODY; // global storage for all entries
-    if(!isset($opf_HEADER) || !is_array($opf_HEADER)) $opf_HEADER = array();
-    if(!isset($opf_BODY) || !is_array($opf_BODY)) $opf_BODY = array();
-    $str = '';
-    // file?
-    if(($type=='js' && !preg_match('~\s*<script~',$file)) || ($type=='css' && !preg_match('~\s*<style~',$file))) {
-        if($type=='js') {
-            $str = '<script type="text/javascript" src="'.$file.'"></script>'."\n";
-            if($iehack)
-                $str = "<!--$iehack>\n".$str."\n<![endif]-->\n";
-        }
-        else
-            $str = '<link rel="stylesheet" href="'.$file.'" type="text/css" media="'.$media.'" />'."\n";
-    } else { // script
-        if($type=='js' || $type=='css')
-            $str = $file;
+    if($type!=='js' && $type!=='css') return(FALSE);
+    $pos = ($target==='body') ? 'body_late' : 'head_late';
+
+    // Inline usage: caller already passed a full <script>/<style> tag. Extract
+    // the raw code and re-insert it via I::insertJsCode()/insertCssCode(), not
+    // I::insertHtmlCode() -- the latter is restricted to <body> by AssetQueue
+    // (arbitrary HTML is never allowed in <head>), which would silently break
+    // $target='head' here. insertJsCode()/insertCssCode() have no such
+    // restriction and correctly honour $pos.
+    if($type==='js' && preg_match('~<script[^>]*>(.*)</script>~is', $file, $m)) {
+        I::insertJsCode(trim($m[1]), $pos, 'opf_'.md5($file));
+        return(TRUE);
     }
-    if($target=='head' && !in_array($str, $opf_HEADER) && !in_array($str, $opf_BODY))
-        $opf_HEADER[] = $str;
-    if($target=='body' && !in_array($str, $opf_BODY) && !in_array($str, $opf_HEADER))
-        $opf_BODY[] = $str;
+    if($type==='css' && preg_match('~<style[^>]*>(.*)</style>~is', $file, $m)) {
+        I::insertCssCode(trim($m[1]), $pos, 'opf_'.md5($file));
+        return(TRUE);
+    }
+
+    if($iehack) {
+        // A conditional-comment-wrapped tag is a structural HTML fragment, not
+        // plain JS/CSS code, so it has to go through insertHtmlCode() -- which
+        // means it always lands in <body> regardless of $target, per the
+        // restriction above. Unavoidable for this legacy IE-only path.
+        $str = ($type==='js')
+            ? '<script type="text/javascript" src="'.$file.'"></script>'
+            : '<link rel="stylesheet" href="'.$file.'" type="text/css" media="'.$media.'" />';
+        I::insertHtmlCode("<!--$iehack>\n$str\n<![endif]-->", $pos, 'opf_'.md5($file.$iehack));
+        return(TRUE);
+    }
+
+    if($type==='js') {
+        I::insertJsFile($file, $pos);
+    } else {
+        I::insertCssFile($file, $pos, $media!=='' ? ['media'=>$media] : []);
+    }
     return(TRUE);
 }
 
 
 /*
     Function: opf_register_onload_event
-        Register an Javascript onload-function inside
-        page's <head>-section, using window.attachEvent() or window.addEventListener().
+        DEPRECATED (WBCE 1.7.0) -- compatibility shim. Delegates to I::insertJsCode().
+        Register a Javascript onload-function inside page's <head>-section, using
+        window.attachEvent() or window.addEventListener().
 
     Prototype:
         %bool% opf_register_onload_event( %string% $function_name )
@@ -874,30 +959,22 @@ function opf_register_frontend_files($file, $type, $target='head', $media='scree
     Returns:
         Always !TRUE!.
 
-    Example:
-        > opf_register_onload_event('prettyPrint');
-
     Notes:
         There is no way to supply arguments to the function, yet. Use <opf_register_onload> in
         case the function call needs arguments.
 */
 function opf_register_onload_event($function_name) {
-    global $opf_HEADER; // global storage for all entries
-    if(!isset($opf_HEADER) || !is_array($opf_HEADER))
-    $opf_HEADER = array();
-    $str = '';
-    if($function_name) {
-        $str = "<script type=\"text/javascript\">if(window.attachEvent) window.attachEvent('onload',$function_name); else window.addEventListener('DOMContentLoaded',$function_name,false);</script>";
-        if(!in_array($str, $opf_HEADER))
-            $opf_HEADER[] = $str;
-    }
+    if(!$function_name) return(TRUE);
+    $js = "if(window.attachEvent) window.attachEvent('onload',$function_name); else window.addEventListener('DOMContentLoaded',$function_name,false);";
+    I::insertJsCode($js, 'head_late', 'opf_onload_event_'.md5($function_name));
     return(TRUE);
 }
 
 
 /*
     Function: opf_register_onload
-        Register an Javascript script onload-function inside page's <body>-section.
+        DEPRECATED (WBCE 1.7.0) -- compatibility shim. Delegates to I::insertJsCode().
+        Register a Javascript script onload-function inside page's <body>-section.
 
     Prototype:
         %bool% opf_register_onload( %string% $script )
@@ -907,29 +984,19 @@ function opf_register_onload_event($function_name) {
 
     Returns:
         Always !TRUE!.
-
-    Example:
-        > opf_register_onload('prettyPrint();');
-        > opf_register_onload("supersleight.run('".WB_URL."/modules/opf_fix_png_ie6/x.gif');");
-        > opf_register_onload('$(\'#tagSphere\').tagSphere();');
 */
 function opf_register_onload($script) {
-    global $opf_BODY; // global storage for all entries
-    if(!isset($opf_BODY) || !is_array($opf_BODY))
-    $opf_BODY = array();
-    $str = '';
-    if($script) {
-        $str = "<script type=\"text/javascript\">$script</script>";
-        if(!in_array($str, $opf_BODY))
-            $opf_BODY[] = $str;
-    }
+    if(!$script) return(TRUE);
+    I::insertJsCode($script, 'body_late', 'opf_onload_'.md5($script));
     return(TRUE);
 }
 
+
 /*
     Function: opf_register_document_ready
-        Register an Javascript onload-event inside
-        page's <head>-section, using jquery's !jQuery(document).ready()! method.
+        DEPRECATED (WBCE 1.7.0) -- compatibility shim. Delegates to I::insertJsCode().
+        Register a Javascript onload-event inside page's <head>-section, using
+        jquery's !jQuery(document).ready()! method.
 
     Prototype:
         %bool% opf_register_document_ready( %string% $js )
@@ -942,21 +1009,10 @@ function opf_register_onload($script) {
 
     Requires:
         This function requires that jQuery is loaded in the page's <head>-section.
-
-    Example:
-        >opf_register_document_ready('alert("OK!");');
-        >opf_register_document_ready('$(\'#tagSphere\').tagSphere();');
 */
 function opf_register_document_ready($js) {
-    global $opf_HEADER; // global storage for all entries
-    if(!isset($opf_HEADER) || !is_array($opf_HEADER))
-    $opf_HEADER = array();
-    $str = '';
-    if($js) {
-        $str = '<script type="text/javascript">jQuery(document).ready(function() {'.$js.'});</script>';
-        if(!in_array($str, $opf_HEADER))
-            $opf_HEADER[] = $str;
-    }
+    if(!$js) return(TRUE);
+    I::insertJsCode('jQuery(document).ready(function() {'.$js.'});', 'head_late', 'opf_doc_ready_'.md5($js));
     return(TRUE);
 }
 

@@ -1,0 +1,98 @@
+/* MarkdownWbce — layout/markdown-embed.css
+ *
+ * The doc + sticky-TOC sidebar layout for a MdReaderHelper::renderForEmbed()
+ * result shown inline in a backend admin page. Load it after layout/markdown.css
+ * (which brings the --mdr-* tokens and the `.markdown-body` typography — the
+ * rendered doc looks identical to the reader popup).
+ *
+ * Opt in by wrapping the pieces:
+ *
+ *   <div class="mdr-embed">                       (add `mdr-embed--notoc` if no TOC)
+ *     <aside class="mdr-embed-toc">
+ *       <div class="mdr-embed-toc-h">On this page</div>
+ *       {{ doc.toc }}
+ *     </aside>
+ *     <article class="markdown-body">{{ doc.html }}</article>
+ *   </div>
+ *
+ * layout/markdown-embed.js parks the sticky TOC below the backend theme's
+ * fixed header (--mdr-toc-top).
+ */
+
+.mdr-embed {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+    --mdr-toc-top: 4.5rem;
+    /* Reader font for the whole embed (article + its TOC), same as the reader
+       popup — scoped to .mdr-embed, so the surrounding backend is untouched.
+       --mdr-font is declared in markdown.css (loaded alongside). */
+    font-family: var(--mdr-font, inherit);
+}
+.mdr-embed--notoc { grid-template-columns: 1fr; }
+
+/* The empty <a class="h-anchor"> that buildToc() puts before each heading —
+   made a block so it sits exactly at the heading top (spy measurement, and the
+   markdown.css first-child rule). The anchor-jump landing offset is NOT set
+   here: markdown-embed.js raises `html { scroll-padding-top }` to clear the
+   backend theme's fixed header instead, so it can't stack with a value the
+   theme already declares (which would push every jump target too far down). */
+.mdr-embed .markdown-body .h-anchor { display: block; }
+
+.mdr-embed-toc {
+    position: sticky;
+    top: var(--mdr-toc-top);
+    max-height: calc(100vh - var(--mdr-toc-top) - 1.5rem);
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.5;
+    border-left: 2px solid var(--mdr-border, #e1e4e8);
+    padding-left: 14px;
+}
+.mdr-embed-toc-h {
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--mdr-fg-faint, #8c959f);
+    margin-bottom: 8px;
+}
+.mdr-embed-toc ul { list-style: none; margin: 0; padding: 0; }
+.mdr-embed-toc ul ul { padding-left: 12px; }
+.mdr-embed-toc li { margin: 3px 0; }
+.mdr-embed-toc a {
+    color: var(--mdr-fg-muted, #57606a);
+    text-decoration: none;
+    display: block;
+    padding: .15rem .4rem;
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    transition: color .12s, background .12s, border-color .12s;
+}
+.mdr-embed-toc a:hover { color: var(--mdr-accent, #0969da); }
+
+/* Size / weight by heading depth (li.mdr-toc-l1 … l6 from buildToc). Keep the
+   colour rules out of here — the active state below has to win on colour. */
+.mdr-embed-toc .mdr-toc-l1 > a { font-size: 1.04em; font-weight: 700; }
+.mdr-embed-toc .mdr-toc-l2 > a { font-weight: 600; }
+.mdr-embed-toc .mdr-toc-l3 > a { font-size: .95em; }
+.mdr-embed-toc .mdr-toc-l4 > a,
+.mdr-embed-toc .mdr-toc-l5 > a,
+.mdr-embed-toc .mdr-toc-l6 > a { font-size: .9em; color: var(--mdr-fg-faint, #8c959f); }
+
+/* Section currently under the header — set by markdown-embed.js. Last, so its
+   colour beats the l4–l6 faint rule; size stays whatever the level set. */
+.mdr-embed-toc a.mdr-nav--active {
+    color: var(--mdr-accent, #0969da);
+    background: var(--mdr-accent-bg, #ddf4ff);
+    border-left-color: var(--mdr-accent, #0969da);
+}
+
+@media (max-width: 680px) {
+    .mdr-embed { grid-template-columns: 1fr; }
+    .mdr-embed-toc {
+        position: static; max-height: none;
+        border-left: 0; padding-left: 0;
+    }
+}

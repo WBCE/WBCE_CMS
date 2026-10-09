@@ -769,3 +769,4 @@ $SIGNAL['RM_PATH_NOT_FOUND']         = 'The path `%s` does not exist.';
 $SIGNAL['RM_PATH_NOT_READABLE']      = 'The directory `%s` exists but is not readable.';
 $SIGNAL['RM_PATH_COULD_NOT_REMOVE']  = 'Could not remove `%s` (permission issue, file locked, or other error).';
 $SIGNAL['RM_PATH_PERMISSION_DENIED'] = 'Permission denied while trying to access `%s`.';
+$SIGNAL['RM_DIR_COULD_NOT_REMOVE']   = 'Could not remove the directory `%s` or one of the files inside it.';

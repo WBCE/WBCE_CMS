@@ -1,0 +1,94 @@
+{# errorlogger — Log View tab. Included by tool.twig. #}
+
+<div class="cp-toolbar">
+    <a class="button el-refresh" href="{{ BASE }}">
+        <i class="fa fa-refresh"></i> {{ L_('TXT:RELOAD') }}
+    </a>
+    <a class="button el-danger"
+       href="javascript:confirm_link('{{ L_('TXT:DELETE_LOGFILE')|e('js') }}','{{ BASE }}&delete=1');">
+        <i class="fa fa-trash"></i> {{ L_('TXT:DELETE_LOGFILE') }}
+    </a>
+
+    <div class="el-seg" role="group">
+        <a href="{{ BASE }}&color=0" class="{{ VIEW == 0 ? 'sel' : '' }}">{{ L_('TXT:PLAIN_VIEW') }}</a>
+        <a href="{{ BASE }}&color=1" class="{{ VIEW == 1 ? 'sel' : '' }}">{{ L_('TXT:COLOR_VIEW') }}</a>
+        <a href="{{ BASE }}&color=2" class="{{ VIEW == 2 ? 'sel' : '' }}">{{ L_('TXT:TABLE_VIEW') }}</a>
+    </div>
+
+    <div class="cp-search pull-right">
+        <input class="cp-table-filter" id="errlogFilter" type="text"
+               placeholder="{{ L_('TXT:SEARCH_PLACEHOLDER')|e }}"
+               data-empty="{{ L_('TXT:NO_RESULTS')|e }}">
+        <button class="cp-search-clear" type="button"
+                onclick="this.previousElementSibling.value='';
+                         this.previousElementSibling.dispatchEvent(new Event('input'));
+                         this.previousElementSibling.focus();">&#10005;</button>
+    </div>
+</div>
+
+<div class="no-filter-results" id="errlogNoResults" style="display:none">
+    {{ L_('TXT:NO_RESULTS') }}
+</div>
+
+{% if not HAS_LOG or (VIEW == 2 and TABLE_ROWS is empty) %}
+
+    <div class="alertbox_success">
+        <span class="signal"><i class="fa fa-check-circle"></i></span>
+        <p>{{ L_('TXT:NO_ERROR_REPORT') }}</p>
+    </div>
+
+{% elseif VIEW == 2 %}
+
+    <div class="logviewWrapper">
+    <table class="el-logtable" data-locale="{{ LOCALE|e }}">
+        <colgroup>
+            <col style="width:5.5rem"><col style="width:9.5rem"><col>
+            <col style="width:30%"><col style="width:3.5rem">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{{ L_('TXT:COL_TYPE') }}</th>
+                <th>{{ L_('TXT:COL_TIME') }}</th>
+                <th>{{ L_('TXT:COL_MESSAGE') }}</th>
+                <th>{{ L_('TXT:COL_FILE') }}</th>
+                <th class="el-c-line">{{ L_('TXT:COL_LINE') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rec in TABLE_ROWS %}
+            <tr{{ rec.is_new ? ' class="el-new"'|raw : '' }}>
+                <td class="el-c-type">
+                    <span class="el-badge el-badge--{{ rec.badge_mod }}" title="{{ rec.type|e }}">{{ rec.badge_label|e }}</span>
+                    {% if rec.count > 1 %}<span class="el-count" title="{{ rec.count }}×">×{{ rec.count }}</span>{% endif %}
+                </td>
+                <td class="el-c-time">
+                    <span class="el-ago" data-ts="{{ rec.unix }}">{{ rec.ts[:16]|replace({'T': ' '})|e }}</span>
+                    {% if rec.exact %}<time datetime="{{ rec.ts|e }}">{{ rec.exact|e }}</time>{% endif %}
+                </td>
+                <td class="el-c-msg">
+                    <span class="el-msg">{{ rec.msg|e|nl2br }}</span>
+                    {% if rec.call %}<span class="el-call">{{ rec.call|e }}</span>{% endif %}
+                </td>
+                <td class="el-c-file">
+                    {% if rec.file %}<span class="el-file">{{ rec.file|e }}</span>{% endif %}
+                    {% if rec.from %}<span class="el-from">&#8627; {{ rec.from|e }}</span>{% endif %}
+                </td>
+                <td class="el-c-line">
+                    {{ rec.line_label ? rec.line_label|e : '—' }}
+                    {% if rec.fline %}<span class="el-fline">{{ rec.fline|e }}</span>{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+{% else %}
+
+    <div class="logviewWrapper{{ COLOR_MODE ? ' color' : '' }}">
+    {% for row in PLAIN_ROWS %}
+        <div class="logline {{ row.cls }}">{{ row.text|e }}</div>
+    {% endfor %}
+    </div>
+
+{% endif %}

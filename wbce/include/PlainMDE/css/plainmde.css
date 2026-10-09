@@ -1,0 +1,465 @@
+/**
+ * include/PlainMDE/css/plainmde.css
+ *
+ * The one stylesheet for PlainMDE: toolbar, editor chrome, preview
+ * typography, fullscreen/side-by-side layout, and line decorations —
+ * previously spread across easymde.css (403 lines, mostly unused Bootstrap-
+ * esque hero-heading/dialog/upload-progress rules) and wbce-mde.css (114
+ * lines of overrides fighting that specificity). One file, one cascade.
+ *
+ * All colors/fonts/spacing are CSS custom properties so a project can
+ * retheme via plainmde-overrides.css without touching this file.
+ */
+
+.PlainMDE {
+    --pmde-border: #d7dbe0;
+    --pmde-bg: #fff;
+    --pmde-toolbar-bg: #f7f8fa;
+    --pmde-text: #1f2328;
+    --pmde-muted: #6b7280;
+    --pmde-accent: #2563eb;
+    --pmde-accent-bg: rgba(37, 99, 235, .1);
+    --pmde-code-bg: rgba(0, 0, 0, .05);
+    --pmde-radius: 6px;
+    /* Editor and preview deliberately use different prose typefaces (not
+       just different from each other in name — geometric/technical sans
+       vs. humanist/reading sans) so the two panes don't look alike.
+       'PmdeEditorProse'/'PmdePreviewProse' are the locally-cached Space
+       Grotesk / Lexend aliases from plugin.php's I::insertWebFont() calls. */
+    --pmde-font: 'PmdeEditorProse', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --pmde-font-preview: 'PmdePreviewProse', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --pmde-font-mono: ui-monospace, SFMono-Regular, 'JetBrains Mono', Consolas, 'Courier New', monospace;
+
+    border: 1px solid var(--pmde-border);
+    border-radius: var(--pmde-radius);
+    background: var(--pmde-bg);
+    color: var(--pmde-text);
+    font-family: var(--pmde-font);
+    overflow: hidden;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────── */
+
+.pmde-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1px;
+    padding: 4px 6px;
+    background: var(--pmde-toolbar-bg);
+    border-bottom: 1px solid var(--pmde-border);
+}
+
+.pmde-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--pmde-text);
+    cursor: pointer;
+}
+
+.pmde-btn svg { width: 15px; height: 15px; }
+
+.pmde-btn:hover { background: var(--pmde-accent-bg); }
+
+.pmde-btn-active {
+    background: var(--pmde-accent-bg);
+    border-color: var(--pmde-accent);
+    color: var(--pmde-accent);
+}
+
+.pmde-separator {
+    width: 1px;
+    height: 18px;
+    margin: 0 3px;
+    background: var(--pmde-border);
+}
+
+/* Pushes everything after it (the preview/side-by-side/fullscreen group by
+   default) to the far right of the toolbar row. */
+.pmde-spacer {
+    flex: 1 1 auto;
+}
+
+/* ── Editor / preview layout ────────────────────────────────────────── */
+
+.pmde-editor-row {
+    display: flex;
+    min-height: 0;
+}
+
+.pmde-cm-host { flex: 1 1 auto; min-width: 0; }
+.pmde-preview {
+    display: none;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: auto;
+    padding: 12px 16px;
+    /* Without this, height:100% (side-by-side/fullscreen rules below) sizes
+       the content box only — the 24px of vertical padding above then adds
+       on top, rendering ~24px taller than the editor pane next to it. */
+    box-sizing: border-box;
+}
+
+.PlainMDE .CodeMirror {
+    height: auto;
+    font-family: var(--pmde-font);
+    line-height: 1.5;
+}
+
+/* Preview-only mode: hide the editor, show the preview full width. */
+.PlainMDE.pmde-preview-active .pmde-cm-host { display: none; }
+.PlainMDE.pmde-preview-active .pmde-preview { display: block; }
+
+/* Side-by-side: both panes visible, split evenly, each with its own
+   internal scrollbar (needs an explicit height, not just max-height —
+   see plainmde-core.js's maxHeight option). */
+.PlainMDE.pmde-sidebyside-active .pmde-cm-host,
+.PlainMDE.pmde-sidebyside-active .pmde-preview {
+    display: block;
+    width: 50%;
+}
+.PlainMDE.pmde-sidebyside-active .pmde-preview {
+    border-left: 1px solid var(--pmde-border);
+}
+.PlainMDE.pmde-sidebyside-active .CodeMirror,
+.PlainMDE.pmde-sidebyside-active .pmde-preview {
+    height: 100%;
+}
+/* .pmde-preview is a plain div — it needs its own overflow:auto to scroll.
+   .CodeMirror must NOT get one: codemirror.css already sets `overflow:
+   hidden` on it (deliberately, to clip a ~30px "magic margin" that hides
+   CodeMirror's own native scrollbars — see that file's comment, "things
+   will break if this is overridden"). Overriding it to `auto` here made
+   that margin leak out as a second, redundant scrollable area on the
+   *outer* element, on top of CodeMirror's own internal .CodeMirror-scroll
+   — both a spurious vertical scrollbar and, since the margin pads width
+   too, a spurious horizontal one despite lineWrapping being on. */
+.PlainMDE.pmde-sidebyside-active .pmde-preview {
+    overflow: auto;
+}
+
+/* Fullscreen */
+.PlainMDE.pmde-fullscreen-active {
+    position: fixed;
+    inset: 0;
+    /* Must clear the WBCE admin chrome's own stacking (templates/wbce_flat_theme
+       /css/theme.css: #headerarea 3000, #sidebararea 2000, #pagetopmenu 1000) or
+       the admin header/sidebar flyout paints on top of "fullscreen". Stays below
+       #toast-container's 9999 (templates/theme_fallbacks/css/cp_chrome.css) so
+       save/error toasts remain visible while in fullscreen. */
+    z-index: 5000;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+}
+.PlainMDE.pmde-fullscreen-active .pmde-editor-row { flex: 1 1 auto; }
+.PlainMDE.pmde-fullscreen-active .CodeMirror,
+.PlainMDE.pmde-fullscreen-active .pmde-preview {
+    height: 100% !important;
+}
+
+/* ── Preview typography ─────────────────────────────────────────────── */
+
+.pmde-preview {
+    font-family: var(--pmde-font-preview);
+    line-height: 1.6;
+}
+/* Guard against the surrounding admin theme: templates/wbce_flat_theme/css/
+   theme.css defines bare-element rules for several of these tags (h2, h3,
+   ul/li, a, table, ...) meant for the admin chrome, not markdown content —
+   without this reset they leak straight into the rendered preview since
+   plainmde.css previously had no competing rule for some of them at all
+   (e.g. headings/links/lists), and a scoped `.pmde-preview h2` still loses
+   to page-specific admin selectors when those load after this stylesheet.
+   `all: revert` resets each tag to the browser UA default first so every
+   rule below always starts from a known baseline, regardless of what any
+   current or future WBCE theme declares globally. */
+.pmde-preview :is(h1, h2, h3, h4, h5, h6, p, ul, ol, li, a, blockquote, table, th, td, code, pre, hr, img) {
+    all: revert;
+}
+/* `all: revert` resets `color` to the UA stylesheet default too (normally
+   black), not to var(--pmde-text) — invisible in light mode only because
+   near-black-on-white happens to look the same either way. Puts the text
+   back under theme control (the .mdr-pmde-theme dark-mode block below
+   redefines --pmde-text; without this line every preview heading/paragraph
+   stayed hardcoded black regardless). */
+.pmde-preview :is(h1, h2, h3, h4, h5, h6, p, ul, ol, li, blockquote, table, th, td, code, pre) {
+    color: var(--pmde-text);
+}
+.pmde-preview h1,
+.pmde-preview h2,
+.pmde-preview h3,
+.pmde-preview h4,
+.pmde-preview h5,
+.pmde-preview h6 {
+    font-family: var(--pmde-font-preview);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: .8em 0 .4em;
+}
+.pmde-preview h1 { font-size: 2em; }
+.pmde-preview h2 { font-size: 1.5em; }
+.pmde-preview h3 { font-size: 1.17em; }
+.pmde-preview h4 { font-size: 1em; }
+.pmde-preview h5 { font-size: .83em; }
+.pmde-preview h6 { font-size: .67em; }
+.pmde-preview p { margin: .6em 0; }
+.pmde-preview a {
+    color: var(--pmde-accent);
+    text-decoration: underline;
+}
+.pmde-preview ul,
+.pmde-preview ol {
+    margin: .6em 0;
+    padding-left: 1.6em;
+}
+.pmde-preview li { margin: .2em 0; }
+.pmde-preview hr {
+    border: none;
+    border-top: 1px solid var(--pmde-border);
+    margin: 1em 0;
+}
+.pmde-preview pre,
+.pmde-preview code { font-family: var(--pmde-font-mono); }
+.pmde-preview pre {
+    background: var(--pmde-code-bg);
+    padding: 10px 12px;
+    border-radius: var(--pmde-radius);
+    overflow: auto;
+}
+.pmde-preview code {
+    background: var(--pmde-code-bg);
+    padding: .1em .3em;
+    border-radius: 4px;
+}
+.pmde-preview pre code { background: none; padding: 0; }
+.pmde-preview table {
+    border-collapse: collapse;
+    margin: .5em 0;
+}
+.pmde-preview th,
+.pmde-preview td {
+    border: 1px solid var(--pmde-border);
+    padding: 4px 10px;
+}
+.pmde-preview blockquote {
+    margin: .5em 0;
+    padding: 2px 12px;
+    border-left: 3px solid var(--pmde-border);
+    color: var(--pmde-muted);
+}
+.pmde-preview img { max-width: 100%; }
+
+/* Cursor↔preview block sync (plainmde-sync.js). Prefixed with .pmde-preview
+   so these beat the ":is(...) { all: revert }" reset above on elements it
+   also targets (li, p, ...) - that reset is ".pmde-preview li" (2 selector
+   weights), which otherwise outranks a bare ".pmde-src-block-active" class
+   (1 weight) and silently zeroes its background/transition back to the UA
+   default. Only surfaced once list items started carrying the class
+   directly (see renderList() in plainmde-preview.js) instead of always
+   being wrapped in a plain, reset-list-exempt <div>. */
+.pmde-preview .pmde-src-block { transition: background-color .15s ease; }
+.pmde-preview .pmde-src-block-active { background: var(--pmde-accent-bg); border-radius: 4px; }
+
+/* ── Editor line decorations (plainmde-decorations.js) ──────────────── */
+
+/* Heading size preview while typing, matching the rendered <h1>-<h6> scale
+   rather than CodeMirror gfm mode's default (which doesn't scale at all). */
+.CodeMirror .cm-header-1 { font-size: 2em; }
+.CodeMirror .cm-header-2 { font-size: 1.5em; }
+.CodeMirror .cm-header-3 { font-size: 1.17em; }
+.CodeMirror .cm-header-4 { font-size: 1em; }
+.CodeMirror .cm-header-5 { font-size: .83em; }
+.CodeMirror .cm-header-6 { font-size: .67em; }
+
+.CodeMirror .cm-comment,
+.CodeMirror-line.pmde-table-row {
+    font-family: var(--pmde-font-mono);
+}
+
+/* Fenced code block: one continuous full-width background instead of
+   per-token highlight pills (see markFencedCodeBlocks()). */
+.CodeMirror-line.pmde-code-fence-line .cm-comment { background: transparent; }
+.CodeMirror-linebackground.pmde-code-fence-bg { background: var(--pmde-code-bg); }
+.CodeMirror-linebackground.pmde-code-fence-first { border-radius: 4px 4px 0 0; }
+.CodeMirror-linebackground.pmde-code-fence-last { border-radius: 0 0 4px 4px; }
+
+/* List blocks: small indent + breathing room above/below. */
+.CodeMirror-line.pmde-list-block { padding-left: 4px; }
+.CodeMirror-line.pmde-list-block-before { padding-bottom: 4px; }
+.CodeMirror-line.pmde-list-block-last { padding-bottom: 4px; }
+
+/* Preview: fixChecklistStyling() (plainmde-preview.js) puts
+   `margin-left: -1.5em; list-style-type: none` directly on a task-list
+   <li> (inline style, so it needs !important here to override) — that
+   pulls the *whole* <li>, checkbox and text both, 1.5em left of where a
+   plain sibling <li>'s text starts, staggering the left edge of mixed
+   checkbox/bullet lists. Keep the li where its siblings are and pull only
+   the checkbox itself back into the space a bullet marker would occupy.
+   Descendant (not direct-child) selector: a "loose" list (blank line
+   between any two items) gets each item's content wrapped in a <p>,
+   putting the checkbox one level deeper. */
+.pmde-preview li[style*="list-style-type: none"] {
+    margin-left: 0 !important;
+}
+.pmde-preview li[style*="list-style-type: none"] input[type="checkbox"] {
+    margin-left: -1.5em;
+    margin-right: .3em;
+}
+/* Loose-list <p> wrapper shouldn't add its own margin on top of that —
+   checklist items should look the same whether the list is tight or loose. */
+.pmde-preview li[style*="list-style-type: none"] > p {
+    margin: 0;
+}
+
+/* ── Dark mode — MarkdownWbce reader only ───────────────────────────────
+   Scoped under .mdr-pmde-theme (added by modules/MarkdownWbce/layout/
+   reader.htt around its PlainMDE mount) so the other consumers of this
+   shared component — cwsoft-addon-file-editor, tinymce_wbce, ves,
+   tiptap_editor, elfinder — are completely unaffected, including under an
+   OS-level prefers-color-scheme:dark: none of them add that class, so
+   neither block below can ever match on their pages. Only redefines the
+   --pmde-* custom properties already used throughout this file above (plus
+   the CodeMirror "shell" colors, which PlainMDE never themed via CodeMirror's
+   own theme system — see plainmde-core.js's _buildCodeMirror(), no `theme:`
+   option is passed, so it was always the un-themed CodeMirror default:
+   white background, black text, regardless of page). Same light source of
+   truth as the rest of the reader — see modules/MarkdownWbce/layout/
+   style.css's "Theme tokens" for where these hex values come from. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mdr-pmde-theme .PlainMDE {
+        --pmde-border: #30363d;
+        --pmde-bg: #161b22;
+        --pmde-toolbar-bg: #21262d;
+        --pmde-text: #e6edf3;
+        --pmde-muted: #8b949e;
+        --pmde-accent: #58a6ff;
+        --pmde-accent-bg: rgba(88,166,255,.15);
+        --pmde-code-bg: rgba(255,255,255,.08);
+        /* CodeMirror syntax-token colors — see .cm-s-default overrides
+           below. Only defined here (dark); the override rules fall back to
+           the exact same hardcoded values codemirror.css's own .cm-s-default
+           rules use, so light mode is untouched. */
+        --pmde-cm-header: #79c0ff;
+        --pmde-cm-quote: #7ee787;
+        --pmde-cm-keyword: #ff7b72;
+        --pmde-cm-atom: #79c0ff;
+        --pmde-cm-number: #79c0ff;
+        --pmde-cm-def: #d2a8ff;
+        --pmde-cm-variable-2: #ffa657;
+        --pmde-cm-variable-3: #7ee787;
+        --pmde-cm-comment: #8b949e;
+        --pmde-cm-string: #a5d6ff;
+        --pmde-cm-string-2: #a5d6ff;
+        --pmde-cm-meta: #8b949e;
+        --pmde-cm-qualifier: #8b949e;
+        --pmde-cm-builtin: #ffa657;
+        --pmde-cm-bracket: #e6edf3;
+        --pmde-cm-tag: #7ee787;
+        --pmde-cm-attribute: #79c0ff;
+        --pmde-cm-hr: #8b949e;
+        --pmde-cm-link: #a5d6ff;
+        --pmde-cm-error: #f85149;
+    }
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror {
+        background: var(--pmde-bg);
+        color: var(--pmde-text);
+    }
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-cursor { border-left-color: var(--pmde-text); }
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-selected,
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-focused .CodeMirror-selected { background: var(--pmde-accent-bg); }
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-line::selection,
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-line > span::selection,
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-line > span > span::selection { background: var(--pmde-accent-bg); }
+    :root:not([data-theme="light"]) .mdr-pmde-theme .CodeMirror-gutters { background: var(--pmde-toolbar-bg); border-color: var(--pmde-border); }
+}
+:root[data-theme="dark"] .mdr-pmde-theme .PlainMDE {
+    --pmde-border: #30363d;
+    --pmde-bg: #161b22;
+    --pmde-toolbar-bg: #21262d;
+    --pmde-text: #e6edf3;
+    --pmde-muted: #8b949e;
+    --pmde-accent: #58a6ff;
+    --pmde-accent-bg: rgba(88,166,255,.15);
+    --pmde-code-bg: rgba(255,255,255,.08);
+    --pmde-cm-header: #79c0ff;
+    --pmde-cm-quote: #7ee787;
+    --pmde-cm-keyword: #ff7b72;
+    --pmde-cm-atom: #79c0ff;
+    --pmde-cm-number: #79c0ff;
+    --pmde-cm-def: #d2a8ff;
+    --pmde-cm-variable-2: #ffa657;
+    --pmde-cm-variable-3: #7ee787;
+    --pmde-cm-comment: #8b949e;
+    --pmde-cm-string: #a5d6ff;
+    --pmde-cm-string-2: #a5d6ff;
+    --pmde-cm-meta: #8b949e;
+    --pmde-cm-qualifier: #8b949e;
+    --pmde-cm-builtin: #ffa657;
+    --pmde-cm-bracket: #e6edf3;
+    --pmde-cm-tag: #7ee787;
+    --pmde-cm-attribute: #79c0ff;
+    --pmde-cm-hr: #8b949e;
+    --pmde-cm-link: #a5d6ff;
+    --pmde-cm-error: #f85149;
+}
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror {
+    background: var(--pmde-bg);
+    color: var(--pmde-text);
+}
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-cursor { border-left-color: var(--pmde-text); }
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-selected,
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-focused .CodeMirror-selected { background: var(--pmde-accent-bg); }
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-line::selection,
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-line > span::selection,
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-line > span > span::selection { background: var(--pmde-accent-bg); }
+:root[data-theme="dark"] .mdr-pmde-theme .CodeMirror-gutters { background: var(--pmde-toolbar-bg); border-color: var(--pmde-border); }
+
+/* ── CodeMirror syntax-token overrides (default theme, .cm-s-default) ────
+   codemirror.css hardcodes these directly on .cm-s-default .cm-* with no
+   custom-property hook of its own — PlainMDE never themed CodeMirror
+   (see the block above), so this is the only place these colors can be
+   touched. Scoped to .mdr-pmde-theme only; --pmde-cm-* is undefined outside
+   the dark blocks above, so the var() fallback (codemirror.css's own
+   original light-mode value) is what actually renders in light mode —
+   this rule set doesn't change anything until dark mode is active. */
+.mdr-pmde-theme .cm-s-default .cm-header    { color: var(--pmde-cm-header, #5088d0); }
+.mdr-pmde-theme .cm-s-default .cm-quote     { color: var(--pmde-cm-quote, #090); }
+.mdr-pmde-theme .cm-s-default .cm-keyword   { color: var(--pmde-cm-keyword, #708); }
+.mdr-pmde-theme .cm-s-default .cm-atom      { color: var(--pmde-cm-atom, #219); }
+.mdr-pmde-theme .cm-s-default .cm-number    { color: var(--pmde-cm-number, #164); }
+.mdr-pmde-theme .cm-s-default .cm-def       { color: var(--pmde-cm-def, #00f); }
+.mdr-pmde-theme .cm-s-default .cm-variable-2 { color: var(--pmde-cm-variable-2, #05a); }
+.mdr-pmde-theme .cm-s-default .cm-variable-3 { color: var(--pmde-cm-variable-3, #085); }
+.mdr-pmde-theme .cm-s-default .cm-comment   { color: var(--pmde-cm-comment, #a50); }
+.mdr-pmde-theme .cm-s-default .cm-string    { color: var(--pmde-cm-string, #a11); }
+.mdr-pmde-theme .cm-s-default .cm-string-2  { color: var(--pmde-cm-string-2, #f50); }
+.mdr-pmde-theme .cm-s-default .cm-meta      { color: var(--pmde-cm-meta, #555); }
+.mdr-pmde-theme .cm-s-default .cm-qualifier { color: var(--pmde-cm-qualifier, #555); }
+.mdr-pmde-theme .cm-s-default .cm-builtin   { color: var(--pmde-cm-builtin, #30a); }
+.mdr-pmde-theme .cm-s-default .cm-bracket   { color: var(--pmde-cm-bracket, #997); }
+.mdr-pmde-theme .cm-s-default .cm-tag       { color: var(--pmde-cm-tag, #170); }
+.mdr-pmde-theme .cm-s-default .cm-attribute { color: var(--pmde-cm-attribute, #00c); }
+.mdr-pmde-theme .cm-s-default .cm-hr        { color: var(--pmde-cm-hr, #999); }
+.mdr-pmde-theme .cm-s-default .cm-link      { color: var(--pmde-cm-link, #00c); }
+.mdr-pmde-theme .cm-s-default .cm-error     { color: var(--pmde-cm-error, #f00); }
+
+/* ── Inline tree previews (plainmde-treeview.js) ─────────────────────────
+   The widget replaces a ```file-tree / ```page-tree block while the cursor is
+   elsewhere. The tree itself is styled by the renderer's own stylesheet
+   (filetree.css); only placement belongs here. */
+.pmde-treeview {
+    display: block;
+    margin: .35rem 0;
+    cursor: text;
+}
+.pmde-treeview .file-tree-container {
+    margin: 0;
+}

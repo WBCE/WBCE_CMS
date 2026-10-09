@@ -4,7 +4,7 @@
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
+ * @version         1.7.0
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
@@ -42,7 +42,7 @@ require('../../../config.php');
 include_once(WB_PATH . '/framework/module.functions.php');
 
 // load outputfilter-functions
-require_once(dirname(dirname(__FILE__))."/functions.php");
+require_once(dirname(__DIR__)."/functions.php");
 
 
 $aJsonRespond = array();

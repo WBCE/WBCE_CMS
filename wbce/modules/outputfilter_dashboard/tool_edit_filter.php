@@ -1,22 +1,20 @@
 <?php
 
-/*
-tool_edit_filter.php
-*/
-
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU General Public License, Version 3
- * @platform        WBCE 1.x
- * @requirements    PHP 7.4 - 8.2
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -52,6 +50,24 @@ if (!$filter) {
 
 $aToTwig = [];
 $filter = opf_replace_sysvar($filter);
+
+// A save just failed CodeVet's syntax/security check -- tool.php stashed the
+// admin's unsaved edit here instead of discarding it (see its docblock and
+// modules/droplets/save_droplet.php's identical pattern). Overlay it onto
+// the freshly-loaded DB row so the broken code (not the last-saved-good
+// version) shows up, and record the flagged line for the editor to jump to.
+// Read once, then cleared immediately so it never leaks into a later,
+// unrelated visit to this filter.
+$errorLine = 0;
+$draftKey  = 'opf_' . $id;
+if (isset($_SESSION['codevet_draft'][$draftKey])) {
+    $draft = $_SESSION['codevet_draft'][$draftKey];
+    unset($_SESSION['codevet_draft'][$draftKey]);
+    if (isset($draft['name']))     $filter['name']     = $draft['name'];
+    if (isset($draft['func']))     $filter['func']      = $draft['func'];
+    if (isset($draft['funcname'])) $filter['funcname'] = $draft['funcname'];
+    $errorLine = max(0, (int) ($draft['line'] ?? 0));
+}
 
 $type = (array_key_exists($filter['type'], opf_get_types())
         ? $filter['type']
@@ -109,6 +125,9 @@ $aToTwig += [
     // AJAX save — only for editable filters with an existing DB record
     'idKey'    => $isEditable ? $admin->getIDKEY($id) : '',
     'ajax_url' => $isEditable ? WB_URL . '/modules/outputfilter_dashboard/ajax_save_filter.php' : '',
+
+    // Line CodeVet flagged on the save that just bounced back here (0 = none).
+    'error_line' => $errorLine,
 ];
 
 $aToTwig['extra_fields'] = opf_get_extrafields_array($id);

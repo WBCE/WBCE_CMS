@@ -1,0 +1,24 @@
+<style>
+    .cp-card-head span {
+    text-transform: none;}
+</style>
+<div class="cp-settings">
+    <div class="cp-toggle-section cp-card-body">
+        <div class="cp-card-head">
+            <label>{{ TOOL_ICON|raw }} <span>{{ TOOL_NAME }}</span></label>
+        </div>
+        <br>
+        <br>
+        <div style="text-align: center">
+        {{ readmeLink }}
+            <br>        
+            <p>There are no other options here at the moment.</p>
+        </div>
+        <br>        
+        <br>        
+
+        <div class="cp-buttons-row">
+            <a href="{{ returnToTools }}" class="button">{{ L_('TEXT:BACK') }}</a>
+        </div>
+    </div>
+</div>

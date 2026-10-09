@@ -3,15 +3,17 @@
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU General Public License, Version 3
- * @platform        WBCE 1.x
- * @requirements    PHP 7.4 - 8.2
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -46,6 +48,13 @@ $ToolUrl = $returnUrl;
 if (class_exists('Lang')) {
     Lang::register('L', $LANG['MOD_OPF']);
 }
+
+// $L is the short alias the PHP side of this tool reads (this file's export
+// toast, tool_dashboard.php's filter-type tooltips). Nothing ever assigned it
+// -- not the language files, not this file -- so every $L['…'] read returned
+// an empty string and raised an undefined-variable warning. The included
+// tool_*.php files run in this scope, so assigning it here covers them too.
+$L = $LANG['MOD_OPF'];
 // load outputfilter-functions
 require_once __DIR__ . "/functions.php";
 
@@ -63,7 +72,7 @@ I::insertCssFile($aCssFiles, 'HEAD TOP+');
 // start Twig object
 $sTwigPath = __DIR__ . '/twig/';
 $oTwig = getTwig($sTwigPath);
-$sImageUrl = get_url_from_path(__DIR__).'/images';
+$sImageUrl = get_url_from_path(__DIR__).'/assets/images';
 $oTwig->addGlobal('IMAGE_URL', $sImageUrl);
 I::insertJsCode(
     'var IMAGE_URL = "'.$sImageUrl.'";
@@ -113,7 +122,11 @@ if (
         && is_uploaded_file($_FILES['filterplugin']['tmp_name'])
     ) {
     include __DIR__.'/upload.php';
+    if ($upload_message !== '') {
+        (new Alerts())->sessionToast($upload_message, $upload_ok ? 'success' : 'error');
+    }
 }
+
 // export a filter
 $export_message = $export_url = ''; // both will be set in export.php
 $export_ok = FALSE;
@@ -121,11 +134,6 @@ if ($export && $id ) {
     $res = include __DIR__.'/export.php';
     if ($res) $export_url = $res;
 }
-$export_success = ($export_ok == FALSE)
-        ? $L['TXT_EXPORT_FAILED']
-        : $L['TXT_EXPORT_SUCCESS'];
-
-
 
 // move up or down (changed to Ajax drag&drop)
 //if ($id && $dir == 'up' )     opf_move_up_one($id);
@@ -144,32 +152,89 @@ $convert_ok = FALSE;
 if ($id && $convert ) {
     $res = include __DIR__.'/convert.php';
     if (!$res) $export_message = $convert_message;
-    $export_success = ($export_ok==FALSE)
-        ? $L['TXT_CONVERT_FAILED']
-        : $L['TXT_CONVERT_SUCCESS'];
+}
+
+// Export/convert feedback, same $export_message/$export_ok pair either path
+// sets (see export.php/convert.php). A successful export gets a download
+// link appended to the toast; a successful convert never sets
+// $export_message at all (matches the previous popup's exact behaviour --
+// convert.php only sets it on failure), so nothing is shown for that case.
+if ($export_message !== '') {
+    $toastMsg = $export_message;
+    if ($export_ok && $export_url) {
+        $toastMsg .= ' <a href="' . htmlspecialchars($export_url) . '">' . $L['TXT_DOWNLOAD'] . '</a>';
+    }
+    (new Alerts())->sessionToast($toastMsg, $export_ok ? 'success' : 'error');
 }
 
 // save filter
 
 if (($filtername || $funcname) && $doSave) {
     $tmp = opf_save();
-    if (is_numeric($tmp)){
-        $id = $tmp; // get the $id    
+    $saveFailed = !is_numeric($tmp);
+    if (!$saveFailed){
+        $id = $tmp; // get the $id
+        (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+    } else {
+        // opf_save() failed -- $id above came from opf_fetch_get('id', ...),
+        // but TOOL_URI (the edit form's action) carries no query string, so
+        // $id is only ever posted in the form body (see
+        // tool_add_edit_filter.twig's hidden "id" field). On success $id
+        // gets overwritten from opf_save()'s return value above; on failure
+        // it never does, so it stays NULL and the dispatch below
+        // ("elseif ($id && $edit)") falls through to the dashboard list
+        // instead of staying on this filter's edit page. Recover it from
+        // POST so a failed save keeps editing the same filter.
+        $postedId = opf_fetch_post( 'id', NULL, 'int');
+        if ($postedId) $id = $postedId;
+
+        // CodeVet rejection (opf_register_filter() populated this global --
+        // see its docblock) gets the specific message + the unsaved edit
+        // preserved for tool_edit_filter.php to re-display, same pattern as
+        // modules/droplets/save_droplet.php's $_SESSION['codevet_draft'].
+        // Any other kind of save failure (missing name/funcname etc.) still
+        // just gets the generic toast -- there's no specific reason to show
+        // beyond what the form itself already indicates.
+        $codevetError = $GLOBALS['opf_codevet_error'] ?? null;
+        if ($codevetError && $id) {
+            $_SESSION['codevet_draft']['opf_' . $id] = $_POST + ['line' => $codevetError['line']];
+            $label = (class_exists('Lang') && Lang::has('L', 'TXT_INVALIDCODE'))
+                ? Lang::get('L', 'TXT_INVALIDCODE')
+                : 'Invalid PHP code';
+            (new Alerts())->sessionToast($label . ': ' . $codevetError['message'], 'error');
+        } else {
+            (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_FAILED', 'error');
+        }
     }
-    // in case we come from add/edit check if user pressed "save" instead of "save and exit"
-    if (opf_fetch_post( 'submit_return', FALSE, 'exists'))
+    // Stay on the edit form if the user pressed "save" instead of "save and
+    // exit" (submit_return) -- OR the save failed outright, no matter which
+    // button was pressed. A failed save (broken/unsafe code, or any other
+    // validation issue) must be seen and fixed before "Save & Close" is
+    // allowed to actually close -- otherwise clicking it silently discards
+    // the failure and lands in the list as if nothing were wrong.
+    if (opf_fetch_post( 'submit_return', FALSE, 'exists') || $saveFailed)
         $force_edit = TRUE;
 }
 
 // save edited css file
 if ($css_save && $doSave) {
+    $cssSaveFailed = false;
     if (!empty($_POST)){
         $tmp = opf_css_save();
-        if (is_numeric($tmp))
+        if (is_numeric($tmp)) {
             $id = $tmp; // overwrite $id
+            (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+        } else {
+            $cssSaveFailed = true;
+            // Same $id recovery as the opf_save() branch above -- see comment there.
+            $postedId = opf_fetch_post( 'id', NULL, 'int');
+            if ($postedId) $id = $postedId;
+            (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_FAILED', 'error');
+        }
     }
-    // in case we come from add/edit check if user pressed "save" instead of "save and exit"
-    if (opf_fetch_post( 'submit_return', FALSE, 'exists')){
+    // Stay on the css edit page if "save" was pressed, OR the save failed
+    // outright -- same reasoning as the filter-code save block above.
+    if (opf_fetch_post( 'submit_return', FALSE, 'exists') || $cssSaveFailed){
         $force_csspath = opf_fetch_post( 'csspath', NULL, 'string');
     }
 }

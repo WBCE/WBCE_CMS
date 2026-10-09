@@ -1,22 +1,20 @@
 <?php
 
-/*
-tool_dashboard.php
-*/
-
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @version         1.7.0
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, 
+ *                   Christian M. Stefan  (https://www.wbEasy.de), 
+ *                   Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan, 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU General Public License, Version 3
- * @platform        WBCE 1.x
- * @requirements    PHP 7.4 - 8.2
+ * @platform        WBCE 1.7.x
+ * @requirements    PHP 8.1
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -54,11 +52,26 @@ foreach(opf_get_types() as $type => $typename){
     $order->clean($type);
 }
 
-// set language for help-browser
-$help_lang = LANGUAGE;
-if (!file_exists(__DIR__."/docs/files/".$help_lang."/intro-txt.html")){
-    $help_lang = 'EN';
-}
+// Main help link — MarkdownWbce popup with one tab per document, replacing the
+// old generated phpDocumentor pages under docs/files/. README.md is the short
+// module overview; the three guides under documentation/ are the actual manual,
+// split by audience (site admins vs. filter authors vs. the API itself).
+// Only the base paths are passed: MdReaderHelper::findExistingDoc() swaps in the
+// _<LANG> variant when one exists, so a DE backend gets README_DE.md and the
+// three *_DE.md guides without this having to know which translations shipped.
+// Labels are decoded first: this module's language files write umlauts as HTML
+// entities, but a tab label travels as a JSON value inside a GET parameter and
+// is rendered as text on the other side -- an '&Uuml;bersicht' would arrive
+// verbatim instead of becoming 'Übersicht'. A no-op for entity-free strings.
+$docLabel = static fn(string $key, string $fallback): string
+    => html_entity_decode(Lang::get('L', $key, $fallback), ENT_QUOTES, 'UTF-8');
+
+$helpLink = MdReaderLink::docs([
+    ['path' => __DIR__ . '/README.md',                        'label' => $docLabel('TXT_DOC_OVERVIEW',  'Overview')],
+    ['path' => __DIR__ . '/documentation/USER_GUIDE.md',      'label' => $docLabel('TXT_DOC_USER',      'User Guide')],
+    ['path' => __DIR__ . '/documentation/DEVELOPER_GUIDE.md', 'label' => $docLabel('TXT_DOC_DEVELOPER', 'Developer Guide')],
+    ['path' => __DIR__ . '/documentation/API_REFERENCE.md',   'label' => $docLabel('TXT_DOC_API',       'API Reference')],
+])->title('OutputFilter Dashboard');
 
 // get list of filters for template
 $aFilters = array();
@@ -132,21 +145,11 @@ foreach($filters as $filter) {
 // collect template vars
 $aToTwig += array(
     'tpl_add_onclick'         => $ToolUrl.'&amp;add=1',
-    'tpl_help_onclick'        => opf_quotes("javascript: return opf_popup('$ModUrl/docs/files/$help_lang/intro-txt.html');"),
-    'tpl_help_url'            => $ModUrl.'/docs/files/'.$help_lang.'/intro-txt.html',
-    'tpl_upload_message'      => opf_quotes($upload_message),
-    'tpl_upload_ok'           => $upload_ok,
-    'tpl_upload_success'      => ($upload_ok == FALSE) ? $L['TXT_UPLOAD_FAILED'] : $L['TXT_UPLOAD_SUCCESS'],
-    'tpl_upload_message_type' => ($upload_ok == FALSE)?'error':'success',
-    'tpl_hide_upload'         => ($upload_message == '' || $upload_ok == TRUE) ? 'class="hideupload"' : '',
-    'tpl_export_message'      => opf_quotes($export_message),
-    'tpl_export_success'      => $export_success,
-    'tpl_export_message_type' => ($export_ok==FALSE) ? 'error' : 'success',
-    'tpl_export_button1'      => ($export_ok==FALSE) ? $L['TXT_OK'] : $L['TXT_CANCEL'],
-    'tpl_export_button2'      => ($export_ok==FALSE) ? 'null' : "'".$L['TXT_DOWNLOAD']."'",
-    'tpl_export_action2'      => ($export_ok==FALSE) ? '0' : opf_quotes($export_url),
-    'tpl_export_ok'           => $export_ok,
-    'tpl_export_url'          => opf_quotes($export_url),
+    'tpl_help_onclick'        => opf_quotes($helpLink->popupOnclick()),
+    'tpl_help_url'            => $helpLink->url(),
+    // Panel starts closed, except right after a failed upload attempt so the
+    // error stays visible next to the retry form instead of being hidden again.
+    'tpl_show_upload'         => ($upload_message != '' && $upload_ok !== TRUE),
     'tpl_tool_url'            => opf_quotes($ToolUrl)
 );
 
@@ -173,26 +176,17 @@ foreach($aFilters as $filter){
         'filter_export_link'=> opf_quotes($filter['export_link']),
         'check_disabled'   => (in_array($filter['funcname'], $arr_allways_active)) ? 'disabled' : '',
         'convert_link'     => $filter['convert_link'],
-        'filter_convert_query' => opf_quotes(
-                "opf_message('"
-                .(($filter['plugin']=='')
-                    ?$LANG['MOD_OPF']["TXT_CONVERT_FILTER"]
-                    :$LANG['MOD_OPF']["TXT_CONVERT_PLUGIN"])
-                ."', '"
-                .sprintf((($filter['plugin']=='')
-                    ?$LANG['MOD_OPF']['TXT_SURE_TO_CONVERT']
-                    :$LANG['MOD_OPF']['TXT_SURE_TO_INLINE']),$filter['name_js_quoted'])
-                ."', 'query', '"
-                .$LANG['MOD_OPF']["TXT_CANCEL"]
-                ."', '"
-                .$LANG['MOD_OPF']["TXT_OK"]
-                ."', '"
-                .opf_quotes($filter['convert_link'])
-                ."'); return false;"
-            ),
+        // Confirmation is rendered inline in the row (see .convert-item in
+        // ajax.js), same UX as the delete confirmation -- no more popup dialog.
+        'convert_question' => opf_quotes(sprintf(
+                (($filter['plugin']=='') ? $LANG['MOD_OPF']['TXT_SURE_TO_CONVERT'] : $LANG['MOD_OPF']['TXT_SURE_TO_INLINE']),
+                $filter['name']
+            )),
+        'convert_confirm'  => opf_quotes($LANG['MOD_OPF']["TXT_OK"]),
+        'convert_cancel'   => opf_quotes($LANG['MOD_OPF']["TXT_CANCEL"]),
 
 
-    );    
+    );
     $aAllFilters[] = $aSingleFilter;
 }
 $aToTwig['filters'] = $aAllFilters;
