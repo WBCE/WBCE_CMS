@@ -278,9 +278,6 @@ class DbSession implements SessionHandlerInterface
         $sql = "DELETE FROM `{TP}dbsessions` WHERE `id` = '" . $this->database->escapeString($sid) . "'";
         $this->database->query($sql);
 
-        $_SESSION = array();
-
-
         return true;
     }
 
