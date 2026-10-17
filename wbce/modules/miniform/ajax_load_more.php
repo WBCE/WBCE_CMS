@@ -9,6 +9,7 @@ if(!empty($_POST["message_id"])){
 	$mod_dir = 'miniform';
 	// Include WB admin wrapper script
 	require_once(WB_PATH.'/framework/class.admin.php');
+	require_once __DIR__.'/functions.php';
     $admin = new admin('Pages', 'pages_modify', false, false);
     if (!($admin->is_authenticated() && $admin->get_permission($mod_dir, 'module'))) {
         $aToJson['message'] = 'insuficcient rights';
@@ -16,9 +17,19 @@ if(!empty($_POST["message_id"])){
     }
 
        // Get records from the database
-	$section_id  = $_POST['section_id'];
-	$msg_id      = $_POST['message_id'];
-    $number_load = $_POST['load'];
+	// All three values are cast to int: they are concatenated straight into the
+	// SQL below, so without this they were a trivial SQL injection.
+	$section_id  = (int) $_POST['section_id'];
+
+	// Authorisation: only read submissions of a section on a page the user may
+	// edit (this endpoint used to expose any section's submissions to anyone
+	// with the module permission).
+	if (!miniform_may_manage_section($admin, $section_id)) {
+		$aToJson['message'] = 'insuficcient rights';
+		exit(json_encode($aToJson));
+	}
+	$msg_id      = (int) $_POST['message_id'];
+    $number_load = (int) $_POST['load'];
 
 
 

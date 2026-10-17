@@ -16,6 +16,33 @@
 
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
+/**
+ * page_id that a miniform section lives on (0 if unknown).
+ */
+if(!function_exists('miniform_section_page_id')) {
+	function miniform_section_page_id($section_id) {
+		global $database;
+		$section_id = (int) $section_id;
+		return (int) $database->get_one("SELECT `page_id` FROM ".TABLE_PREFIX."sections WHERE `section_id` = ".$section_id);
+	}
+}
+
+/**
+ * Authorisation gate used by the delete/read endpoints: may the current user
+ * manage this miniform section? True for admins and for editors of the page the
+ * section lives on. Prevents one backend user from touching another page's
+ * submissions.
+ */
+if(!function_exists('miniform_may_manage_section')) {
+	function miniform_may_manage_section($admin, $section_id) {
+		$page_id = miniform_section_page_id($section_id);
+		if ($page_id <= 0) {
+			return false;
+		}
+		return (bool) $admin->get_page_permission($page_id, 'admin');
+	}
+}
+
 class mform {
 
 	public $templates = array();
@@ -387,7 +414,7 @@ class mform {
 			function ($matches) { return "s:".strlen($matches[2]).':"'.$matches[2].'";'; },
 			$sObject
 		);
-		return unserialize($__ret);
+		return unserialize($__ret, ['allowed_classes' => false]);
 	}
 
 	function guid() {

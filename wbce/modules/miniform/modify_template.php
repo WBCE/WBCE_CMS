@@ -35,6 +35,17 @@ if (!$section_id){
     exit();
 }
 
+// CSRF: every POST (template save and remote load) must carry a valid FTAN; the
+// forms below render it with getFTAN().
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$admin->checkFTAN()) {
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL.'/pages/modify.php?page_id='.(int)$page_id);
+}
+
+// A template name becomes a file name (form_<name>.htt); only allow characters
+// that occur in the shipped template names (letters, digits, space, _ - ( )),
+// so it cannot contain a path separator or '..'.
+$sNameRegex = '/^[A-Za-z0-9 _()-]+$/';
+
 $query = "SELECT * FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'";
 $get_settings = $database->query($query);
 $settings = $get_settings->fetchRow();
@@ -74,7 +85,10 @@ if(isset($_POST['remote'])) {
 $_action = (isset($_POST['action']) ? $_POST['action'] : '');
 $_action = ($_action != 'save' ? 'edit' : 'save');
 if ($_action == 'save') {
-	$template = $admin->add_slashes($_POST['name']);
+	$template = isset($_POST['name']) ? $_POST['name'] : '';
+	if (!preg_match($sNameRegex, $template)) {
+		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL.'/pages/modify.php?page_id='.(int)$page_id);
+	}
 	$data = $_POST['template_data'];
 	$filename = dirname(__FILE__).'/templates/form_'.$template.'.htt';
 	if (false !== file_put_contents($filename,$data)) {
@@ -84,7 +98,10 @@ if ($_action == 'save') {
 	}
 } else {
 	
-	$template = $admin->add_slashes($_GET['name']);
+	$template = isset($_GET['name']) ? $_GET['name'] : '';
+	if ($template !== '' && !preg_match($sNameRegex, $template)) {
+		$template = ''; // invalid name -> treat as a new, blank template (also stops reflected XSS via ?name=)
+	}
 	$filename = dirname(__FILE__).'/templates/form_'.$template.'.htt';
 	$data = '';
 	if (file_exists($filename)) $data = file_get_contents($filename) ;
@@ -92,6 +109,7 @@ if ($_action == 'save') {
 	echo registerEditArea ('code_area','html',true,'both',true,true,600,450,$toolbar = 'default');
 	?>
 	<form name="edit_module_file" action="<?=$manage_url.$template;?>" method="post" style="margin: 0;">
+			<?= $admin->getFTAN() ?>
 			<input type="hidden" name="page_id" value="<?=$page_id; ?>" />
 			<input type="hidden" name="section_id" value="<?=$section_id; ?>" />
 			<input type="hidden" name="action" value="save" />
@@ -118,7 +136,8 @@ if ($_action == 'save') {
 	</form>
 	<div class="mf_remote" style="display:none;">
 		<br><br>
-		<form name="load_remote" action="<?=$manage_url.$template;?>" method="post" > 
+		<form name="load_remote" action="<?=$manage_url.$template;?>" method="post" >
+			<?= $admin->getFTAN() ?>
 			<input type="hidden" name="page_id" value="<?=$page_id; ?>" />
 			<input type="hidden" name="section_id" value="<?=$section_id; ?>" />
 			<span class="sleft"><?=$MF['REMOTE']; ?>: </span><input type="text" class="mf-input" name="remote" value="<?=$remote; ?>" />

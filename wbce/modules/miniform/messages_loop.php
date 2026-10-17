@@ -76,7 +76,9 @@ if(!isset($js_functions_loaded)){
 	<script>			
 	var TPL_MSG_ROW  = <?=json_encode($tpl_msg_row)?>;	
 	var TPL_ROW_LOAD_MORE  = <?=json_encode($tpl_row_load_more)?>;	
-	var TEXT_ARE_YOU_SURE  = '<?=utf8_fast_entities_to_umlauts($TEXT['ARE_YOU_SURE'])?>';	
+	var TEXT_ARE_YOU_SURE  = '<?=utf8_fast_entities_to_umlauts($TEXT['ARE_YOU_SURE'])?>';
+	// FTAN token ("formtoken=hash") sent with the delete request (CSRF)
+	var MF_FTAN = '<?= isset($admin) ? $admin->getFTAN(false) : '' ?>';
 	// Ajax Delete Message
 	(function($) {
 		$.fn.ajaxDeleteRecord = function(options) {
@@ -102,7 +104,8 @@ if(!isset($js_functions_loaded)){
 							 +'&DB_COLUMN='+aOpts.DB_COLUMN
 							 +'&MODULE='+aOpts.MODULE
 							 +'&iRecordID='+iRecordID
-							 +'&iSectionID='+iSectionID,
+							 +'&iSectionID='+iSectionID
+							 +'&'+MF_FTAN,
 						
 						success: function(json_respond) {
 							if(json_respond.success == true) {

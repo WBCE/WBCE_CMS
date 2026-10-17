@@ -18,6 +18,11 @@ require_once (WB_PATH.'/framework/functions.php');
 $update_when_modified = true; 
 require(WB_PATH.'/modules/admin.php');
 
+// CSRF: the settings form (modify.php) renders a FTAN token.
+if(!$admin->checkFTAN()) {
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+}
+
 if(isset($_POST['section_id'])) {
 	$email = $admin->add_slashes(strip_tags($_POST['email']));
 	$emailfrom = $admin->add_slashes(strip_tags($_POST['emailfrom']));

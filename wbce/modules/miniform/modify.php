@@ -29,11 +29,11 @@ if(file_exists(WB_PATH.'/modules/miniform/new_frontend.css') && !file_exists(WB_
 }
 if(file_exists(WB_PATH.'/modules/miniform/new_frontend.css')) {
 	$url = ADMIN_URL."/pages/modify.php?page_id=$page_id";
-	if(isset($_GET['unlink'])) {
+	if(isset($_GET['unlink']) && $admin->checkFTAN('GET')) {
 		unlink (WB_PATH.'/modules/miniform/new_frontend.css');
 	} else {
 		echo "<h6 style='background:rgba(231, 76, 60,0.5);padding:10px;border-radius:10px;'>If you upgraded this module from an older version and you want to use the new responsive forms you need to rename the file new_frontend.css to frontend.css.";
-		echo '<br>Otherwise <a style="text-decoration:underline" href="'.$url.'&unlink=1">click here</a> to remove the file new_frontend.css</h6>';
+		echo '<br>Otherwise <a style="text-decoration:underline" href="'.$url.'&amp;'.$admin->getFTAN(false).'&amp;unlink=1">click here</a> to remove the file new_frontend.css</h6>';
 	}
 }
 $mform = new mForm();
@@ -41,7 +41,15 @@ $mform = new mForm();
 $d = 0;
 if(isset($_GET['delete'])) {
 	$d = intval($_GET['delete']);
-	$mform->delete_record($d);
+	// FTAN + the submission must belong to THIS section (delete_record() itself
+	// only matches on message_id, so without this a page editor could delete
+	// another section's submissions by guessing the id).
+	$d_sid = (int) $database->get_one(
+		"SELECT `section_id` FROM ".TABLE_PREFIX."mod_miniform_data WHERE `message_id` = ".$d
+	);
+	if($d > 0 && $admin->checkFTAN('GET') && $d_sid === (int) $section_id) {
+		$mform->delete_record($d);
+	}
 }
 if (!isset($links)) {
 	$links = array();
@@ -105,6 +113,7 @@ $(function() {
 </script>
 
     <form action="<?=WB_URL ?>/modules/miniform/save.php" method="post"  >
+	<?= $admin->getFTAN() ?>
 	<input type="hidden" name="page_id" value="<?=$page_id ?>" />
 	<input type="hidden" name="section_id" value="<?=$section_id ?>" />
 	<table class="settable" id="mfsettings-<?=$section_id ?>" cellpadding="3" cellspacing="3" border="0">
@@ -234,7 +243,7 @@ $(function() {
 		<tbody>
 
 	<?php if($show_messages){ 		
-		$delete_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&delete=';
+		$delete_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&'.$admin->getFTAN(false).'&delete=';
 		include __DIR__ .'/messages_loop.php';
 	} ?>
 	</tbody>

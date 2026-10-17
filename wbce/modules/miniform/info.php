@@ -11,6 +11,7 @@
  * @version         0.23.1
  * @lastmodified    July 13, 2024
  *
+ * v0.23.4 – local security fixes (Rik van Loenhout)
  * v0.23.3 - Fix issue with AJAX message delete	(reported by Peter Reporter) (Florian)
  * v0.23.2 - Fix for the fix										  (Ruud)
  * v0.23.1 - Fix issue with AJAX message delete	(reported by young pope) (Ruud)
@@ -36,7 +37,7 @@
 $module_directory = 'miniform';
 $module_name = 'MiniForm WBCE CMS Edition';
 $module_function = 'page';
-$module_version = '0.23.3';
+$module_version = '0.23.4';
 $module_platform = '1.4.x';
 $module_author = 'Ruud / Dev4me';
 $module_license = 'GNU General Public License';
