@@ -3,7 +3,7 @@
     var DROPLETS_SHOW_DATE = {% if show_date %}{{ show_date }}{% else %}0{% endif %};
 </script>
 <div style="padding:10px 15px 0;">
-    <a class="button" href="{{ MODULE_DIR }}/add_droplet.php"><i class="fa fa-fw fa-tint"></i>{{ L_('DR_TEXT:ADD_DROPLET') }}</a>
+    <a class="button" href="{{ MODULE_DIR }}/add_droplet.php?{{ FTAN_GET }}"><i class="fa fa-fw fa-tint"></i>{{ L_('DR_TEXT:ADD_DROPLET') }}</a>
 </div>
 <form method="post" action="{{ TOOL_URI }}">
     {{ FTAN }}
@@ -62,7 +62,7 @@
                 </td>
                 
                 <td style="white-space:nowrap; text-align: center;">
-                    <a href="javascript: confirm_link('{{ item.name }}: {{ L_('DR_TEXT:DUPLICATE') }}?', '{{ TOOL_URI }}&amp;copy={{ item.id }}');" title="{{ L_('DR_TEXT:DUPLICATE') }}">
+                    <a href="javascript: confirm_link('{{ item.name }}: {{ L_('DR_TEXT:DUPLICATE') }}?', '{{ TOOL_URI }}&amp;copy={{ item.id }}&amp;{{ FTAN_GET }}');" title="{{ L_('DR_TEXT:DUPLICATE') }}">
                         <i class="fa fa-fw fa-copy"></i>
                     </a>                    
                     <a href="javascript:void(0)" class="delete-item" 
@@ -70,7 +70,7 @@
                        data-question="&raquo;<b>%s</b>&laquo; {{ L_('DR_TEXT:DROPLET_DELETE') }}" 
                        data-delete="{{ L_('TEXT:DELETE') }}" 
                        data-cancel="{{ L_('TEXT:CANCEL') }}"
-                       data-del-uri="{{ TOOL_URI }}&amp;do=delete&amp;droplet_id={{ item.id }}"
+                       data-del-uri="{{ TOOL_URI }}&amp;do=delete&amp;droplet_id={{ item.id }}&amp;{{ FTAN_GET }}"
                        >
                         <i class="fa  fa-fw fa-trash"></i>
                     </a>
@@ -83,7 +83,7 @@
             <td colspan="2"><label style="font-weight:600"><input type="checkbox" id="checkAll" /> {{ droplets|length }} Droplets</label></td>
             <td align="right" colspan="{% if show_date %}4{% else %}5{% endif %}">
                 <label style="font-weight:600">
-                    <input type="checkbox" id="show_date" {% if show_date %}checked{% endif %} data-uri="{{ TOOL_URI }}&amp;do=show_date&amp;val={% if show_date %}{{ show_date }}{% else %}0{% endif %}" /> {{ L_('DR_TEXT:SHOW_DATE') }}
+                    <input type="checkbox" id="show_date" {% if show_date %}checked{% endif %} data-uri="{{ TOOL_URI }}&amp;do=show_date&amp;val={% if show_date %}{{ show_date }}{% else %}0{% endif %}&amp;{{ FTAN_GET }}" /> {{ L_('DR_TEXT:SHOW_DATE') }}
                 </label>
             </td>
         </tr>

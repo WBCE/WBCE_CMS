@@ -21,10 +21,11 @@ if(is_readable($sConfigFile = '../../config.php')) {
     exit(json_encode($aRspnd));
 }
 
-// check if user has permissions to access the outputfilter_dashboard module
+// check if the user may use the droplets tool (not just any admin-tool)
 require_once(WB_PATH.'/framework/class.admin.php');
+require_once(dirname(__FILE__).'/functions.inc.php');
 $admin = new admin('admintools', 'admintools', false, false);
-if (!($admin->is_authenticated() && $admin->get_permission('droplets', 'module'))) {
+if (!droplets_may_use_tool($admin)) {
     $aRspnd['message'] = 'insuficcient rights';
     exit(json_encode($aRspnd));
 }
@@ -37,6 +38,17 @@ if ($purpose == "toggle_status") {
         $aRspnd['message'] = 'ID '.$iId.' can\'t work';
         $aRspnd['success'] = false;
         exit(json_encode($aRspnd));
+    }
+    // non-admins may not toggle an admin-only droplet (admin_edit)
+    if (!droplets_is_admin($admin)) {
+        $iAdminEdit = (int) $database->get_one(sprintf(
+            "SELECT `admin_edit` FROM `{TP}mod_droplets` WHERE `id` = '%d'", (int) $iId
+        ));
+        if ($iAdminEdit === 1) {
+            $aRspnd['message'] = 'insuficcient rights';
+            $aRspnd['success'] = false;
+            exit(json_encode($aRspnd));
+        }
     }
     $iActive = (int) $_POST['action'];
     

@@ -18,15 +18,16 @@ require_once dirname(__FILE__) . '/functions.inc.php';
 $oMsgBox = new MessageBox();
 
 $sBackToList = ADMIN_URL.'/admintools/tool.php?tool=droplets';
-// check permission
-if ( $admin->get_permission('admintools') == true ){
+// check permission (droplets tool, not just any admin-tool) + CSRF token
+if ( droplets_may_use_tool($admin) && $admin->checkFTAN() ){
     // Get id
     if ( isset($_POST['droplet_id']) && is_numeric($_POST['droplet_id']) && !empty($_POST['droplet_id'])) {
         $droplet_id = intval($_POST['droplet_id']);
     } else {
         header( "Location: " . ADMIN_URL . "/pages/index.php" );
+        exit();
     }
-} else {   
+} else {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $sBackToList );   
     $admin->print_footer();
@@ -41,13 +42,25 @@ if($sName == '') {
     $admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], $sBackURL);
     $admin->print_footer();
 } else {
+    // Load the existing droplet and enforce admin_view/admin_edit server-side
+    // (the template only hides the controls).
+    $oRes      = $database->query(sprintf("SELECT * FROM `{TP}mod_droplets` WHERE id='%d'", $droplet_id));
+    $aExisting = ($oRes && $oRes->numRows() > 0) ? $oRes->fetchRow(MYSQLI_ASSOC) : null;
+    $bIsAdmin  = droplets_is_admin($admin);
+    if (!$aExisting || (!$bIsAdmin && ((int) $aExisting['admin_edit'] === 1 || (int) $aExisting['admin_view'] === 1))) {
+        $admin->print_header();
+        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $sBackToList);
+        $admin->print_footer();
+        exit();
+    }
     $tags = array('<?php', '?'.'>' , '<?');
     $aUpdate = array(
         'id'            => $droplet_id,
         'name'          => $sName,
         'active'        => (int) $admin->get_post('active'),
-        'admin_view'    => (int) $admin->get_post('admin_view'),
-        'admin_edit'    => (int) $admin->get_post('admin_edit'),
+        // non-admins cannot set or clear the admin-only flags
+        'admin_view'    => $bIsAdmin ? (int) $admin->get_post('admin_view') : (int) $aExisting['admin_view'],
+        'admin_edit'    => $bIsAdmin ? (int) $admin->get_post('admin_edit') : (int) $aExisting['admin_edit'],
         'show_wysiwyg'  => (int) $admin->get_post('show_wysiwyg'),
         'description'   => $admin->add_slashes($admin->get_post('description')),
         'code'          => $admin->add_slashes(str_replace($tags, '', $_POST['savecontent'])),

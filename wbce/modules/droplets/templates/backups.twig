@@ -4,7 +4,7 @@
 <div class="text-center" style="padding:1rem;">
 <button class="button ico-zip" type="button"
         name="backup_mgmt"
-        onclick="javascript: confirm_link('{{ L_('DR_TEXT:BACKUP') }}, {{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=backup_droplets');">
+        onclick="javascript: confirm_link('{{ L_('DR_TEXT:BACKUP') }}, {{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=backup_droplets&amp;{{ FTAN_GET }}');">
         {{ L_('DR_TEXT:BACKUP') }}
 </button>
 </div>
@@ -39,9 +39,9 @@
                 </ul>
             </td>
         <td>
-            <a href="{{ WB_URL }}/var/modules/droplets/export/{{ file.name }}" title="Download"><i class="fa fa-download">&nbsp;</i></a>
-            <a href="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;recover={{ file.name }}');" title="{{ L_('TEXT:RESTORE') }}"><i class="fa fa-mail-reply">&nbsp;</i></a>
-            <a href="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=manage_backups&amp;del={{ file.name }}');" title="{{ L_('TEXT:DELETE') }}"><i class="fa fa-trash text-red">&nbsp;</i></a>
+            <a href="{{ MODULE_DIR }}/download_backup.php?file={{ file.name|url_encode }}&amp;{{ FTAN_GET }}" title="Download"><i class="fa fa-download">&nbsp;</i></a>
+            <a href="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;recover={{ file.name }}&amp;{{ FTAN_GET }}');" title="{{ L_('TEXT:RESTORE') }}"><i class="fa fa-mail-reply">&nbsp;</i></a>
+            <a href="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=manage_backups&amp;del={{ file.name }}&amp;{{ FTAN_GET }}');" title="{{ L_('TEXT:DELETE') }}"><i class="fa fa-trash text-red">&nbsp;</i></a>
         </td>
     </tr>
     {% endfor %}
@@ -55,7 +55,7 @@
         <button class="button ico-back" type="button" data-redirect-location="{{ TOOL_URI }}">{{ L_('TEXT:BACK') }}</button>
         <button class="button ico-delete pos-right" type="button"
                 name="backup_mgmt"
-                onclick="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=manage_backups&amp;del=all');">
+                onclick="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=manage_backups&amp;del=all&amp;{{ FTAN_GET }}');">
                 {{ L_('DR_TEXT:DELETE_ALL') }}
         </button>
     </div>

@@ -82,7 +82,11 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                 }
 
                 // request the droplet code from database
-                $sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` LIKE "'.$droplet_name.'" AND `active` = 1';
+                // $droplet_name comes from page content ([[Name]]); escape it so
+                // it cannot break out of the LIKE "..." literal (SQL injection,
+                // whose result would then be eval()'d).
+                $sNameEsc = $GLOBALS['database']->escapeString($droplet_name);
+                $sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` LIKE "'.$sNameEsc.'" AND `active` = 1';
                 $codedata = $GLOBALS['database']->get_one($sql);
                 if (!is_null($codedata))
                 {

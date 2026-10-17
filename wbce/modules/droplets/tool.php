@@ -31,6 +31,16 @@ I::insertCssFile($aCssFiles, 'HEAD TOP+');
 global $module_version;
 require_once dirname(__FILE__).'/functions.inc.php';
 
+// The admin-tool runner only checks the generic 'admintools' right, not this
+// specific tool. Enforce the droplets tool right here (return, don't exit, so
+// the runner can still render the admin footer).
+if (!droplets_may_use_tool($admin)) {
+    $oMsgBoxDenied = new MessageBox();
+    $oMsgBoxDenied->error($MESSAGE['GENERIC_SECURITY_ACCESS']);
+    echo $oMsgBoxDenied->fetchDisplay();
+    return;
+}
+
 // removes empty entries from the table; this may happen if someone adds a
 // droplet but does not save any changes
 if (!$admin->get_get("do")) {
@@ -67,9 +77,24 @@ if ( isset($_GET['copy']) )
     }
 } elseif (isset($_GET['recover'])){
     // ----- recover from backup -----
-    if (file_exists( $sRecoverFile = __DIR__.'/export/'.$_GET['recover'])){
+    // droplets_backup_path() only accepts a .zip that really exists in the
+    // backup dir (DROPLETS_BACKUP_DIR), which blocks path traversal and also
+    // fixes the old bug of looking in modules/droplets/export/.
+    if (false !== ($sRecoverFile = droplets_backup_path($_GET['recover']))){
         $_GET['do'] = 'recover';
     }
+}
+
+// CSRF: require a valid FTAN (POST form token or GET link token) for every
+// state-changing action. On failure, drop the action and show an error.
+$sDo = isset($_GET['do']) ? $_GET['do'] : '';
+$aWriteActions = array('show_date','export','delete','recover','copy','backup_droplets');
+$bNeedsFtan = in_array($sDo, $aWriteActions, true)
+    || ($sDo === 'upload' && !empty($_FILES['userfile']['name']))
+    || ($sDo === 'manage_backups' && isset($_GET['del']));
+if ($bNeedsFtan && !droplets_check_ftan($admin)) {
+    $oMsgBox->error('Security offense! Access denied!');
+    unset($_GET['do']);
 }
 
 $aToTwig['TABS'] = renderTabs('overview');
@@ -81,9 +106,7 @@ if(isset($_GET['do']))
     {
         // ----- change show_date -----
         case 'show_date':
-            debug_dump($_GET);
             $value = ($_GET['val'] == '0') ? true : false;
-            debug_dump($value);
             Settings::Set('droplets_show_by_date', (bool) $value);
             $oMsgBox->redirect($sToolURI.'#show_date');
             break;
@@ -187,9 +210,10 @@ if(isset($_GET['do']))
             // file to delete?
             if ( isset( $_GET['del'] ) ) {
                 if ( $_GET['del'] !== 'all' ) {
-                    if ( file_exists( $sFile = DROPLETS_BACKUP_DIR.$_GET['del'])) {
+                    // only a .zip that really exists in the backup dir (no traversal)
+                    if ( false !== ($sFile = droplets_backup_path($_GET['del']))) {
                         if(unlink($sFile)){
-                            $oMsgBox->success('<b>'.$_GET['del'].'</b><br>'.$MESSAGE['MEDIA_DELETED_FILE']);
+                            $oMsgBox->success('<b>'.htmlspecialchars(basename($_GET['del'])).'</b><br>'.$MESSAGE['MEDIA_DELETED_FILE']);
                         }
                     }
                 } else {

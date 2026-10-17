@@ -14,7 +14,7 @@
 $module_directory = 'droplets';
 $module_name      = 'Droplets';
 $module_function  = 'tool';
-$module_version   = '2.4.0';
+$module_version   = '2.4.1';
 $module_platform  = '1.6.0';
 $module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
 $module_license   = 'GNU General Public License';
@@ -28,7 +28,9 @@ $module_level = 'core';
  * Version history
  * ===============
  *
- * 
+ * v2.4.1 Rik van Loenhout 
+ *         - local security fixes
+ *
  * v2.4.0 Stefek 06.02 2023
  *        - move OpF Filter file to `/modules/droplets/` directory 
              and remove `/modules/mod_opf_droplets/` directory

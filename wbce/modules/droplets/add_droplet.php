@@ -13,7 +13,10 @@
 require_once '../../config.php';
 
 $admin = new admin( 'admintools', 'admintools');
-if ( $admin->get_permission( 'admintools' ) == true )
+require_once dirname(__FILE__) . '/functions.inc.php';
+// Require the droplets tool right (not just any admin-tool) and a FTAN on this
+// state-changing GET link.
+if ( droplets_may_use_tool($admin) && $admin->checkFTAN('GET') )
 {
     $admintool_link   = ADMIN_URL . '/admintools/index.php';
     $module_edit_link = ADMIN_URL . '/admintools/tool.php?tool=droplets';
