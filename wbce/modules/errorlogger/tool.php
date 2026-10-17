@@ -30,7 +30,9 @@ if (!$admin->get_permission('admintools')) {
 }
 
 $link = ADMIN_URL.'/admintools/tool.php?tool=errorlogger';
-$del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','$link&delete=1');";
+// Carry an FTAN so the delete/rename action (a state-changing GET) is CSRF-protected.
+$delUrl = $link.'&delete=1&'.$admin->getFTAN(false);
+$del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','$delUrl');";
 
 
 // Use colored view, stored in cookie
@@ -66,11 +68,13 @@ if (!$logfile) {
 }
 
 if (isset($_GET['delete'])) {
-    if (file_exists($logfile)) {
+    if (!$admin->checkFTAN('GET')) {
+        $warning .= '<div class="errorlevel">Security check failed (FTAN). Please use the Delete logfile link.</div>';
+    } elseif (file_exists($logfile)) {
         $now = date("Ymd_Hi");
         rename($logfile, dirname($logfile).'/'.$now.'_php_error.log.php');
         $lname = str_replace(WB_PATH, '', dirname($logfile).'/'.$now.'_php_error.log.php');
-        $warning .= '<div class="messagelevel">Message: Logfile renamed to '.$lname.'</div>';
+        $warning .= '<div class="messagelevel">Message: Logfile renamed to '.htmlspecialchars($lname).'</div>';
     }
 }
 
@@ -133,7 +137,7 @@ if ($view == '0' or $view == '1') {
 		if (strpos($line, "Visitor Request]")!== false) {
             $type = " usedurl";
         }
-        echo '<div class="logline '.$row.$type.'">'.$line.'</div>';
+        echo '<div class="logline '.$row.$type.'">'.htmlspecialchars($line).'</div>';
     }
 } else {
     $aLines = log_to_array($res);
@@ -215,16 +219,20 @@ function log_to_array($aLines)
         if ($sType == 'Warning') {
             $sColor = 'red';
         }
+        // htmlspecialchars every field: these come straight from the log file,
+        // which stores raw PHP error strings that may contain attacker-influenced
+        // markup. 'type' is escaped too; the equality checks below compare against
+        // plain words ('Exception'/'Visitor Request') so escaping is a no-op there.
         $aRetVal[] = array(
-            'color'     => $sColor,
-            'date'      => $aDateTime[0],
-            'time'      => trim(str_replace('+00:00', '', $aDateTime[1])),
-            'type'      => $sType,
-            'primary'   => isset($arr2[1][1]) ? $arr2[1][1]:'',
-            'p_line'    => isset($arr2[2][0]) ? $arr2[2][0] : '?',
-            'secondary' => isset($arr2[2][1]) ? trim(str_replace(['from', ':'], '', $arr2[2][1])):'',
-            's_line'    => isset($arr2[3][0]) ? $arr2[3][0] :'?',
-            'msg'       => isset($arr2[3][1]) ? trim($arr2[3][1]) : '??',
+            'color'     => $sColor, // fixed set (inherit/red/#355ff9), not user data
+            'date'      => htmlspecialchars($aDateTime[0]),
+            'time'      => htmlspecialchars(trim(str_replace('+00:00', '', $aDateTime[1]))),
+            'type'      => htmlspecialchars($sType),
+            'primary'   => htmlspecialchars(isset($arr2[1][1]) ? $arr2[1][1]:''),
+            'p_line'    => htmlspecialchars(isset($arr2[2][0]) ? $arr2[2][0] : '?'),
+            'secondary' => htmlspecialchars(isset($arr2[2][1]) ? trim(str_replace(['from', ':'], '', $arr2[2][1])):''),
+            's_line'    => htmlspecialchars(isset($arr2[3][0]) ? $arr2[3][0] :'?'),
+            'msg'       => htmlspecialchars(isset($arr2[3][1]) ? trim($arr2[3][1]) : '??'),
         );
     }
     return $aRetVal;
