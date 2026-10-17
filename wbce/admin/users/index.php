@@ -123,17 +123,34 @@ $oTemplate->pparse('output', 'page');
 
 
 /**/
-if (isset($_POST['submit'])) {
-    $aError = [];
-    if (!$admin->checkFTAN()) {
-        $admin->print_header();
-        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
-    }
+ if (isset($_POST['submit'])) {
+        $aError = [];
+        if (!$admin->checkFTAN()) {
+            $admin->print_header();
+            $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+        }
 
-    // Get details entered
-    $groups_id = (isset($_POST['groups'])) ? implode(",", $admin->add_slashes($_POST['groups'])) : ''; //should check permissions
-    $groups_id = trim($groups_id, ','); // there will be an additional ',' when "Please Choose" was selected, too
-    $active = $admin->add_slashes($_POST['active'][0]);
+        // Get details entered
+        $groups_post = (isset($_POST['groups']) && is_array($_POST['groups'])) ? $_POST['groups'] : [];
+        $groups_id = implode(",", $admin->add_slashes($groups_post));
+        $groups_id = trim($groups_id, ','); // there will be an additional ',' when "Please Choose" was selected, too
+		
+		// Create a javascript back link
+		$js_back = ADMIN_URL . '/users/index.php';
+
+        // --- Autorisierungsprüfung (Fix GHSA-x7jh-vpvg-pjqv) ---
+        $activeUserGroupArray = explode(",", $_SESSION['GROUPS_ID']);
+        if (!in_array('1', $activeUserGroupArray, true)) {
+            $unauthorizedGroups = array_diff($groups_post, $activeUserGroupArray);
+            if (!empty($unauthorizedGroups)) {
+                $admin->print_header();
+                $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+            }
+        }
+
+        $active = $admin->add_slashes($_POST['active'][0]);
+	
+	
     $usernameTmp = $admin->get_post_escaped('username_fieldname');
     $username = strtolower($admin->get_post_escaped($usernameTmp));
     $sNewPassword = $admin->get_post('password');

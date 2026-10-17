@@ -88,15 +88,17 @@ if (!isset($_POST['user_id']) or !is_numeric($_POST['user_id']) or $_POST['user_
 }
 
 
-$activeUserGroupArray = explode(",", $_SESSION['GROUPS_ID']);
+ $activeUserGroupArray = explode(",", $_SESSION['GROUPS_ID']);
 
 //only allow administrators to assign users to any group; usual users may assign themselves and other users only to groups where they already belong to
-if ((!in_array('1',$activeUserGroupArray) && in_array('1',$_POST['groups'])) 
-	|| (!in_array('1',$activeUserGroupArray) && array_diff($activeUserGroupArray,$_POST['groups']))) {
-    unset($_POST['group_id']);
-	$admin->print_header();
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
-}
+if (!in_array('1', $activeUserGroupArray, true)) {
+        $unauthorizedGroups = array_diff((array) $_POST['groups'], $activeUserGroupArray);
+        if (!empty($unauthorizedGroups)) {
+            unset($_POST['group_id']);
+            $admin->print_header();
+            $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+        }
+    }
 
 // Gather details entered
 //$groups_id = (isset($_POST['groups'])) ? implode(",", $admin->add_slashes($_POST['groups'])) : '';
