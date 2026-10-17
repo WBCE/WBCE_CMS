@@ -264,7 +264,7 @@ JsAdmin.DD.trDDSwap.prototype.endDrag = function(e) {
 	var newIndex = this.getEl().rowIndex;
 	if(newIndex != this.rowIndex) {
 		var url = JsAdmin.WB_URL + "/modules/jsadmin/move_to.php";
-		url += JsAdmin.movable_rows[this.getEl().id].params + "&position=" + newIndex;
+		url += JsAdmin.movable_rows[this.getEl().id].params + "&position=" + newIndex + (JsAdmin.FTAN ? "&" + JsAdmin.FTAN : "");
 		document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1") + " jsadmin_busy";
 		YAHOO.util.Connect.asyncRequest('GET', url, this, null);
 	}
@@ -368,7 +368,7 @@ JsAdmin.DD.liDDSwap.prototype.endDrag = function(e) {
 	var newIndex = JsAdmin.util.getItemIndex(this.getEl());
 	if(newIndex != this.rowIndex) {
 		var url = JsAdmin.WB_URL + "/modules/jsadmin/move_to.php";
-		url += JsAdmin.movable_rows[this.getEl().id].params + "&position=" + (newIndex+1);
+		url += JsAdmin.movable_rows[this.getEl().id].params + "&position=" + (newIndex+1) + (JsAdmin.FTAN ? "&" + JsAdmin.FTAN : "");
 		document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1") + " jsadmin_busy";
 		YAHOO.util.Connect.asyncRequest('GET', url, this, null);
 	}

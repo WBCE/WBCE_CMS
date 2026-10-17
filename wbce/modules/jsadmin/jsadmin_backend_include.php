@@ -74,8 +74,18 @@ if($page_type != '') {
 		$admin->print_error('PageTtype '.$TEXT['ERROR'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 	}
 	
+	// FTAN token for the drag&drop requests to move_to.php (state-changing GET).
+	// This file is included from Admin::print_footer(), so the admin object is
+	// reachable as $GLOBALS['admin'] (or $this in that method scope).
+	$sFtanGet = '';
+	if (isset($GLOBALS['admin']) && is_object($GLOBALS['admin']) && method_exists($GLOBALS['admin'], 'getFTAN')) {
+		$sFtanGet = $GLOBALS['admin']->getFTAN(false);
+	} elseif (isset($this) && is_object($this) && method_exists($this, 'getFTAN')) {
+		$sFtanGet = $this->getFTAN(false);
+	}
+
 	$sToJS = "
-		var JsAdmin = { WB_URL : WB_URL, ADMIN_URL : ADMIN_URL };
+		var JsAdmin = { WB_URL : WB_URL, ADMIN_URL : ADMIN_URL, FTAN : ".json_encode($sFtanGet)." };
 		var JsAdminTheme = { THEME_URL : THEME_URL };
 		buttonCell=".$js_buttonCell.";\n"; // For variable cell structure in the tables of admin content by Swen  Uth
 	I::insertJsCode ($sToJS, "BODY BTM-", 'JsAdminVars');

@@ -17,12 +17,23 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 require_once(WB_PATH.'/modules/jsadmin/jsadmin.php');
 
+// The 1.6.x admin-tool runner only checks the generic 'admintools' right, not
+// this specific tool. Enforce the jsadmin tool right here (MODULE_PERMISSIONS
+// is a deny-list, so get_permission(..,'module') is true unless explicitly
+// denied for the group).
+if (!$admin->get_permission('admintools') || !$admin->get_permission('jsadmin_tool', 'module')) {
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL.'/admintools/tool.php');
+}
+
+// Fixed return URL for the form and redirects (do not echo the raw REQUEST_URI).
+$returnUrl = ADMIN_URL.'/admintools/tool.php?tool=jsadmin';
+
 // Check if user selected what add-ons to reload
 if(isset($_POST['save_settings']))  {
 
 	if (!$admin->checkFTAN())
 	{
-		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$_SERVER['REQUEST_URI']);
+		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $returnUrl);
 	}
 
 	// Include functions file
@@ -33,9 +44,9 @@ if(isset($_POST['save_settings']))  {
 	// check if there is a database error, otherwise say successful
 
 	if($database->is_error()) {
-		$admin->print_error($database->get_error(), $js_back);
+		$admin->print_error($database->get_error(), $returnUrl);
 	} else {
-		$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
+		$admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl);
 	}
 
 } else {
@@ -47,7 +58,7 @@ if(isset($_POST['save_settings']))  {
             $ajax_order_sections = get_setting('mod_jsadmin_ajax_order_sections', true) ? 'checked="checked"' : '';
     ?>
 
-    <form id="jsadmin_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+    <form id="jsadmin_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?php echo htmlspecialchars($returnUrl); ?>" method="post">
         <?php echo $admin->getFTAN(); ?>
         <table cellpadding="4" cellspacing="0" border="0">
             <tr>
