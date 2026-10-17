@@ -31,6 +31,15 @@ require $lang;
 // Security check: Admin only
 $admin = new admin('Admintools', 'admintools', false, false);
 
+// Authorization: this endpoint downloads+stages a core update package and can
+// enable maintenance mode, so it must require a full admin. checkFTAN() below is
+// CSRF protection only (it validates session possession, not privilege), so it is
+// not sufficient on its own.
+if (!$admin->is_authenticated() || !$admin->isAdmin()) {
+    header('Location: ' . ADMIN_URL . '/index.php');
+    exit;
+}
+
 if (!empty($wbce_updater_disabled)) {
     header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
@@ -197,6 +206,8 @@ if ($success && $enable_maintenance) {
 
 // Generate output
 $update_url = WB_URL . '/modules/wbce_updater/execute_update.php?version=' . urlencode($target_version);
+// Carry an FTAN so execute_update.php (a state-changing GET) is CSRF-protected.
+$update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTAN(false);
 
 ?>
 <!DOCTYPE html>

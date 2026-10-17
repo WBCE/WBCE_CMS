@@ -34,6 +34,15 @@ if (!$admin->is_authenticated() || !$admin->isAdmin()) {
     exit;
 }
 
+// CSRF: this GET extracts the staged update ZIP over the core files, so it must
+// carry a valid FTAN (token embedded in the link download.php/upload.php build).
+// Without this, a cross-site GET (cookie sent under SameSite=Lax) could trigger
+// the extraction of a staged package.
+if (!$admin->checkFTAN('GET')) {
+    http_response_code(403);
+    die('Security check failed (FTAN). Please start the update from the updater page.');
+}
+
 // Load language file
 $lang = (file_exists(__DIR__ . '/languages/' . LANGUAGE . '.php'))
     ? __DIR__ . '/languages/' . LANGUAGE . '.php'

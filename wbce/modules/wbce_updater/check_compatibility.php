@@ -38,6 +38,15 @@ require_once __DIR__ . '/compatibility_checker.php';
 // Security check: Admin only (without header output for AJAX)
 $admin = new admin('Admintools', 'admintools', false, false);
 
+// Authorization: require a full admin. A valid FTAN proves session possession
+// (CSRF), not privilege, so it must not be allowed to stand in for admin rights.
+if (!$admin->is_authenticated() || !$admin->isAdmin()) {
+    ob_end_clean();
+    http_response_code(403);
+    header('Content-Type: application/json');
+    exit(json_encode(['error' => 'Forbidden']));
+}
+
 // CSRF protection: Check FTAN token
 $ftan_valid = method_exists($admin, 'checkFTAN') && $admin->checkFTAN();
 
