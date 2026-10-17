@@ -33,7 +33,7 @@ function wysiwyg_search($func_vars) {
     $query = $func_database->query("
         SELECT content
         FROM $table
-        WHERE section_id='$func_section_id'
+        WHERE section_id=" . (int) $func_section_id . "
     ");
     
     if ($query->numRows() > 0) {

@@ -11,4 +11,4 @@
  */
 
 // Delete record from the database
-$database->query("DELETE FROM " . TABLE_PREFIX . "mod_wysiwyg WHERE section_id = '$section_id'");
+$database->query("DELETE FROM " . TABLE_PREFIX . "mod_wysiwyg WHERE section_id = " . (int) $section_id);

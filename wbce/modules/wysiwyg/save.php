@@ -29,6 +29,14 @@ if (!$admin->checkFTAN()) {
 // After check print the header
 $admin->print_header();
 
+// Ensure the posted section actually belongs to the posted page. modules/admin.php
+// only checks admin rights on page_id and that the section exists (get_section_details
+// looks the section up by section_id alone), so without this an editor of page A could
+// POST section_id of a section on page B and overwrite that page's content.
+if ((int) $section_id !== 0 && (!isset($section['page_id']) || (int) $section['page_id'] !== (int) $page_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL . '/pages/index.php');
+}
+
 // Include the WB functions file
 require_once(WB_PATH . '/framework/functions.php');
 
