@@ -27,6 +27,12 @@ if (!$group_id){
     exit();
 }
 
+// Ownership: the group must live on a page this user may admin
+if (!mod_nwi_may_manage_group($group_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
 
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '0' where `group_id`='$group_id'");
 // Update row

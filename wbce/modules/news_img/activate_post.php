@@ -61,6 +61,13 @@ if (isset($_GET['value']) && ($_GET['value']==0)) {
     $value=0;
 }
 
+// Ownership: post must live on a page this user may admin
+if (!mod_nwi_may_manage_post($post_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    $admin->print_footer();
+    exit();
+}
+
 $_POST['manage_posts'] = array($post_id);
 $result = mod_nwi_post_activate($value);
 

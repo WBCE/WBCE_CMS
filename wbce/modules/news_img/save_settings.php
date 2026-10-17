@@ -35,6 +35,17 @@ if (!defined('CAT_PATH')) {
     }
 }
 
+// Enforce the "settings only for admins" flag server-side (modify_settings.php
+// only hides the form; the save must refuse too). Mirrors modify_settings.php.
+if (!defined('CAT_PATH') && !$admin->isAdmin()) {
+    $current_settings = mod_nwi_settings_get($section_id);
+    if (($current_settings['show_settings_only_admins'] ?? 'N') == 'Y') {
+        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+        $admin->print_footer();
+        exit();
+    }
+}
+
 // change mode
 if(isset($_POST['mode']) && in_array($_POST['mode'],array('default','advanced'))) {
     $database->query(sprintf(

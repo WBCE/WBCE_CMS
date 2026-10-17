@@ -51,9 +51,18 @@ $posts=array();
 if (isset($_GET['post_id'])){    
     $posts = array($post_id);
 } else {
-    if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts'])) 
+    if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts']))
         $posts=$_POST['manage_posts'];
-} 
+}
+
+// Ownership: every post must live on a page this user may admin
+foreach ($posts as $pid) {
+    if (!mod_nwi_may_manage_post($pid)) {
+        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+        $admin->print_footer();
+        exit();
+    }
+}
 
 mod_nwi_post_delete($posts);
 

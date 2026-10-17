@@ -58,6 +58,18 @@ $tag_section_id = $section_id;
 if($admin->get_post('global_tag') == 'on') {
     $tag_section_id = 0;
 }
+// Ownership: editing an existing tag requires rights on its section(s);
+// a new global tag is admin-only; a new local tag requires rights on the target section.
+if (!defined('CAT_PATH')) {
+    $tagOwnershipOk = !empty($tag_id)
+        ? mod_nwi_may_manage_tag($tag_id)
+        : ($tag_section_id == 0 ? $admin->isAdmin() : mod_nwi_may_manage_section($tag_section_id));
+    if (!$tagOwnershipOk) {
+        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+        $admin->print_footer();
+        exit();
+    }
+}
 // Update row
 if(empty($tag_id)) {
     if(mod_nwi_tag_exists($tag_section_id,$tag)) {

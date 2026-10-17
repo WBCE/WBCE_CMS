@@ -26,6 +26,13 @@ if (!$tag_id){
     exit();
 }
 
+// Ownership: the tag must belong to a section on a page this user may admin (global tags: admins only)
+if (!mod_nwi_may_manage_tag($tag_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
+
 $FTAN = $admin->getFTAN();
 
 // Get header and footer

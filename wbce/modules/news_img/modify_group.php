@@ -26,6 +26,13 @@ if (!$group_id){
     exit();
 }
 
+// Ownership: the group must live on a page this user may admin
+if (!mod_nwi_may_manage_group($group_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
+
 $FTAN = $admin->getFTAN();
 
 $group = mod_nwi_get_group($group_id);

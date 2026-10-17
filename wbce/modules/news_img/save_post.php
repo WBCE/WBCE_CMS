@@ -46,6 +46,13 @@ if(!defined('CAT_PATH')) {
     }
 }
 
+// Ownership: the post being saved must live on a page this user may admin
+if(!defined('CAT_PATH') && !mod_nwi_may_manage_post($id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
+
 if(!defined('CAT_PATH')) {
     include __DIR__.'/config/wbce_config.php';
 } else {
@@ -89,7 +96,7 @@ $old_page_id = $page_id;
 
 if (!empty($group)) {
     $gid_value = urldecode($group);
-    $values = unserialize($gid_value);
+    $values = unserialize($gid_value, ['allowed_classes' => false]);
     if (!isset($values['s']) or  !isset($values['g']) or  !isset($values['p'])) {
         header("Location: ".ADMIN_URL."/pages/index.php");
         exit(0);
@@ -98,6 +105,12 @@ if (!empty($group)) {
         $group_id = intval($values['g']);
         $section_id = intval($values['s']);
         $page_id = intval($values['p']);
+        // Ownership: don't let the post be moved into a section on a page this user can't admin
+        if (!defined('CAT_PATH') && !mod_nwi_may_manage_section($section_id)) {
+            $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+            $admin->print_footer();
+            exit();
+        }
     }
 }
 

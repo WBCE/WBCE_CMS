@@ -57,6 +57,17 @@ if (in_array($_POST['action'], $known_actions)) {
 }
 
 if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
+    // Ownership: every selected post must live on a page this user may admin,
+    // regardless of the page_id passed in the request (see functions.inc.php).
+    if (is_array($_POST['manage_posts'])) {
+        foreach ($_POST['manage_posts'] as $pid) {
+            if (!mod_nwi_may_manage_post($pid)) {
+                $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+                $admin->print_footer();
+                exit();
+            }
+        }
+    }
     switch($action) {
         case "copy":
             $result = mod_nwi_post_copy($section_id,$page_id);
@@ -96,7 +107,7 @@ if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
             // get group
             if(isset($_POST['group']) && !empty($_POST['group'])) {
                 $gid_value = urldecode($_POST['group']);
-                $values = unserialize($gid_value);
+                $values = unserialize($gid_value, ['allowed_classes' => false]);
                 if (!isset($values['s']) or  !isset($values['g']) or  !isset($values['p'])) {
                     header("Location: ".ADMIN_URL."/pages/index.php");
                     exit(0);
@@ -105,6 +116,12 @@ if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
                     $group_id = intval($values['g']);
                     $section_id = intval($values['s']);
                     $page_id = intval($values['p']);
+                    // Ownership: don't reassign posts into a section on a page this user can't admin
+                    if (!mod_nwi_may_manage_section($section_id)) {
+                        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+                        $admin->print_footer();
+                        exit();
+                    }
                     $group = mod_nwi_get_group($group_id);
                 }
             }
@@ -143,7 +160,9 @@ if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
             }
             // save
             foreach($posts as $post_id) {
+                $post_id = (int) $post_id; // manage_posts[] comes raw from $_POST
                 foreach($assign as $tag_id) {
+                    $tag_id = (int) $tag_id; // defence in depth (already whitelisted against existing tags above)
                     // Update row
                     $database->query(sprintf(
                         "REPLACE INTO `%smod_news_img_tags_posts`"

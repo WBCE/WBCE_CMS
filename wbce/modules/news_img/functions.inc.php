@@ -18,6 +18,72 @@ if(file_exists($lang)) {
 global $allowed_suffixes;
 $allowed_suffixes = array('jpg','jpeg','gif','png','webp');
 
+/**
+ * Authorization helpers (added 5.0.33).
+ *
+ * modules/admin.php validates page-admin rights on the page_id passed in the
+ * request, but it does NOT verify that the post/group/tag/section an action
+ * targets actually lives on that page. Without these checks a user who may
+ * edit page A can mutate objects belonging to page B by passing B's object id
+ * together with A's page_id. Each helper resolves the object back to its page
+ * and funnels through Admin::get_page_permission($page_id, 'admin').
+ * (WBCE 1.6.8 DB layer: no placeholder binding/fetchValue, so (int)+get_one.)
+ */
+function mod_nwi_may_manage_section($section_id)
+{
+    global $admin, $database;
+    $section_id = (int) $section_id;
+    if ($section_id <= 0) {
+        return $admin->isAdmin(); // section 0 == global scope -> admins only
+    }
+    $page_id = (int) $database->get_one("SELECT `page_id` FROM `".TABLE_PREFIX."sections` WHERE `section_id` = ".$section_id);
+    if ($page_id <= 0) {
+        return false;
+    }
+    return (bool) $admin->get_page_permission($page_id, 'admin');
+}
+
+function mod_nwi_may_manage_post($post_id)
+{
+    global $database;
+    $post_id = (int) $post_id;
+    if ($post_id <= 0) {
+        return false;
+    }
+    $section_id = (int) $database->get_one("SELECT `section_id` FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = ".$post_id);
+    return $section_id > 0 ? mod_nwi_may_manage_section($section_id) : false;
+}
+
+function mod_nwi_may_manage_group($group_id)
+{
+    global $database;
+    $group_id = (int) $group_id;
+    if ($group_id <= 0) {
+        return false;
+    }
+    $section_id = (int) $database->get_one("SELECT `section_id` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = ".$group_id);
+    return $section_id > 0 ? mod_nwi_may_manage_section($section_id) : false;
+}
+
+function mod_nwi_may_manage_tag($tag_id)
+{
+    global $admin;
+    $tag = mod_nwi_get_tag((int) $tag_id);
+    if (empty($tag) || !isset($tag['sections']) || $tag['sections'] === '') {
+        return false;
+    }
+    $sections = explode(',', $tag['sections']);
+    if (in_array('0', $sections, true)) {
+        return $admin->isAdmin(); // global tag -> admins only
+    }
+    foreach ($sections as $sid) {
+        if (!mod_nwi_may_manage_section($sid)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 $mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
 $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
@@ -556,6 +622,7 @@ function mod_nwi_post_activate($value)
 
     $errors = 0;
     foreach($posts as $post_id) {
+        $post_id = (int) $post_id; // manage_posts[] comes raw from $_POST — cast before use in SQL/paths
         // Update row
         $database->query(sprintf(
             "UPDATE `%smod_news_img_posts`"
@@ -607,6 +674,7 @@ function mod_nwi_post_clear($value)
 
     $errors = 0;
     foreach($posts as $post_id) {
+        $post_id = (int) $post_id; // manage_posts[] comes raw from $_POST — cast before use in SQL/paths
         // Update row
 	if ((strcmp($value,'published_when')==0) or(strcmp($value,'published_until')==0)){
         	$database->query(sprintf(
@@ -671,7 +739,7 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
 
     if (!empty($group)) {
         $gid_value = urldecode($group);
-        $values = unserialize($gid_value);
+        $values = unserialize($gid_value, ['allowed_classes' => false]);
         if (!isset($values['s']) or  !isset($values['g']) or  !isset($values['p'])) {
             header("Location: ".ADMIN_URL."/pages/index.php");
             exit(0);
@@ -680,6 +748,11 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
             $group_id = intval($values['g']);
             $section_id = intval($values['s']);
             $page_id = intval($values['p']);
+            // Ownership: don't copy/move posts into a section on a page this user can't admin
+            if (!mod_nwi_may_manage_section($section_id)) {
+                header("Location: ".ADMIN_URL."/pages/index.php");
+                exit(0);
+            }
         }
     }
 
@@ -868,6 +941,7 @@ function mod_nwi_post_delete($posts)
 
     foreach($posts as $post_id)
     {
+        $post_id = (int) $post_id; // manage_posts[] comes raw from $_POST — cast before use in SQL/paths
         // Get post details
         $get_details = mod_nwi_post_get($post_id);
 
@@ -985,7 +1059,7 @@ function mod_nwi_post_move($section_id,$page_id,$with_tags=false)
 
     if (!empty($group)) {
         $gid_value = urldecode($group);
-        $values = unserialize($gid_value);
+        $values = unserialize($gid_value, ['allowed_classes' => false]);
         if (!isset($values['s']) or  !isset($values['g']) or  !isset($values['p'])) {
             header("Location: ".ADMIN_URL."/pages/index.php");
             exit(0);
@@ -994,6 +1068,11 @@ function mod_nwi_post_move($section_id,$page_id,$with_tags=false)
             $group_id = intval($values['g']);
             $section_id = intval($values['s']);
             $page_id = intval($values['p']);
+            // Ownership: don't copy/move posts into a section on a page this user can't admin
+            if (!mod_nwi_may_manage_section($section_id)) {
+                header("Location: ".ADMIN_URL."/pages/index.php");
+                exit(0);
+            }
         }
     }
 

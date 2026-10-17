@@ -31,7 +31,12 @@ if (!$tag_id || !$section_id){
 }
 $tag_id = intval($tag_id);
 
-
+// Ownership: the tag must belong to a section on a page this user may admin (global tags: admins only)
+if (!mod_nwi_may_manage_tag($tag_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
 
 // get tag
 $tag = mod_nwi_get_tag($tag_id);

@@ -45,6 +45,13 @@ if (!defined('CAT_PATH')) {
     }
 }
 
+// Ownership: the group must live on a page this user may admin
+if (!defined('CAT_PATH') && !mod_nwi_may_manage_group($group_id)) {
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
+
 // Validate all fields
 if ($admin->get_post('title') == '') {
     $admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id).'&tab=g');
