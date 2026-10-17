@@ -461,7 +461,8 @@
 				if (typeof quality !== 'undefined') {
 					this.fm.storage('jpgQuality', quality);
 				}
-				if (hash && (file = this.fm.file(hash))) {
+				if (hash) {
+					file = this.fm.file(hash);
 					$base.data('mime', file.mime);
 				}
 			}
@@ -673,9 +674,7 @@
 				}
 				if (hash) {
 					file = this.fm.file(hash);
-					if (file) {
-						$base.data('mime', file.mime);
-					}
+					$base.data('mime', file.mime);
 				} else {
 					$base.removeData('mime');
 				}

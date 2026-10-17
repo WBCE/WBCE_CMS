@@ -89,6 +89,9 @@ if (($admin->get_permission('media_view') === true)) {
     $nodu = '';
     $noex = '';
     $nore = '';
+    $noar = '';
+    $noput = '';
+    $nochm = '';
 
     // if user is not allowed to upload files, file operations and image resize is not allowed either.
     if (($admin->get_permission('media_upload') === false)) {
@@ -98,6 +101,13 @@ if (($admin->get_permission('media_view') === true)) {
         $nodu = 'duplicate';
         $noex = 'extract';
         $nore = 'resize';
+        // Without upload rights a user may not create or alter file content either.
+        // archive (zip creation), put (overwrite file content) and chmod are write
+        // operations too, so disable them as well. (put is already blocked by the
+        // always-disabled 'edit' and chmod by the driver, but keep them explicit.)
+        $noar  = 'archive';
+        $noput = 'put';
+        $nochm = 'chmod';
     }
 
     // if needed, disallow file renaming, directory deleting and directory creating.
@@ -157,7 +167,10 @@ if (($admin->get_permission('media_view') === true)) {
                         $noco,
                         $nodu,
                         $noex,
-                        $nore
+                        $nore,
+                        $noar,
+                        $noput,
+                        $nochm
                     )
                 )
             )
@@ -205,7 +218,10 @@ if (($admin->get_permission('media_view') === true)) {
                         $noco,
                         $nodu,
                         $noex,
-                        $nore
+                        $nore,
+                        $noar,
+                        $noput,
+                        $nochm
                     )
                 )
             )

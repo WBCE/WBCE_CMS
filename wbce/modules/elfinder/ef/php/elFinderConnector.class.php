@@ -83,7 +83,6 @@ class elFinderConnector
         'extract' => true,
         'mkdir' => true,
         'mkfile' => true,
-        'netmount' => true,
         'paste' => true,
         'put' => true,
         'rename' => true,
