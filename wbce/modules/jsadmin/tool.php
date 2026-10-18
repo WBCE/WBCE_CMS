@@ -18,10 +18,11 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 require_once(WB_PATH.'/modules/jsadmin/jsadmin.php');
 
 // The 1.6.x admin-tool runner only checks the generic 'admintools' right, not
-// this specific tool. Enforce the jsadmin tool right here (MODULE_PERMISSIONS
-// is a deny-list, so get_permission(..,'module') is true unless explicitly
-// denied for the group).
-if (!$admin->get_permission('admintools') || !$admin->get_permission('jsadmin_tool', 'module')) {
+// this specific tool. Enforce the jsadmin tool right here. In 1.6.x
+// MODULE_PERMISSIONS is a deny-list of bare module directory names (not the
+// 1.7 '<dir>_tool' allow-list), so get_permission('jsadmin', 'module') is
+// false only when the group explicitly denies this tool.
+if (!$admin->get_permission('admintools') || !$admin->get_permission('jsadmin', 'module')) {
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL.'/admintools/tool.php');
 }
 

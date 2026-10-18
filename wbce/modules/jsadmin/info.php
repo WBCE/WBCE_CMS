@@ -13,7 +13,7 @@
 $module_directory = 'jsadmin';
 $module_name = 'Javascript Admin';
 $module_function = 'tool';
-$module_version = '1.4.5';
+$module_version = '1.4.6';
 $module_platform = '1.4.0';
 $module_author = 'Stepan Riha, Swen Uth';
 $module_license = 'BSD License';
@@ -24,7 +24,9 @@ $module_level = 'core';
 /**
  * Version history
  *
- * 1.4.5 - security hardening 
+ * 1.4.6 - compatibility fix
+ *
+ * 1.4.5 - security hardening
  *
  * 1.4.4 - fixes for MySQL-Strict (Bernd)
  *
