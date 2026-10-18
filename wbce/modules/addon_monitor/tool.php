@@ -20,8 +20,9 @@ if (!class_exists('admin', false)) {
     $admin = new admin('admintools', 'admintools');
 }
 // check for permission
-if (!$admin->get_permission('admintools')) {
-    die(header('Location: ../../index.php'));
+
+if (!$admin->get_permission('admintools') ) {
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL.'/admintools/index.php');
 }
 
 require_once((dirname(__FILE__)) . '/info.php');
@@ -44,7 +45,10 @@ $oTwig->addGlobal('WB_URL', WB_URL);
 $oTwig->addGlobal('ICONS_DIR', '../../modules/'.$sAddonDir.'/icons');
 
 $aOuptut = array();
-$sMonitorCase = isset($_GET['addons']) ? (string) $_GET['addons'] : 'modules';
+// only the three known views; anything else would make Twig throw an
+// uncaught LoaderError (broken page, server path in the message)
+$aMonitorCases = array('modules', 'templates', 'languages');
+$sMonitorCase = (isset($_GET['addons']) && in_array($_GET['addons'], $aMonitorCases, true)) ? $_GET['addons'] : 'modules';
 $sActiveModules = '';
 $sActiveTemplates = '';
 $sActiveLanguages = '';

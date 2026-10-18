@@ -2,7 +2,7 @@
 $module_directory 		= 'addon_monitor';
 $module_name 			= 'Addon Monitor';
 $module_function 		= 'tool';
-$module_version 		= '0.7.2';
+$module_version 		= '0.7.3';
 $module_status          = 'stable';
 $module_platform 		= '1.0.0';
 $module_author 			= 'Christian M. Stefan (Stefek)';
@@ -11,6 +11,8 @@ $module_description 	= 'This AdminTool\'s entire purpose is to give you a handy 
 
 /**
  * Version history
+ *
+ * 0.7.3 - security hardening
  *
  * 0.7.2 - fix for hybrid modules
  *
