@@ -1,0 +1,18 @@
+# Uploaded files must never run as active content on this origin.
+<IfModule mod_headers.c>
+    # 1. Never let the browser guess a type (unknown extensions get no Content-Type)
+    Header always set X-Content-Type-Options "nosniff"
+
+    # 2. Anything that is not a known inline-safe type is served as a download.
+    #    FilesMatch (not <If>) for portability across Apache and LiteSpeed.
+    <FilesMatch "^(?!.*\.(?i:jpe?g|png|gif|webp|avif|pdf|mp4|webm|mp3|ogg|txt|css|js)$)">
+        Header always set Content-Disposition "attachment"
+    </FilesMatch>
+
+    # 3. Defense in depth: no script, own opaque origin for anything still opened
+    Header always set Content-Security-Policy "default-src 'none'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; sandbox"
+    # Chrome's built-in PDF viewer refuses to render under a strict CSP
+    <FilesMatch "\.(?i:pdf)$">
+        Header always unset Content-Security-Policy
+    </FilesMatch>
+</IfModule>
