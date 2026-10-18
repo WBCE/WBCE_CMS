@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.9
- * @lastmodified    May 29, 2026
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
@@ -17,10 +17,10 @@
 *	Must include code to stop this file being accessed directly
 */
 if(defined('WB_PATH') == false) exit("Cannot access this file directly");
-global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $code2lang,$WS;
+global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $CODE2LANG,$WS;
 $mpath = WB_PATH.'/modules/wbstats/';
 $lang = $mpath . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
+require(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
 require_once($mpath . '/info.php');
 require_once($mpath . '/class.stats.php');
 $stats = new stats();

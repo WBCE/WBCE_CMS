@@ -8,10 +8,11 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.9
- * @lastmodified    May 29, 2026
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
+
  
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 $c = $stats->getCampaigns();
@@ -23,7 +24,7 @@ foreach($c as $campaign => $data) {
 	foreach ($data as $content => $val) {
 	  if(stripos($content,"Not identified") === false) {
 		print ( '<div class="full">');
-		print ( '<h3>'.$campaign.' -> '.$content.'</h3>');
+		print ( '<h3>'.htmlspecialchars($campaign).' -> '.htmlspecialchars($content).'</h3>');
 		
 		print ( '<table class="res" width="100%" border="0" cellpadding="5" cellspacing="0">' );
 		print ( '<tr>');	
@@ -39,9 +40,9 @@ foreach($c as $campaign => $data) {
 		print ( '<tr>');
 		foreach ($val as $medium => $detail) {
 			print ( '<tr>');	
-			print ( '<td>'.$detail['source'].'</td>');	
-			print ( '<td>'.$medium.'</td>');	
-			print ( '<td style="white-space:nowrap;">'.$content.'</td>');	
+			print ( '<td>'.htmlspecialchars($detail['source']).'</td>');	
+			print ( '<td>'.htmlspecialchars($medium).'</td>');	
+			print ( '<td style="white-space:nowrap;">'.htmlspecialchars($content).'</td>');	
 			print ( '<td style="text-align:center;">'.fdate($detail['first']).'</td>');	
 			print ( '<td style="text-align:center;">'.fdate($detail['last']).'</td>');	
 			print ( '<td style="text-align:center;">'.$detail['totalcount'].'</td>');	

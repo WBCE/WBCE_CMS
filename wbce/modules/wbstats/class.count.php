@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.9
- * @lastmodified    May 29, 2026
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
@@ -185,9 +185,11 @@ class counter {
 		if(isset($_SERVER['HTTP_USER_AGENT'])) {
 			$res = $this->parse_user_agent();
 			$this->agent = $this->escapeString($_SERVER['HTTP_USER_AGENT']);
-			$this->os = $res['platform']; // .' '.$res['platform_version'];
-			$this->browser = $res['browser'];
-			$this->browser_version = $res['version'];
+			// os/browser come from a constrained UA regex, but escape them too
+			// (defense in depth — they are concatenated raw into INSERTs).
+			$this->os = $this->escapeString($res['platform']); // .' '.$res['platform_version'];
+			$this->browser = $this->escapeString($res['browser']);
+			$this->browser_version = $this->escapeString($res['version']);
 			/*
 			echo '<!-- ';
 			print_r($res);
@@ -237,7 +239,11 @@ class counter {
 		
 	function getUTM () {
 		if($ref = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY)) {
-			$p = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+			// $p is embedded (unescaped by the click-id branches) into the UTM
+			// `content` column, so escape it here — the request path is fully
+			// attacker-controlled (SQL injection, CVE-class). The utm_* params
+			// below are escaped individually.
+			$p = $this->escapeString(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
 			parse_str( $ref, $parms );
 			if(isset($parms['fbclid'])) {
@@ -301,9 +307,8 @@ class counter {
 			return true;
 		} elseif(!$id = $database->get_one("SELECT `id` FROM ".$table_ips." WHERE `ip`='".$this->ip."' AND `session`='".$this->session."' AND `time` > '$timeout' ORDER BY `id` DESC LIMIT 1")) {
 			$city = $this->getCountryCode();
-			$country = $this->getCountryCode(true);
-			$database->query("INSERT INTO ".$table_ips." (`ip`,`session`, `location`, `country`, `time`, `online`,`page`,`last_page`,`pages`,`language`,`os`,`browser`,`referer`,`ua`) VALUES 
-				('".$this->ip."', '".$this->session."', '".$city."','".$country."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1','".$this->language."', '".$this->os."', '".$this->browser." (".$this->browser_version.")','".$this->referer_host."','".$this->agent."')");
+			$database->query("INSERT INTO ".$table_ips." (`ip`,`session`, `location`, `time`, `online`,`page`,`last_page`,`pages`,`language`,`os`,`browser`,`referer`,`ua`) VALUES 
+				('".$this->ip."', '".$this->session."', '".$city."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1','".$this->language."', '".$this->os."', '".$this->browser." (".$this->browser_version.")','".$this->referer_host."','".$this->agent."')");
 			$database->query("UPDATE ".$table_day." SET `user`=`user`+1, `view`=`view`+1 WHERE `day`='".$this->day."'");
 			return true;
 		} else {
@@ -314,14 +319,13 @@ class counter {
 	}
 	
 
-	function getCountryCode($countryOnly = false) {
+	function getCountryCode() {
 		global $database, $table_loc;
 		$ip = $this->getRealUserIp(); 
 		$ipkey = md5($ip);
 		$timeout = time() - $this->reload;
-		$field = $countryOnly ? 'country':'location';
 		
-		if(!$location = $database->get_one("SELECT `$field` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `location` != '' and `timestamp` > '$timeout' ORDER BY `timestamp` DESC LIMIT 1")) {
+		if(!$location = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `location` != '' and `timestamp` > '$timeout' ORDER BY `timestamp` DESC LIMIT 1")) {
 			if($ipdata = json_decode($this->getUrlContent('http://ip-api.com/json/'.$ip),true)) {
 				
 				if(!isset($ipdata['city']) || !$ipdata['city'])  				$ipdata['city'] = '- unknown -';
@@ -335,7 +339,6 @@ class counter {
 				$lon 			= $database->escapeString($ipdata['lon']);
 				$tz 			= $database->escapeString($ipdata['timezone']);
 				$country 		= $database->escapeString($ipdata['country']);
-				$country 		= str_ireplace("The ","",$country);  // "Netherlands" is sometimes "The Netherlands"
 				$country_code 	= $database->escapeString($ipdata['countryCode']);
 				$city 			= $database->escapeString($ipdata['city']);
 				
@@ -344,7 +347,6 @@ class counter {
 
 				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`,`city`,`country`,`country_code`,`latitude`,`longitude`,`timezone`) 
 					VALUES ('".$ipkey."','".$location."','".time()."','".$city."','".$country."','".$country_code."','".$lat."','".$lon."','".$tz."') ");
-				if($countryOnly) $location = $country;
 			}
 		} else {
 			// $city .= ' *';
@@ -381,7 +383,7 @@ class counter {
 		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 		$data = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		//curl_close($ch);
+		curl_close($ch);
 		return ($httpcode>=200 && $httpcode<300) ? $data : false;
 	}	
 	

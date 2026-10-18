@@ -8,20 +8,20 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.9
- * @lastmodified    May 29, 2026
+ * @version         0.2.5.12
+ * @lastmodified    October 17, 2026
  *
  */
 
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.9';
+$module_version = '0.2.5.12';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
 	$module_function = 'tool,initialize,page';
-	$module_platform = '1.3.0';
+	$module_platform = '1.7.0';
 }
 $module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl, Norbert Heimsath(heimsath.org)';
 $module_license = 'GNU General Public License';
@@ -31,10 +31,17 @@ $module_icon = 'fa fa-bar-chart';
 /**
  * Version history
  *
- * 0.2.5.9
- * - fixed E_DEPRECATED warning on PHP8.5
- * - added countries counter in visitors page
- * - small css changes
+ * 0.2.5.12 - compatibility fix
+ *
+ * 0.2.5.11 - security fixes
+ *
+ * 0.2.5.10 - Christian M. Stefan
+ * - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *   experimental SQLite readiness
+ *
+ * 0.2.5.9 - Christian M. Stefan
+ * - Language Arrays have been changed to UPPER_CASE.
+ *   (Following the naming convention for Language Arrays since WBCE 1.7.0)
  *
  * 0.2.5.8
  * - bugfix for storing citynames with apostrophes (like 's-Gravenhage)

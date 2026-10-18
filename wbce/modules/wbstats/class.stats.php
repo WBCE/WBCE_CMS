@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.9
- * @lastmodified    May 29, 2026
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
@@ -88,7 +88,7 @@ class stats {
 			if($result['online']) {
 				$result['online_title'] = '<table class=\'popup\' cellpadding=\'2\'><tr><th colspan=\'3\'>'.$WS['CURRENTONLINE'].'</th></tr>';
 				while($res = $query->fetchRow()) {
-					$result['online_title']  .= '<tr><td>'.date(DATE_FORMAT,$res['online']+TIMEZONE).'</td><td>'.date(TIME_FORMAT,$res['online']+TIMEZONE).'</td><td>'.$res['last_page'].'</td></tr>';
+					$result['online_title']  .= '<tr><td>'.date(DATE_FORMAT,$res['online']+TIMEZONE).'</td><td>'.date(TIME_FORMAT,$res['online']+TIMEZONE).'</td><td>'.htmlspecialchars($res['last_page']).'</td></tr>';
 				}
 				$result['online_title']  .= '</table>';
 				$result['online_title'] = htmlspecialchars($result['online_title']);
@@ -172,7 +172,7 @@ class stats {
 	}
 	
 	function getVisitors($top = 10) {
-		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_brwsr, $code2lang;
+		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_brwsr, $CODE2LANG;
 		$result = array();
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_ref);
@@ -237,7 +237,7 @@ class stats {
 		$query = $database->query("SELECT language, SUM(view) AS views from ".$table_lang." GROUP BY language ORDER BY views DESC LIMIT 0, $top");
 		while($res = $query->fetchRow()) {
 			$language=htmlspecialchars($res['language']);
-			if (array_key_exists($language,$code2lang)) $language=$code2lang[$language];
+			if (array_key_exists($language,$CODE2LANG)) $language=$CODE2LANG[$language];
 			$short = (strlen($language) > 55) ? substr($language,0,50)."...": $language;
 			$views = $res['views'];
 			$percent = (100 / $totals) * $views;
@@ -307,26 +307,6 @@ class stats {
 			$result['location'][$nr]['views'] = $views;
 			$result['location'][$nr]['percent'] = $percent;
 			$result['location'][$nr]['width'] = $bar_width;
-			$nr++;
-		}		
-		// Countries
-		$totals = $database->get_one("SELECT count(*) FROM ".$table_ips." WHERE `country`!='' AND `session`!='ignore'");
-		//$q = "SELECT session as location, COUNT(*) AS total FROM ".$table_ips." WHERE session != '' AND `session`!='ignore' GROUP BY session ORDER BY total DESC LIMIT 0,$top";
-		$q = "SELECT country, COUNT(*) AS total FROM ".$table_ips." WHERE country != '' AND `session`!='ignore' GROUP BY country ORDER BY total DESC LIMIT 0,$top";
-		$nr = 1;
-		$query = $database->query($q);
-		while($res = $query->fetchRow()) {
-			$views = $res['total'];
-			$country = htmlspecialchars($res['country']);
-			$percent = (100 / $totals) * $views;
-			$percent = ($percent < 0.1 ) ? $this->safeRound($percent,2) : $this->safeRound($percent,1);
-			$short = (strlen($country) > 55) ? substr($country,0,50)."...": $country;
-			$bar_width = $this->safeRound((100/$totals)*$views);
-			$result['country'][$nr]['short'] = $short;
-			$result['country'][$nr]['name'] = $country;
-			$result['country'][$nr]['views'] = $views;
-			$result['country'][$nr]['percent'] = $percent;
-			$result['country'][$nr]['width'] = $bar_width;
 			$nr++;
 		}	
 		// browsers
@@ -545,7 +525,7 @@ class stats {
 		if($query  = $database->query("SELECT * from ".$table_ips." WHERE `session`!='ignore' ORDER BY `online` DESC LIMIT 0, 50 ")) {
 			while($res = $query->fetchRow()) {
 				
-				$array = explode("/",$res['last_page']);
+				$array = array_map('htmlspecialchars', explode("/",$res['last_page']));
 				$last_item_index = count($array) - 2;
 				if($last_item_index > 0) {
 					$array[$last_item_index] = '<b>'.$array[$last_item_index].'</b>';
@@ -557,7 +537,7 @@ class stats {
 				$tmp['vis'] = $res['online'] >= $this->online ? 'online':'old';
 				$tmp['date'] = date(DATE_FORMAT,$res['online']+TIMEZONE);
 				$tmp['time'] = date(TIME_FORMAT,$res['online']+TIMEZONE);
-				$tmp['page'] = '<a href="'.$res['last_page'].'" target="_blank">'.substr($res['last_page_b'],0,70).'</a>';
+				$tmp['page'] = '<a href="'.htmlspecialchars($res['last_page']).'" target="_blank">'.substr($res['last_page_b'],0,70).'</a>';
 				if($res['last_status'] && $res['last_status'] != 200) $tmp['page'] .= ' <span style="float:right;font-size:80%;color:red">&nbsp; ['.$res['last_status'].']</span>';
 
 				$tmp['count'] = $res['pages'];
@@ -586,7 +566,7 @@ class stats {
 				$tmp['vis'] = $res['online'] >= $this->online ? 'online':'old';
 				$tmp['date'] = date(DATE_FORMAT,$res['online']+TIMEZONE);
 				$tmp['time'] = date(TIME_FORMAT,$res['online']+TIMEZONE);
-				$tmp['page'] = '<a href="'.$res['last_page'].'" target="_blank">'.substr($res['last_page'],0,70).'</a>';
+				$tmp['page'] = '<a href="'.htmlspecialchars($res['last_page']).'" target="_blank">'.substr(htmlspecialchars($res['last_page']),0,70).'</a>';
 				$tmp['count'] = $res['pages'];
 				$tmp['last'] = $this->seconds2human(time()-$res['online']);
 				$tmp['duration'] = $this->seconds2human($res['online']-$res['time']);
@@ -594,7 +574,7 @@ class stats {
 				$tmp['browser'] = $res['browser'];
 				$tmp['language'] = $res['language'];
 				$tmp['os'] = $res['os'];
-				$tmp['referer'] = $res['referer'];
+				$tmp['referer'] = htmlspecialchars($res['referer']);
 				$tmp['history'] = $this->getLogSession($res['ip'],$res['session']);
 				$tmp['ua'] = $res['ua'];
 				$result[] = $tmp;
@@ -613,7 +593,7 @@ class stats {
 				$tmp = array();
 				$tmp['date'] = date(DATE_FORMAT,$res['timestamp']+TIMEZONE);
 				$tmp['time'] = date(TIME_FORMAT,$res['timestamp']+TIMEZONE);
-				$tmp['page'] = '<a href="'.$res['page'].'" target="_blank">'.substr($res['page'],0,70).'</a>';
+				$tmp['page'] = '<a href="'.htmlspecialchars($res['page']).'" target="_blank">'.substr(htmlspecialchars($res['page']),0,70).'</a>';
 				if($res['status'] && $res['status'] != 200) $tmp['page'] .= ' <span style="float:right; font-size:80%;color:red">&nbsp; ['.$res['status'].']</span>';
 				if ($sess != $res['session']) {
 					$sess = $res['session'];

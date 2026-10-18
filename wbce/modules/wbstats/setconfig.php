@@ -8,13 +8,14 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.9
- * @lastmodified    May 29, 2026
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
 defined('WB_PATH') OR die(header('Location: ../index.php?foutje'));
-if(isset($_POST['ips'])) {
+// Save the ignore list only on a valid FTAN (CSRF protection).
+if(isset($_POST['ips']) && isset($admin) && $admin->checkFTAN()) {
 	$tmp = $_POST['ips'];
 	$tmp = str_replace(array(" ",",","|","\r\n"), '|', $tmp);
 	$ip = explode("|" , $tmp);
@@ -31,11 +32,12 @@ $usecopy = strpos($testlist,'|'.$myip.'|') !== false ? 'isthere':'copyip';
 <div class="third" id="ignore" style="padding: 15px">
 	<h3><?=$WS['IGNORES']?>:</h3>
 	<form method="post">
+		<?php if(isset($admin)) echo $admin->getFTAN(); ?>
 		<input type="hidden" name="tool" value="wbstats">
-		<p><textarea style="width:100%;height:200px;border:1px solid #aaa;padding:10px;background:#fff;" name="ips" id="ips"><?php echo implode("\n",$iplist) ?></textarea></p>
+		<p><textarea style="width:100%;height:200px;border:1px solid #aaa;padding:10px;background:#fff;" name="ips" id="ips"><?php echo htmlspecialchars(implode("\n",$iplist)) ?></textarea></p>
 		<p><input type="submit" class="btn" value="<?php echo $TEXT['SAVE']; ?>" /></p>
 	</form>
-	<b><?=$WS['MYIP']?>: <a href="#" class="<?=$usecopy?>" data-ip="<?=$myip?>"><u><?=$myip?></u></a></b><br>
+	<b><?=$WS['MYIP']?>: <a href="#" class="<?=$usecopy?>" data-ip="<?=htmlspecialchars($myip)?>"><u><?=htmlspecialchars($myip)?></u></a></b><br>
 </div>
 <!--
 <div class="third" id="ignore" style="padding: 15px">
