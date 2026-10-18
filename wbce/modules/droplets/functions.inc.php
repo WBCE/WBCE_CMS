@@ -44,12 +44,13 @@ if (!file_exists(DROPLETS_BACKUP_DIR . '.htaccess')) {
 if (!function_exists('droplets_may_use_tool')) {
     // Same gate as admin/admintools/tool.php intends: logged in, admintools
     // system right, and this specific tool not denied. MODULE_PERMISSIONS is a
-    // deny-list in WBCE 1.6.8, so get_permission('droplets_tool','module') is
+    // deny-list of bare module directory names in WBCE 1.6.8 (not the 1.7
+    // '<dir>_tool' allow-list), so get_permission('droplets','module') is
     // false only when the group denies it.
     function droplets_may_use_tool($admin) {
         return $admin->is_authenticated()
             && $admin->get_permission('admintools')
-            && $admin->get_permission('droplets_tool', 'module');
+            && $admin->get_permission('droplets', 'module');
     }
 }
 if (!function_exists('droplets_is_admin')) {

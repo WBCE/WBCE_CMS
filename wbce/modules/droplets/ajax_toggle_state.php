@@ -23,8 +23,10 @@ if(is_readable($sConfigFile = '../../config.php')) {
 
 // check if the user may use the droplets tool (not just any admin-tool)
 require_once(WB_PATH.'/framework/class.admin.php');
-require_once(dirname(__FILE__).'/functions.inc.php');
 $admin = new admin('admintools', 'admintools', false, false);
+// after $admin: functions.inc.php calls getTwig() at load time, which needs
+// the global $admin (otherwise a fatal error and an empty response)
+require_once(dirname(__FILE__).'/functions.inc.php');
 if (!droplets_may_use_tool($admin)) {
     $aRspnd['message'] = 'insuficcient rights';
     exit(json_encode($aRspnd));

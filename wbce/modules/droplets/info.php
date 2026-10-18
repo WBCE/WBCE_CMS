@@ -14,7 +14,7 @@
 $module_directory = 'droplets';
 $module_name      = 'Droplets';
 $module_function  = 'tool';
-$module_version   = '2.4.1';
+$module_version   = '2.4.2';
 $module_platform  = '1.6.0';
 $module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
 $module_license   = 'GNU General Public License';
@@ -28,8 +28,27 @@ $module_level = 'core';
  * Version history
  * ===============
  *
+ * v2.4.2 Rik van Loenhout
+ *        - fix: the per-tool right check from 2.4.1 used the name 'droplets_tool',
+ *          which never appears in 1.6.x MODULE_PERMISSIONS (a deny-list of bare
+ *          directory names), so it never denied anyone. Now checks 'droplets'
+ *          (see _docs/wbce-droplets/security-fixes-2.4.2.md).
+ *        - fix: ajax_toggle_state.php (active/inactive switch in the list) loaded
+ *          functions.inc.php before $admin existed, so getTwig() died and the
+ *          switch silently did nothing since 2.4.1.
+ *
  * v2.4.1 Rik van Loenhout 
- *         - local security fixes
+ *         - local security fixes (see _docs/wbce-droplets/security-fixes-2.4.1.md):
+ *        - SQL injection in the frontend filter droplets.php (droplet name from
+ *          page content) patched using escapeString; similarly for droplet import
+ *          (filename/description from a zip file) + name validation.
+ *        - FTAN on all modifying actions (tool.php, add_droplet, save_droplet),
+ *          tokens in the GET action links; path traversal in del/recover patched
+ *          (only existing backups from the backup folder).
+ *        - Per-tool permissions (droplets_tool) instead of admin tools only; admin_view/
+ *          admin_edit enforced server-side on save/delete/copy/export/toggle.
+ *        - Backup folder protected with .htaccess + authenticated download_backup.php.
+ *        - various clean-up measures (debug_dump removed, exit after redirect).
  *
  * v2.4.0 Stefek 06.02 2023
  *        - move OpF Filter file to `/modules/droplets/` directory 
