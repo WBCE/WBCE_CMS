@@ -166,6 +166,7 @@ class mform {
 		}
 		if (isset($val)) {
 			$val = htmlspecialchars($val);
+			$val = str_replace(array('[[', ']]', '[[[', ']]]'), '', $val);
 			$val = preg_replace("/(\n)/","",$val);
 			return $val;
 		} else {
