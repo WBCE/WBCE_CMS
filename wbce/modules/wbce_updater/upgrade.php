@@ -2,8 +2,8 @@
 /**
  * WBCE Update-Assistent - Upgrade Script
  *
- * Wird beim Upgrade des Moduls ausgeführt
- * Kann zukünftig für Migrations-Aufgaben verwendet werden
+ * Executed when the module is upgraded.
+ * Reserved for future migration tasks.
  *
  * @category    module
  * @package     wbce_updater

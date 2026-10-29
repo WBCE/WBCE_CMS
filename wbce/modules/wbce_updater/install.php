@@ -2,8 +2,8 @@
 /**
  * WBCE Update-Assistent - Install Script
  *
- * Wird beim Deinstallieren des Moduls ausgeführt
- * Räumt temporäre Dateien und Cache auf
+ * Executed when the module is installed.
+ * Creates the var/logs directory needed by the module.
  *
  * @category    module
  * @package     wbce_updater

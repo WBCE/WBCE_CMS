@@ -38,27 +38,13 @@ require_once __DIR__ . '/compatibility_checker.php';
 // Security check: Admin only (without header output for AJAX)
 $admin = new admin('Admintools', 'admintools', false, false);
 
-// Authorization: require a full admin. A valid FTAN proves session possession
-// (CSRF), not privilege, so it must not be allowed to stand in for admin rights.
+// Administrators only (same check as check_version.php). A valid FTAN only
+// proves a logged-in backend user, so it must not stand in for admin rights.
 if (!$admin->is_authenticated() || !$admin->isAdmin()) {
     ob_end_clean();
     http_response_code(403);
     header('Content-Type: application/json');
-    exit(json_encode(['error' => 'Forbidden']));
-}
-
-// CSRF protection: Check FTAN token
-$ftan_valid = method_exists($admin, 'checkFTAN') && $admin->checkFTAN();
-
-// Fallback for WBCE 1.4.x: Check session-based authentication
-$session_valid = isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] &&
-                 isset($_SESSION['GROUP_ID']) && $_SESSION['GROUP_ID'] == 1;
-
-if (!$ftan_valid && !$session_valid) {
-    ob_end_clean();
-    http_response_code(403);
-    header('Content-Type: application/json');
-    exit(json_encode(['error' => 'Invalid or missing CSRF token']));
+    exit(json_encode(['error' => 'Unauthorized']));
 }
 
 if (!empty($wbce_updater_disabled)) {

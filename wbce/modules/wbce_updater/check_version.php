@@ -2,7 +2,7 @@
 /**
  * WBCE Update-Assistent - Version Check
  *
- * Prüft GitHub API auf verfügbare WBCE Updates
+ * Checks the GitHub API for available WBCE updates
  *
  * @category    module
  * @package     wbce_updater
@@ -87,7 +87,9 @@ try {
         $context = stream_context_create([
             'http' => [
                 'method' => 'GET',
-                'header' => "User-Agent: WBCE-Updater/1.0\r\nAccept: application/vnd.github.v3+json\r\nAccept-Encoding: gzip",
+                // No "Accept-Encoding: gzip": the release list is small, and decompressing it would need
+                // a gz function that the WBCE 1.7 addon scanner (CodeVet) flags as forbidden.
+                'header' => "User-Agent: WBCE-Updater/1.0\r\nAccept: application/vnd.github.v3+json",
                 'timeout' => WBCE_UPDATER_HTTP_TIMEOUT,
                 'ignore_errors' => true
             ],
@@ -105,47 +107,41 @@ try {
         for ($attempt = 1; $attempt <= $max_retries; $attempt++) {
             $response = @file_get_contents($github_api, false, $context);
 
-            if ($response !== false && !empty($response)) {
-                // Decompress if GitHub sent gzip-encoded response
-                if (isset($http_response_header) && function_exists('gzdecode')) {
-                    foreach ($http_response_header as $hdr) {
-                        if (stripos($hdr, 'Content-Encoding:') !== false && stripos($hdr, 'gzip') !== false) {
-                            $decoded = gzdecode($response);
-                            if ($decoded !== false) {
-                                $response = $decoded;
-                            }
-                            break;
-                        }
+            // With 'ignore_errors' => true, file_get_contents() returns the
+            // response body even on HTTP error status codes (e.g. 403 rate
+            // limit) instead of false - the status line must be checked
+            // explicitly, or an error body would be cached and treated as a
+            // valid release list.
+            $status_code = null;
+            if (isset($http_response_header)) {
+                foreach ($http_response_header as $header) {
+                    if (preg_match('/^HTTP\/\d\.\d\s+(\d+)/', $header, $matches)) {
+                        $status_code = (int)$matches[1];
                     }
                 }
-                // Save decompressed JSON to cache
+            }
+
+            $is_success = $response !== false && !empty($response) && ($status_code === null || $status_code < 400);
+
+            if ($is_success) {
+                // Save JSON to cache
                 @file_put_contents($cache_file, $response);
                 break;
             }
+
+            $response = false;
 
             // Get error details
             $error = error_get_last();
             $last_error = isset($error['message']) ? $error['message'] : 'Unknown error';
 
-            // Check HTTP response code
-            if (isset($http_response_header)) {
-                foreach ($http_response_header as $header) {
-                    if (preg_match('/^HTTP\/\d\.\d\s+(\d+)/', $header, $matches)) {
-                        $status_code = (int)$matches[1];
-
-                        // Don't retry on client errors (4xx)
-                        if ($status_code >= 400 && $status_code < 500) {
-                            throw new Exception("GitHub API returned error $status_code");
-                        }
-
-                        // 5xx errors: retry
-                        if ($status_code >= 500 && $attempt < $max_retries) {
-                            continue;
-                        }
-                    }
+            if ($status_code !== null) {
+                // Don't retry on client errors (4xx, e.g. rate limiting)
+                if ($status_code >= 400 && $status_code < 500) {
+                    throw new Exception("GitHub API returned error $status_code");
                 }
+                // 5xx errors: retry (loop continues on its own)
             }
-
         }
 
         if ($response === false || empty($response)) {
@@ -175,8 +171,14 @@ try {
     $available_updates = [];
 
     foreach ($releases as $release) {
+        // Defense in depth: skip anything that isn't a proper release object
+        // (e.g. if a GitHub error body ever slips through as a string entry)
+        if (!is_array($release)) {
+            continue;
+        }
+
         // Skip drafts and pre-releases
-        if ($release['draft'] || $release['prerelease']) {
+        if (!empty($release['draft']) || !empty($release['prerelease'])) {
             continue;
         }
 

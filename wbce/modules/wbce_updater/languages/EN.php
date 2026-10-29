@@ -19,6 +19,14 @@ $LANG = [
     // General
     'TOOL_NAME' => 'WBCE Update Assistant',
     'CURRENT_VERSION' => 'Installed Version',
+    'ADMIN_DIR_CUSTOM_DETECTED' => 'Custom admin directory detected: "%s". The update package will be automatically remapped to it on download/upload.',
+
+    // Environment Capability Checks
+    'ENV_ZIP_MISSING_TITLE' => 'PHP extension "ZipArchive" missing',
+    'ENV_ZIP_MISSING_INFO' => 'The WBCE Update Assistant requires the PHP extension "ZipArchive" to unpack update packages. It is not available on this server. Please ask your hosting provider to enable the "zip" (php-zip) extension, or perform the update manually via the WBCE installer.',
+    'ENV_URL_FOPEN_DISABLED_TITLE' => 'Automatic update download not available',
+    'ENV_URL_FOPEN_DISABLED_INFO' => 'The PHP setting "allow_url_fopen" is disabled on this server (common with some hosting providers, e.g. Hosteurope). Because of this, the update assistant cannot automatically download updates from GitHub. Please download the desired release ZIP manually from github.com/WBCE/WBCE_CMS/releases and use the manual upload below.',
+    'ENV_URL_FOPEN_DISABLED_SHORT' => '"allow_url_fopen" is disabled on this server - the custom update source cannot be downloaded automatically. Please download it manually and use the upload section below.',
 
     // Backup Section
     'BACKUP_REQUIRED' => 'Backup Required!',
@@ -38,6 +46,8 @@ $LANG = [
     'DOWNLOAD_PLEASE_WAIT' => 'Please wait, this may take several minutes.',
     'LOADING_UPLOAD' => 'Uploading & processing file',
     'UPLOAD_PLEASE_WAIT' => 'Please wait, this may take a few seconds.',
+    'LOADING_EXTRACT' => 'Unpacking update package',
+    'EXTRACT_PLEASE_WAIT' => 'Please wait and do not close this window.',
     'NO_UPDATES_AVAILABLE' => 'No updates available',
     'UP_TO_DATE' => 'Your WBCE installation is up to date.',
     'SHOW_ADDITIONAL_UPDATES' => 'Show additional versions',
@@ -156,11 +166,13 @@ Continue anyway?',
     // Tool Disabled
     'TOOL_DISABLED' => 'The update tool is disabled.',
     'TOOL_DISABLED_INFO' => 'Set $wbce_updater_disabled to false in user_config.php to re-enable the tool.',
+    'ADMIN_ONLY' => 'The update assistant is available to administrators only.',
 
     // Checksums
     'CHECKSUM_VALIDATED' => 'Download successfully validated',
     'ERROR_CHECKSUM_MISMATCH' => 'Checksum does not match! Download may be corrupted or manipulated.',
     'WARNING_NO_CHECKSUM' => 'No checksum available - download cannot be validated',
+    'INFO_ADMIN_DIR_ADJUSTED' => 'Custom admin directory detected: update package was automatically remapped to "%s" (%d files).',
     'WARNING_CHECKSUM_DISABLED' => 'WARNING: Checksum verification is disabled. The integrity of the downloaded file cannot be guaranteed.',
     'WARNING_CHECKSUM_DISABLED_MANUAL' => 'NOTE: Automatic checksum verification is disabled. Please verify the checksum manually!',
     'CHECKSUM_INFO' => 'SHA256 Checksum',
@@ -204,6 +216,8 @@ Continue anyway?',
     'EXEC_SEC_BAD_PATH'       => 'Security warning: Invalid file path detected in ZIP: %s',
     'EXEC_SEC_ABS_PATH'       => 'Security warning: Absolute path detected in ZIP: %s',
     'EXEC_SEC_TRAVERSAL'      => 'Security warning: Path traversal outside target directory detected',
+    'EXEC_TEMPLATE_PROTECTED'         => 'Active standard template "%s" was excluded from the update (%d files skipped) - local customizations are preserved.',
+    'EXEC_TEMPLATE_PROTECTED_WARNING' => 'The active standard template/theme "%s" was NOT updated in order to protect local customizations. Please check the WBCE changelog manually for any security-relevant changes to this template.',
 
     // Execute Update – Result page
     'EXEC_SUCCESS_TITLE'       => 'Update package extracted successfully!',

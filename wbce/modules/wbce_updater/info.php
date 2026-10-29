@@ -2,7 +2,7 @@
 /**
  * WBCE Update-Assistent
  *
- * Intelligenter Update-Helfer für WBCE CMS
+ * Intelligent update helper for WBCE CMS
  *
  * @category    module
  * @package     wbce_updater
@@ -20,16 +20,9 @@ $module_directory     = 'wbce_updater';
 $module_name          = 'WBCE Update-Assistent';
 $module_function      = 'tool';
 $module_icon          = 'fa  fa-cloud-download';
-$module_version       = '1.0.7';
-$module_platform      = '1.4 | 1.5 | 1.6';
+$module_version       = '1.1.1';
+$module_platform      = '1.4 | 1.5 | 1.6 | 1.7';
 $module_author        = 'WBCE Community';
 $module_license       = 'MIT License';
 $module_description   = 'Vereinfachter Update-Prozess mit direktem Download vom GitHub';
 $module_guid          = 'wbce-updater-2025';
-
-/**
- * Changelog
- *
- * 1.0.7 (Rik van Loenhout, 2026-10-11)
- *   - security fixes
- */

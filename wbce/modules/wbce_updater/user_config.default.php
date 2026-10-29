@@ -1,18 +1,18 @@
 <?php
 /**
- * WBCE Updater – Lokale Konfiguration (Vorlage)
+ * WBCE Updater – Local Configuration (Template)
  *
- * Um eigene Einstellungen zu hinterlegen:
- * 1. Diese Datei kopieren und die Kopie "user_config.php" nennen
- * 2. Die gewünschten Werte in user_config.php eintragen
+ * To set your own configuration:
+ * 1. Copy this file and rename the copy to "user_config.php"
+ * 2. Enter the desired values in user_config.php
  *
- * user_config.php wird NIEMALS automatisch erstellt oder überschrieben.
- * Da sie manuell angelegt wird, ist sie nie in einem Release-ZIP enthalten
- * und überlebt daher alle WBCE- und Modul-Updates automatisch.
+ * user_config.php is NEVER created or overwritten automatically.
+ * Since it is created manually, it is never included in a release ZIP
+ * and therefore automatically survives all WBCE and module updates.
  *
- * Diese Datei (user_config.default.php) ist immer im Release-ZIP enthalten
- * und wird bei Updates auf den aktuellen Stand gebracht – eigene Einstellungen
- * daher ausschließlich in user_config.php eintragen, nie hier.
+ * This file (user_config.default.php) is always included in the release ZIP
+ * and gets refreshed on updates - always put your own settings in
+ * user_config.php, never here.
  *
  * @category    module
  * @package     wbce_updater
@@ -20,20 +20,20 @@
 defined('WB_PATH') or die("This file can't be accessed directly!");
 
 // ============================================================================
-// EIGENE UPDATE-QUELLE
+// CUSTOM UPDATE SOURCE
 // ============================================================================
-// Vollständige HTTPS-URL zum eigenen Update-ZIP-Paket.
-// Das ZIP muss denselben Aufbau haben wie das offizielle WBCE-Release-Paket
-// (also einen "wbce"-Ordner enthalten oder direkt die WBCE-Dateien).
-// Leer lassen um ausschließlich die Standard-Quelle (GitHub) zu nutzen.
+// Full HTTPS URL to your own update ZIP package.
+// The ZIP must have the same structure as the official WBCE release package
+// (i.e. contain a "wbce" folder, or the WBCE files directly).
+// Leave empty to use only the default source (GitHub).
 //
-// Beispiel: 'https://example.com/updates/wbce_custom_build.zip'
+// Example: 'https://example.com/updates/wbce_custom_build.zip'
 $wbce_updater_custom_source_url = '';
 
 // ============================================================================
-// UPDATE-SPERRE
+// UPDATE LOCK
 // ============================================================================
-// Auf true setzen, um das Update-Tool für normale Administratoren zu sperren.
-// In zukünftigen WBCE-Versionen wird dies durch das erweiterte
-// Berechtigungssystem ersetzt und kann hier dann entfernt werden.
+// Set to true to lock the update tool for regular administrators.
+// In future WBCE versions this will be replaced by the extended
+// permission system and can then be removed here.
 $wbce_updater_disabled = false;

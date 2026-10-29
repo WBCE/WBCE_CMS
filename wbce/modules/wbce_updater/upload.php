@@ -2,7 +2,7 @@
 /**
  * WBCE Update-Assistent - Upload Handler
  *
- * Verarbeitet manuell hochgeladene WBCE ZIP-Dateien und bereitet Update vor
+ * Processes manually uploaded WBCE ZIP files and prepares the update
  *
  * @category    module
  * @package     wbce_updater
@@ -34,10 +34,9 @@ require $lang;
 // Security check: Admin only
 $admin = new admin('Admintools', 'admintools', false, false);
 
-// Authorization: this endpoint stages an uploaded core update package and can
-// enable maintenance mode, so it must require a full admin. checkFTAN() below is
-// CSRF protection only (it validates session possession, not privilege), so it is
-// not sufficient on its own.
+// The updater replaces core files: administrators only. The 4th argument false
+// switches off the constructor's own checks, and a valid FTAN only proves a
+// logged-in backend user - so both have to be checked here.
 if (!$admin->is_authenticated() || !$admin->isAdmin()) {
     header('Location: ' . ADMIN_URL . '/index.php');
     exit;
@@ -65,7 +64,7 @@ $backup_confirmed = isset($_POST['backup_confirmed_upload']) && $_POST['backup_c
 $enable_maintenance = isset($_POST['enable_maintenance_upload']) && $_POST['enable_maintenance_upload'] === '1';
 $target_version = trim($_POST['target_version_upload'] ?? '');
 if (!empty($target_version) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $target_version)) {
-    $target_version = ''; // Ungültiges Format ignorieren
+    $target_version = ''; // Ignore invalid format
 }
 
 // Validate backup confirmation
@@ -223,6 +222,7 @@ try {
     }
 
     $final_zip_path = WB_PATH . '/wbceup.zip';
+    require_once __DIR__ . '/repack_helper.php';
 
     if ($has_wbce_marker) {
         // ZIP is already in correct format - just copy it
@@ -237,7 +237,6 @@ try {
     } else {
         // ZIP needs repacking (probably GitHub format)
 
-        require_once __DIR__ . '/repack_helper.php';
         $repack_result = repackZip($temp_zip_path, $final_zip_path, null, 'wbce');
 
 
@@ -248,6 +247,16 @@ try {
             throw new Exception($LANG['ERROR_REPACK_FAILED'] . ': ' . $repack_result['message']);
         }
 
+    }
+
+    // Account for a renamed admin directory in the update package
+    $admin_folder_adjust = adjustAdminFolderName($final_zip_path);
+    if ($admin_folder_adjust['renamed'] > 0) {
+        $errors[] = sprintf(
+            $LANG['INFO_ADMIN_DIR_ADJUSTED'],
+            htmlspecialchars($admin_folder_adjust['admin_dir']),
+            $admin_folder_adjust['renamed']
+        );
     }
 
 
@@ -273,12 +282,6 @@ if ($success && $enable_maintenance) {
     $maintenance_activated      = $maint['activated'];
     $maintenance_already_active = $maint['already_active'];
 }
-
-// Generate output
-$update_url = WB_URL . '/modules/wbce_updater/execute_update.php'
-    . (!empty($target_version) ? '?version=' . urlencode($target_version) : '');
-// Carry an FTAN so execute_update.php (a state-changing GET) is CSRF-protected.
-$update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTAN(false);
 
 ?>
 <!DOCTYPE html>
@@ -337,6 +340,12 @@ $update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTA
             border-radius: 4px;
             font-weight: bold;
             margin-top: 20px;
+        }
+        button.button {
+            border: none;
+            cursor: pointer;
+            font-size: inherit;
+            font-family: inherit;
         }
         .button:hover {
             background: #0056b3;
@@ -423,13 +432,14 @@ $update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTA
             <p><strong><?php echo $LANG['READY_TO_UPDATE']; ?></strong></p>
             <p><?php echo $LANG['CLICK_BUTTON_TO_START']; ?></p>
 
-            <a href="<?php echo $update_url; ?>" class="button">
-                🚀 <?php echo $LANG['START_UPDATE_NOW']; ?>
-            </a>
-
-            <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                <?php echo $LANG['OR_MANUAL']; ?>: <code><?php echo $update_url; ?></code>
-            </p>
+            <!-- execute_update.php unpacks over the core: POST + FTAN only, never a plain link -->
+            <form method="post" action="<?php echo WB_URL; ?>/modules/wbce_updater/execute_update.php" onsubmit="this.querySelector('button').disabled = true;">
+                <?php echo $admin->getFTAN(); ?>
+                <input type="hidden" name="version" value="<?php echo htmlspecialchars($target_version); ?>">
+                <button type="submit" class="button">
+                    🚀 <?php echo $LANG['START_UPDATE_NOW']; ?>
+                </button>
+            </form>
 
             <p style="margin-top: 20px;">
                 <a href="<?php echo ADMIN_URL; ?>/admintools/tool.php?tool=wbce_updater" class="button button-secondary">

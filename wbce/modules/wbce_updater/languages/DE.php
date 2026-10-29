@@ -19,6 +19,14 @@ $LANG = [
     // General
     'TOOL_NAME' => 'WBCE Update-Assistent',
     'CURRENT_VERSION' => 'Installierte Version',
+    'ADMIN_DIR_CUSTOM_DETECTED' => 'Individuelles Admin-Verzeichnis erkannt: "%s". Das Update-Paket wird beim Download/Upload automatisch entsprechend angepasst.',
+
+    // Environment Capability Checks
+    'ENV_ZIP_MISSING_TITLE' => 'PHP-Erweiterung "ZipArchive" fehlt',
+    'ENV_ZIP_MISSING_INFO' => 'Der WBCE Update-Assistent benötigt die PHP-Erweiterung "ZipArchive", um Update-Pakete zu entpacken. Diese ist auf Ihrem Server nicht verfügbar. Bitte bitten Sie Ihren Hoster, die Erweiterung "zip" (php-zip) zu aktivieren, oder führen Sie das Update manuell über den WBCE-Installer durch.',
+    'ENV_URL_FOPEN_DISABLED_TITLE' => 'Automatischer Update-Download nicht verfügbar',
+    'ENV_URL_FOPEN_DISABLED_INFO' => 'Auf diesem Server ist die PHP-Einstellung "allow_url_fopen" deaktiviert (z.B. bei manchen Hostern wie Hosteurope üblich). Dadurch kann der Update-Assistent Updates nicht automatisch von GitHub herunterladen. Bitte laden Sie das gewünschte Release-ZIP manuell von github.com/WBCE/WBCE_CMS/releases herunter und nutzen Sie den manuellen Upload unten.',
+    'ENV_URL_FOPEN_DISABLED_SHORT' => '"allow_url_fopen" ist auf diesem Server deaktiviert - eigene Update-Quelle kann nicht automatisch heruntergeladen werden. Bitte manuell laden und über den Upload-Bereich einspielen.',
 
     // Backup Section
     'BACKUP_REQUIRED' => 'Backup erforderlich!',
@@ -38,6 +46,8 @@ $LANG = [
     'DOWNLOAD_PLEASE_WAIT' => 'Bitte warten Sie, dies kann einige Minuten dauern.',
     'LOADING_UPLOAD' => 'Datei wird hochgeladen & verarbeitet',
     'UPLOAD_PLEASE_WAIT' => 'Bitte warten Sie, dies kann einige Sekunden dauern.',
+    'LOADING_EXTRACT' => 'Update-Paket wird entpackt',
+    'EXTRACT_PLEASE_WAIT' => 'Bitte warten Sie und schließen Sie das Fenster nicht.',
     'NO_UPDATES_AVAILABLE' => 'Keine Updates verfügbar',
     'UP_TO_DATE' => 'Ihre WBCE-Installation ist auf dem neuesten Stand.',
     'SHOW_ADDITIONAL_UPDATES' => 'Weitere Versionen anzeigen',
@@ -156,11 +166,13 @@ Trotzdem fortfahren?',
     // Tool Disabled
     'TOOL_DISABLED' => 'Das Update-Tool ist deaktiviert.',
     'TOOL_DISABLED_INFO' => 'Setzen Sie in user_config.php die Variable $wbce_updater_disabled auf false, um das Tool wieder zu aktivieren.',
+    'ADMIN_ONLY' => 'Der Update-Assistent steht nur Administratoren zur Verfügung.',
 
     // Checksums
     'CHECKSUM_VALIDATED' => 'Download erfolgreich validiert',
     'ERROR_CHECKSUM_MISMATCH' => 'Checksumme stimmt nicht überein! Download möglicherweise beschädigt oder manipuliert.',
     'WARNING_NO_CHECKSUM' => 'Keine Checksumme verfügbar - Download kann nicht validiert werden',
+    'INFO_ADMIN_DIR_ADJUSTED' => 'Individuelles Admin-Verzeichnis erkannt: Update-Paket wurde automatisch für "%s" angepasst (%d Dateien).',
     'WARNING_CHECKSUM_DISABLED' => 'WARNUNG: Checksum-Verifizierung ist deaktiviert. Die Integrität der heruntergeladenen Datei kann nicht garantiert werden.',
     'WARNING_CHECKSUM_DISABLED_MANUAL' => 'HINWEIS: Automatische Checksum-Verifizierung ist deaktiviert. Bitte prüfen Sie die Checksum manuell!',
     'CHECKSUM_INFO' => 'SHA256 Checksumme',
@@ -171,7 +183,7 @@ Trotzdem fortfahren?',
     'ERROR_INVALID_MIME_TYPE' => 'Ungültiger Dateityp. Nur ZIP-Dateien erlaubt. Erkannter Typ: %s',
     'ERROR_FILE_TOO_LARGE_MB' => 'Datei zu groß. Maximal erlaubt: %s MB',
 
-    // Execute Update – Schrittbezeichnungen
+    // Execute Update – Step labels
     'EXEC_TITLE'              => 'Update-Durchführung',
     'EXEC_STEP1'              => 'Schritt 1: PHP-Kompatibilität prüfen...',
     'EXEC_STEP2'              => 'Schritt 2: Update-Paket prüfen...',
@@ -179,7 +191,7 @@ Trotzdem fortfahren?',
     'EXEC_STEP4'              => 'Schritt 4: WBCE Update-Script prüfen...',
     'EXEC_STEP5'              => 'Schritt 5: Cleanup...',
 
-    // Execute Update – PHP-Kompatibilität
+    // Execute Update – PHP compatibility
     'EXEC_PHP_SKIPPED'        => 'Keine Zielversion angegeben, PHP-Check übersprungen',
     'EXEC_PHP_CANNOT_CHECK'   => 'PHP-Kompatibilität kann nicht geprüft werden: %s – Update wird fortgesetzt.',
     'EXEC_PHP_INCOMPAT'       => 'WARNUNG: PHP-Inkompatibilität erkannt!',
@@ -190,7 +202,7 @@ Trotzdem fortfahren?',
     'EXEC_PHP_COMPATIBLE_MSG' => 'PHP %s ist kompatibel mit WBCE %s',
     'EXEC_PHP_COMPAT_WARN'    => 'PHP %s ist nicht kompatibel mit WBCE %s (benötigt: %s – %s). Bitte PHP-Version nach dem Update ändern!',
 
-    // Execute Update – Paket & Script
+    // Execute Update – Package & Script
     'EXEC_ZIP_FOUND'          => 'wbceup.zip gefunden (%s MB)',
     'EXEC_ZIP_MISSING'        => 'Update-Paket (wbceup.zip) nicht gefunden!',
     'EXEC_SCRIPT_FOUND'       => 'install/update.php gefunden',
@@ -204,8 +216,10 @@ Trotzdem fortfahren?',
     'EXEC_SEC_BAD_PATH'       => 'Sicherheitswarnung: Ungültiger Dateipfad im ZIP erkannt: %s',
     'EXEC_SEC_ABS_PATH'       => 'Sicherheitswarnung: Absoluter Pfad im ZIP erkannt: %s',
     'EXEC_SEC_TRAVERSAL'      => 'Sicherheitswarnung: Pfad-Traversal außerhalb des Zielverzeichnisses erkannt',
+    'EXEC_TEMPLATE_PROTECTED'         => 'Aktives Standardtemplate "%s" wurde vom Update ausgeschlossen (%d Dateien übersprungen) - lokale Anpassungen bleiben erhalten.',
+    'EXEC_TEMPLATE_PROTECTED_WARNING' => 'Das aktive Standardtemplate/-theme "%s" wurde beim Update NICHT aktualisiert, um lokale Anpassungen zu schützen. Prüfen Sie ggf. manuell im WBCE-Changelog, ob es sicherheitsrelevante Änderungen an diesem Template gibt.',
 
-    // Execute Update – Ergebnisseite
+    // Execute Update – Result page
     'EXEC_SUCCESS_TITLE'       => 'Update-Paket erfolgreich entpackt!',
     'EXEC_WARNINGS_TITLE'      => 'Wichtige Warnungen:',
     'EXEC_NEXT_STEP_TITLE'     => 'Nächster Schritt:',

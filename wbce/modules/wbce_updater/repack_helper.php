@@ -1,8 +1,8 @@
-﻿<?php
+<?php
 /**
  * WBCE Update-Assistent - ZIP Repack Helper
  *
- * Intelligente ZIP-Umpackfunktion für GitHub Releases
+ * Intelligent ZIP repack function for GitHub releases
  *
  * @category    module
  * @package     wbce_updater
@@ -13,24 +13,22 @@
  */
 
 /**
- * Findet automatisch den WBCE-Unterordner im GitHub ZIP
+ * Automatically finds the WBCE subfolder inside a GitHub ZIP
  *
- * @param ZipArchive $zip Geöffnetes ZIP-Archiv
- * @return string|false Pfad zum WBCE-Ordner oder false
+ * @param ZipArchive $zip Opened ZIP archive
+ * @return string|false Path to the WBCE folder, or false
  */
 function findWbceFolder($zip) {
     $foundPaths = [];
 
-    // Alle Einträge durchsuchen
     for ($i = 0; $i < $zip->numFiles; $i++) {
         $stat = $zip->statIndex($i);
         $path = $stat['name'];
 
-        // Suche nach typischen WBCE-Dateien im Root.
-        // Diese Pfade existieren garantiert im wbce/-Wurzelverzeichnis und
-        // sind spezifisch genug, um nicht versehentlich in Modulen zu treffen.
-        // Hinweis: 'config.php' NICHT verwenden – existiert nicht im Release-ZIP
-        // (nur config.php.new), aber in Modulen wie ckeditor/filemanager.
+        // Look for files that are guaranteed to exist in the wbce/ root and
+        // are specific enough not to accidentally match inside a module.
+        // Note: don't use 'config.php' - not present in the release ZIP
+        // (only config.php.new), but present in modules like ckeditor/filemanager.
         $wbceMarkers = [
             'framework/class.admin.php',
             'framework/class.wb.php',
@@ -40,7 +38,7 @@ function findWbceFolder($zip) {
 
         foreach ($wbceMarkers as $marker) {
             if (substr($path, -strlen($marker)) === $marker) {
-                // Extrahiere den Basis-Pfad (alles vor dem Marker)
+                // Extract the base path (everything before the marker)
                 $basePath = substr($path, 0, strrpos($path, $marker));
                 $foundPaths[] = $basePath;
             }
@@ -51,20 +49,19 @@ function findWbceFolder($zip) {
         return false;
     }
 
-    // Zähle welcher Pfad am häufigsten vorkommt
+    // The most frequently occurring path is most likely the correct one
     $pathCounts = array_count_values($foundPaths);
     arsort($pathCounts);
 
-    // Der häufigste Pfad ist wahrscheinlich der richtige
     return key($pathCounts);
 }
 
 /**
- * Alternative: Suche nach einem Ordner mit einem bestimmten Namen
+ * Alternative: look for a folder with a specific name
  *
- * @param ZipArchive $zip Geöffnetes ZIP-Archiv
- * @param string $folderName Name des zu suchenden Ordners (z.B. 'wbce')
- * @return string|false Vollständiger Pfad zum Ordner
+ * @param ZipArchive $zip Opened ZIP archive
+ * @param string $folderName Name of the folder to look for (e.g. 'wbce')
+ * @return string|false Full path to the folder
  */
 function findFolderByName($zip, $folderName = 'wbce') {
     $candidates = [];
@@ -73,9 +70,8 @@ function findFolderByName($zip, $folderName = 'wbce') {
         $stat = $zip->statIndex($i);
         $path = $stat['name'];
 
-        // Suche nach Ordnern, die den Namen enthalten
         if (preg_match('#/?' . preg_quote($folderName, '#') . '/#', $path)) {
-            // Extrahiere den Pfad bis einschließlich des gesuchten Ordners
+            // Extract the path up to and including the folder we're looking for
             $pos = strpos($path, $folderName . '/');
             if ($pos !== false) {
                 $candidate = substr($path, 0, $pos + strlen($folderName) + 1);
@@ -88,7 +84,7 @@ function findFolderByName($zip, $folderName = 'wbce') {
         return false;
     }
 
-    // Nehme den kürzesten Pfad (wahrscheinlich der richtige)
+    // The shortest path is most likely the correct one
     usort($candidates, function($a, $b) {
         return strlen($a) - strlen($b);
     });
@@ -97,12 +93,12 @@ function findFolderByName($zip, $folderName = 'wbce') {
 }
 
 /**
- * Erweiterte ZIP-Umpack-Funktion mit automatischer Pfad-Erkennung
+ * Repacks a ZIP with automatic path detection
  *
- * @param string $sourceZip Quell-ZIP-Datei
- * @param string $targetZip Ziel-ZIP-Datei
- * @param string|null $subPath Optionaler Unterordner-Pfad (null = auto-detect)
- * @param string $targetFolderName Name des zu suchenden Ordners bei Auto-Detect
+ * @param string $sourceZip Source ZIP file
+ * @param string $targetZip Target ZIP file
+ * @param string|null $subPath Optional subfolder path (null = auto-detect)
+ * @param string $targetFolderName Folder name to look for during auto-detect
  * @return array ['success' => bool, 'message' => string, 'found_path' => string]
  */
 function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 'wbce') {
@@ -119,12 +115,11 @@ function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 
         return $result;
     }
 
-    // Auto-Detect: Finde den richtigen Pfad
     if ($subPath === null) {
-        // Methode 1: Suche nach typischen WBCE-Dateien
+        // Method 1: look for typical WBCE files
         $detectedPath = findWbceFolder($zip);
 
-        // Methode 2 (Fallback): Suche nach Ordnername
+        // Method 2 (fallback): look for a folder name
         if (!$detectedPath) {
             $detectedPath = findFolderByName($zip, $targetFolderName);
         }
@@ -139,7 +134,7 @@ function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 
         $result['found_path'] = $subPath;
     }
 
-    // Pfad normalisieren (muss mit / enden, falls nicht leer)
+    // Normalize the path (must end with / if not empty)
     $subPath = rtrim($subPath, '/');
     if ($subPath !== '') {
         $subPath .= '/';
@@ -158,9 +153,8 @@ function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 
         $stat = $zip->statIndex($i);
         $fullPath = $stat['name'];
 
-        // Prüfen, ob die Datei im gewünschten Unterordner liegt
         if ($subPath === '' || strpos($fullPath, $subPath) === 0) {
-            // Neuen Pfad berechnen (den Präfix abschneiden)
+            // Strip the prefix to get the new relative path
             $relativePath = $subPath === '' ? $fullPath : substr($fullPath, strlen($subPath));
 
             // Security: Check for path traversal attempts
@@ -169,7 +163,7 @@ function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 
                 continue;
             }
 
-            // Nur hinzufügen, wenn es kein leerer Ordnername ist
+            // Only add if it's not an empty folder name
             if ($relativePath !== false && $relativePath !== "" && substr($relativePath, -1) !== '/') {
                 $content = $zip->getFromIndex($i);
 
@@ -192,7 +186,7 @@ function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 
 
     if ($filesAdded === 0) {
         $result['message'] = 'Keine Dateien gefunden im Pfad: ' . $subPath;
-        @unlink($targetZip); // Leeres ZIP löschen
+        @unlink($targetZip); // Delete the empty ZIP
         return $result;
     }
 
@@ -209,11 +203,109 @@ function repackZip($sourceZip, $targetZip, $subPath = null, $targetFolderName = 
 }
 
 /**
- * Debug-Funktion: Zeigt die Struktur eines ZIPs
+ * Detects an individually renamed admin directory and renames the
+ * "admin/" folder in the already packed update ZIP accordingly.
  *
- * @param string $zipPath Pfad zur ZIP-Datei
- * @param int $maxDepth Maximale Verzeichnistiefe (0 = nur erste Ebene)
- * @return array Liste der Einträge
+ * WBCE release packages always contain an "admin/" folder. Without this
+ * adjustment, updating with a renamed admin directory would just create a
+ * new, unused "admin/" folder and leave the actually active directory unpatched.
+ *
+ * @param string $zipPath Path to the already packed wbceup.zip (modified in-place)
+ * @return array ['renamed' => int, 'admin_dir' => string]
+ */
+function adjustAdminFolderName($zipPath) {
+    $result = ['renamed' => 0, 'admin_dir' => 'admin'];
+
+    if (!defined('WB_URL') || !defined('ADMIN_URL')) {
+        return $result;
+    }
+
+    // Derive the physical name of the active admin directory from ADMIN_URL
+    $adminDirName = trim(str_replace(rtrim(WB_URL, '/'), '', ADMIN_URL), '/');
+
+    // Only act if clearly detected, different from the default, and safe
+    // (no path separators, dots, etc.)
+    if ($adminDirName === '' || $adminDirName === 'admin' || !preg_match('/^[A-Za-z0-9_-]+$/', $adminDirName)) {
+        return $result;
+    }
+
+    $result['admin_dir'] = $adminDirName;
+
+    $zip = new ZipArchive();
+    if ($zip->open($zipPath) !== TRUE) {
+        return $result;
+    }
+
+    $oldPrefix = 'admin/';
+    $newPrefix = $adminDirName . '/';
+    $renamed = 0;
+
+    for ($i = 0; $i < $zip->numFiles; $i++) {
+        $name = $zip->getNameIndex($i);
+        if ($name !== false && strpos($name, $oldPrefix) === 0) {
+            $newName = $newPrefix . substr($name, strlen($oldPrefix));
+            if ($zip->renameIndex($i, $newName)) {
+                $renamed++;
+            }
+        }
+    }
+
+    $zip->close();
+    $result['renamed'] = $renamed;
+
+    return $result;
+}
+
+/**
+ * Determines which currently active templates/themes are WBCE standard
+ * templates and therefore should be protected from being overwritten on update.
+ *
+ * Extracted into its own pure function (instead of inline in execute_update.php)
+ * so it can be unit-tested without a full WBCE bootstrap.
+ *
+ * @param string|null $activeTemplate Value of DEFAULT_TEMPLATE, or null
+ * @param string|null $activeTheme Value of DEFAULT_THEME, or null
+ * @param string $standardTemplatesCsv Comma-separated list (WBCE_UPDATER_STANDARD_TEMPLATES)
+ * @return array List of folder names to protect (0, 1 or 2 entries)
+ */
+function getProtectedTemplateFolders($activeTemplate, $activeTheme, $standardTemplatesCsv) {
+    $standardTemplates = array_map('trim', explode(',', $standardTemplatesCsv));
+    $protected = [];
+
+    if ($activeTemplate !== null && $activeTemplate !== '' && in_array($activeTemplate, $standardTemplates, true)) {
+        $protected[] = $activeTemplate;
+    }
+
+    if ($activeTheme !== null && $activeTheme !== '' && $activeTheme !== $activeTemplate
+        && in_array($activeTheme, $standardTemplates, true)) {
+        $protected[] = $activeTheme;
+    }
+
+    return $protected;
+}
+
+/**
+ * Checks whether a ZIP entry name lies inside one of the protected template folders.
+ *
+ * @param string $filename Entry name in the ZIP (e.g. "templates/wbcetik/index.php")
+ * @param array $protectedTemplateFolders Result of getProtectedTemplateFolders()
+ * @return bool
+ */
+function isProtectedTemplateFile($filename, array $protectedTemplateFolders) {
+    foreach ($protectedTemplateFolders as $protectedFolder) {
+        if (strpos($filename, 'templates/' . $protectedFolder . '/') === 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Debug function: shows the structure of a ZIP
+ *
+ * @param string $zipPath Path to the ZIP file
+ * @param int $maxDepth Maximum directory depth (0 = top level only)
+ * @return array List of entries
  */
 function debugZipStructure($zipPath, $maxDepth = 2) {
     $zip = new ZipArchive();
@@ -223,7 +315,7 @@ function debugZipStructure($zipPath, $maxDepth = 2) {
         return ['error' => 'ZIP konnte nicht geöffnet werden'];
     }
 
-    for ($i = 0; $i < min($zip->numFiles, 100); $i++) { // Max 100 Einträge zur Sicherheit
+    for ($i = 0; $i < min($zip->numFiles, 100); $i++) { // Cap at 100 entries for safety
         $stat = $zip->statIndex($i);
         $path = $stat['name'];
         $depth = substr_count($path, '/');
@@ -241,29 +333,29 @@ function debugZipStructure($zipPath, $maxDepth = 2) {
     return $structure;
 }
 
-// Beispielaufruf mit Auto-Detection:
+// Example call with auto-detection:
 /*
 $result = repackZip(
-    'github-download.zip',  // Quell-ZIP
-    'wbceup.zip',          // Ziel-ZIP
-    null,                  // Auto-detect
-    'wbce'                 // Suche nach 'wbce' Ordner
+    'github-download.zip',  // source ZIP
+    'wbceup.zip',          // target ZIP
+    null,                  // auto-detect
+    'wbce'                 // look for a 'wbce' folder
 );
 
 if ($result['success']) {
     echo $result['message'];
-    echo "\nGefundener Pfad: " . $result['found_path'];
+    echo "\nFound path: " . $result['found_path'];
 } else {
-    echo "Fehler: " . $result['message'];
+    echo "Error: " . $result['message'];
 }
 */
 
-// Beispielaufruf mit festem Pfad (alte Methode):
+// Example call with a fixed path (old method):
 /*
 repackZip(
     'pack.zip',
     'result.zip',
-    'WBCE_CMS-1.6.5/wbce/'  // Fester Pfad
+    'WBCE_CMS-1.6.5/wbce/'  // fixed path
 );
 */
 ?>

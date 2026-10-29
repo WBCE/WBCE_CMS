@@ -2,8 +2,8 @@
 /**
  * WBCE Update-Assistent - Uninstall Script
  *
- * Wird beim Deinstallieren des Moduls ausgeführt
- * Räumt temporäre Dateien und Cache auf
+ * Executed when the module is uninstalled.
+ * Cleans up temporary files and cache.
  *
  * @category    module
  * @package     wbce_updater

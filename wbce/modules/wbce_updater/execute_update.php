@@ -2,8 +2,8 @@
 /**
  * WBCE Updater - Execute Update
  *
- * Entpackt das Update-Paket und startet den WBCE Update-Prozess
- * Ersetzt das externe wbce_update_unzip.php Script
+ * Unpacks the update package and starts the WBCE update process.
+ * Replaces the external wbce_update_unzip.php script.
  *
  * @category    module
  * @package     wbce_updater
@@ -27,6 +27,9 @@ require_once __DIR__ . '/config_defaults.php';
 // Include compatibility checker for dynamic PHP version check
 require_once __DIR__ . '/compatibility_checker.php';
 
+// Include repack/template-protection helpers
+require_once __DIR__ . '/repack_helper.php';
+
 $admin = new admin('Admintools', 'admintools', false, false);
 
 if (!$admin->is_authenticated() || !$admin->isAdmin()) {
@@ -34,13 +37,16 @@ if (!$admin->is_authenticated() || !$admin->isAdmin()) {
     exit;
 }
 
-// CSRF: this GET extracts the staged update ZIP over the core files, so it must
-// carry a valid FTAN (token embedded in the link download.php/upload.php build).
-// Without this, a cross-site GET (cookie sent under SameSite=Lax) could trigger
-// the extraction of a staged package.
-if (!$admin->checkFTAN('GET')) {
-    http_response_code(403);
-    die('Security check failed (FTAN). Please start the update from the updater page.');
+// Unpacks the staged package over the core: never on a plain GET (a link on a
+// foreign site carries the session cookie with SameSite=Lax).
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$admin->checkFTAN()) {
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
+    exit;
+}
+
+if (!empty($wbce_updater_disabled)) {
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
+    exit;
 }
 
 // Load language file
@@ -49,8 +55,8 @@ $lang = (file_exists(__DIR__ . '/languages/' . LANGUAGE . '.php'))
     : __DIR__ . '/languages/EN.php';
 require $lang;
 
-// Get target version from GET parameter
-$targetVersion = $_GET['version'] ?? '';
+// Get target version from POST parameter
+$targetVersion = $_POST['version'] ?? '';
 
 // Security: Validate version format
 if (!empty($targetVersion) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $targetVersion)) {
@@ -142,6 +148,8 @@ if (!empty($targetVersion) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $targetVers
 $success = true;
 $errors = [];
 $warnings = [];
+// Own flag: $warnings also collects non-PHP notices (e.g. protected template)
+$phpChangeNeeded = false;
 
 // Step 1: PHP Compatibility Check (Dynamic from requirements.json)
 // IMPORTANT: Only WARNING, never blocking! User might need to update WBCE first, then change PHP version.
@@ -172,6 +180,7 @@ if (!empty($targetVersion)) {
             echo '</span>';
 
             $warnings[] = sprintf($LANG['EXEC_PHP_COMPAT_WARN'], PHP_VERSION, $targetVersion, $phpMinStr, $phpMaxStr);
+            $phpChangeNeeded = true;
         }
     } else {
         echo '<span style="color: #28a745;">✅ ' . sprintf($LANG['EXEC_PHP_COMPATIBLE_MSG'], PHP_VERSION, htmlspecialchars($targetVersion)) . '</span>';
@@ -211,6 +220,13 @@ if ($success) {
     echo '<div class="step">';
     echo '<strong>' . $LANG['EXEC_STEP3'] . '</strong><br>';
 
+    // Protect the active standard template/theme from being overwritten (local customizations)
+    $protectedTemplateFolders = getProtectedTemplateFolders(
+        defined('DEFAULT_TEMPLATE') ? DEFAULT_TEMPLATE : null,
+        defined('DEFAULT_THEME') ? DEFAULT_THEME : null,
+        WBCE_UPDATER_STANDARD_TEMPLATES
+    );
+
     try {
         $zip = new ZipArchive;
         $res = $zip->open($zipFile);
@@ -223,6 +239,9 @@ if ($success) {
             if ($realBasePath === false) {
                 throw new Exception($LANG['EXEC_DIR_RESOLVE_ERROR']);
             }
+
+            $filesToExtract = [];
+            $skippedFiles   = [];
 
             for ($i = 0; $i < $numFiles; $i++) {
                 $stat     = $zip->statIndex($i);
@@ -258,12 +277,29 @@ if ($success) {
                         throw new Exception($LANG['EXEC_SEC_TRAVERSAL']);
                     }
                 }
+
+                // Skip files inside a protected (active, customizable) standard template/theme
+                if (isProtectedTemplateFile($filename, $protectedTemplateFolders)) {
+                    $skippedFiles[] = $filename;
+                    continue;
+                }
+
+                $filesToExtract[] = $filename;
             }
 
-            $zip->extractTo($path);
+            // Guard against extractTo() with an empty list (all entries filtered out)
+            if (!empty($filesToExtract)) {
+                $zip->extractTo($path, $filesToExtract);
+            }
             $zip->close();
 
-            echo '<span style="color: #28a745;">✅ ' . sprintf($LANG['EXEC_FILES_EXTRACTED'], $numFiles, htmlspecialchars($path)) . '</span>';
+            echo '<span style="color: #28a745;">✅ ' . sprintf($LANG['EXEC_FILES_EXTRACTED'], count($filesToExtract), htmlspecialchars($path)) . '</span>';
+
+            if (!empty($skippedFiles)) {
+                $protectedNames = implode(', ', $protectedTemplateFolders);
+                echo '<br><span style="color: #856404;">⚠️ ' . sprintf($LANG['EXEC_TEMPLATE_PROTECTED'], htmlspecialchars($protectedNames), count($skippedFiles)) . '</span>';
+                $warnings[] = sprintf($LANG['EXEC_TEMPLATE_PROTECTED_WARNING'], $protectedNames);
+            }
         } else {
             throw new Exception($LANG['EXEC_ZIP_OPEN_FAILED']);
         }
@@ -331,7 +367,7 @@ if ($success) {
             <strong><?php echo $LANG['EXEC_NEXT_STEP_TITLE']; ?></strong>
             <p><?php echo $LANG['EXEC_NEXT_STEP_INFO']; ?></p>
             <p><strong><?php echo $LANG['EXEC_WINDOW_HINT']; ?></strong></p>
-            <?php if (!empty($warnings)): ?>
+            <?php if ($phpChangeNeeded): ?>
             <p style="color: #dc3545; font-weight: bold;">⚠️ <?php echo $LANG['EXEC_PHP_CHANGE_REMINDER']; ?></p>
             <?php endif; ?>
         </div>

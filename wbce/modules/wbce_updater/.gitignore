@@ -22,3 +22,6 @@ Thumbs.db
 # Backup files
 *.bak
 *.backup
+
+# Lokale Benutzerkonfiguration (enthaelt ggf. Custom-Source-URL) - nie committen
+user_config.php

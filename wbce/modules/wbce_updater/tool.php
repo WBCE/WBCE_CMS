@@ -2,7 +2,7 @@
 /**
  * WBCE Update-Assistent - Main Interface
  *
- * Hauptoberfläche für den WBCE Update-Assistenten
+ * Main interface for the WBCE update assistant
  *
  * @category    module
  * @package     wbce_updater
@@ -11,11 +11,11 @@
  * @copyright   2026 WBCE Community
  * @license     MIT License
  *
- * WICHTIG: Diese Datei wird vom WBCE Admin-Tools Framework eingebunden.
- * Folgendes ist bereits verfügbar:
- * - $admin (Admin-Objekt, Header bereits ausgegeben)
+ * IMPORTANT: This file is included by the WBCE admin tools framework.
+ * The following are already available:
+ * - $admin (admin object, header already printed)
  * - $modulePath, $languagePath, $returnUrl, $toolDir, $toolName
- * - config.php, framework-Klassen, Sprachdateien
+ * - config.php, framework classes, language files
  */
 
 defined('WB_PATH') or die("This file can't be accessed directly!");
@@ -25,6 +25,15 @@ $langFile = (file_exists(__DIR__ . '/languages/' . LANGUAGE . '.php'))
     ? __DIR__ . '/languages/' . LANGUAGE . '.php'
     : __DIR__ . '/languages/EN.php';
 require_once $langFile;
+
+// The updater replaces core files: administrators only. A group with just the
+// admintools permission must not even see the update forms.
+if (!$admin->isAdmin()) {
+    echo '<div class="alert-danger" style="padding:20px;">';
+    echo '<strong>' . htmlspecialchars($LANG['ADMIN_ONLY']) . '</strong>';
+    echo '</div>';
+    return;
+}
 
 // Get current WBCE version from database
 // $database is globally available through the framework
@@ -60,11 +69,29 @@ if (file_exists(__DIR__ . '/user_config.php')) {
     require_once __DIR__ . '/user_config.php';
 }
 
+// Detect a custom (renamed) admin directory - the update package will be
+// automatically remapped to it on download/upload (see repack_helper.php)
+$admin_dir_name = trim(str_replace(rtrim(WB_URL, '/'), '', ADMIN_URL), '/');
+$admin_dir_is_custom = ($admin_dir_name !== '' && $admin_dir_name !== 'admin' && preg_match('/^[A-Za-z0-9_-]+$/', $admin_dir_name));
+
 // Tool disabled check
 if ($wbce_updater_disabled) {
     echo '<div class="alert-warning" style="padding:20px;">';
     echo '<strong>' . htmlspecialchars($LANG['TOOL_DISABLED']) . '</strong><br>';
     echo htmlspecialchars($LANG['TOOL_DISABLED_INFO']);
+    echo '</div>';
+    return;
+}
+
+// ZipArchive is a hard requirement for both update paths.
+// allow_url_fopen is only needed for the GitHub/custom-source download - manual upload works without it.
+$env_has_zip = class_exists('ZipArchive');
+$env_has_url_fopen = (bool) ini_get('allow_url_fopen');
+
+if (!$env_has_zip) {
+    echo '<div class="alert-danger" style="padding:20px;">';
+    echo '<strong>' . htmlspecialchars($LANG['ENV_ZIP_MISSING_TITLE']) . '</strong><br>';
+    echo htmlspecialchars($LANG['ENV_ZIP_MISSING_INFO']);
     echo '</div>';
     return;
 }
@@ -110,6 +137,12 @@ if (typeof ADMIN_URL === 'undefined') {
         <h1><?php echo htmlspecialchars($LANG['TOOL_NAME']); ?></h1>
         <p class="version-display"><strong><?php echo htmlspecialchars($LANG['CURRENT_VERSION']); ?>:</strong> <?php echo htmlspecialchars($current_version); ?></p>
 
+        <?php if ($admin_dir_is_custom): ?>
+        <div class="alert-info" style="margin: 10px 0 20px; padding: 10px 14px; background: #e7f3ff; border: 1px solid #b8daff; border-radius: 4px; font-size: 13px;">
+            ℹ️ <?php echo sprintf(htmlspecialchars($LANG['ADMIN_DIR_CUSTOM_DETECTED']), htmlspecialchars($admin_dir_name)); ?>
+        </div>
+        <?php endif; ?>
+
         <!-- Backup Warning Section -->
         <div class="backup-section">
             <h3 class="section-title-backup"><?php echo defined('WEBSITE_TITLE') ? WEBSITE_TITLE : 'WBCE CMS'; ?> - Verwaltung</h3>
@@ -153,6 +186,7 @@ if (typeof ADMIN_URL === 'undefined') {
         <div class="updates-section">
             <h3 class="section-title-gray"><?php echo $LANG['AVAILABLE_UPDATES']; ?></h3>
 
+            <?php if ($env_has_url_fopen): ?>
             <div class="button-row">
                 <button type="button" class="btn-primary" onclick="loadAvailableUpdates()">
                     🔍 <?php echo $LANG['CHECK_UPDATES']; ?>
@@ -168,6 +202,15 @@ if (typeof ADMIN_URL === 'undefined') {
             </div>
 
             <div id="updates-container"></div>
+            <?php else: ?>
+            <div class="alert-warning" style="padding:15px; background:#fff3cd; border:1px solid #ffc107; border-radius:4px;">
+                <p style="margin:0 0 10px 0;"><strong>⚠️ <?php echo htmlspecialchars($LANG['ENV_URL_FOPEN_DISABLED_TITLE']); ?></strong></p>
+                <p style="margin:0 0 10px 0;"><?php echo htmlspecialchars($LANG['ENV_URL_FOPEN_DISABLED_INFO']); ?></p>
+                <button type="button" class="btn-secondary" onclick="jumpToUpload()">
+                    📤 <?php echo $LANG['JUMP_TO_UPLOAD']; ?>
+                </button>
+            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Manual Upload Section -->
@@ -270,12 +313,16 @@ if (typeof ADMIN_URL === 'undefined') {
                 <strong><?php echo htmlspecialchars($LANG['CUSTOM_SOURCE_CONFIGURED']); ?></strong><br>
                 <code style="word-break:break-all;"><?php echo htmlspecialchars($wbce_updater_custom_source_url); ?></code>
             </div>
+            <?php if ($env_has_url_fopen): ?>
             <button type="button"
                     class="btn-download download-button"
                     onclick="prepareCustomSourceUpdate()"
                     disabled>
                 📥 <?php echo htmlspecialchars($LANG['CUSTOM_SOURCE_BUTTON']); ?>
             </button>
+            <?php else: ?>
+            <p style="color:#856404; font-size:13px; margin:0;">⚠️ <?php echo htmlspecialchars($LANG['ENV_URL_FOPEN_DISABLED_SHORT']); ?></p>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
 
@@ -695,10 +742,10 @@ if (typeof ADMIN_URL === 'undefined') {
         /**
          * Calculate risk level based on version comparison
          *
-         * Risikostufen:
-         * - major (rot): Major-Version unterschiedlich ODER Minor-Differenz > 1
-         * - minor (gelb): Minor-Differenz == 1
-         * - patch (grün): Nur Patch-Version unterschiedlich
+         * Risk levels:
+         * - major (red): major version differs OR minor difference > 1
+         * - minor (yellow): minor difference == 1
+         * - patch (green): only the patch version differs
          */
         function calculateRiskLevel(current, target) {
             const c = current.split('.').map(Number);
@@ -714,13 +761,13 @@ if (typeof ADMIN_URL === 'undefined') {
             // Minor version difference
             const minorDiff = t[1] - c[1];
 
-            // Minor-Sprung > 1 (z.B. 1.5 → 1.7) = major risk (rot)
+            // Minor jump > 1 (e.g. 1.5 → 1.7) = major risk (red)
             if (minorDiff > 1) return 'major';
 
-            // Minor-Sprung == 1 (z.B. 1.5 → 1.6) = minor risk (gelb)
+            // Minor jump == 1 (e.g. 1.5 → 1.6) = minor risk (yellow)
             if (minorDiff === 1) return 'minor';
 
-            // Patch version change (1.6.3 → 1.6.5) = patch risk (grün)
+            // Patch version change (1.6.3 → 1.6.5) = patch risk (green)
             return 'patch';
         }
 
@@ -936,4 +983,4 @@ if (typeof ADMIN_URL === 'undefined') {
     </div>
 </div> <!-- end wbce-updater-container -->
 <?php
-// Footer wird vom Framework ausgegeben - hier NICHT $admin->print_footer() aufrufen!
+// Footer is printed by the framework - do NOT call $admin->print_footer() here!

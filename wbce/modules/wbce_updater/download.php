@@ -2,7 +2,7 @@
 /**
  * WBCE Update-Assistent - Download Handler
  *
- * Lädt Update-Paket herunter und bereitet Update vor
+ * Downloads the update package and prepares the update
  *
  * @category    module
  * @package     wbce_updater
@@ -31,10 +31,9 @@ require $lang;
 // Security check: Admin only
 $admin = new admin('Admintools', 'admintools', false, false);
 
-// Authorization: this endpoint downloads+stages a core update package and can
-// enable maintenance mode, so it must require a full admin. checkFTAN() below is
-// CSRF protection only (it validates session possession, not privilege), so it is
-// not sufficient on its own.
+// The updater replaces core files: administrators only. The 4th argument false
+// switches off the constructor's own checks, and a valid FTAN only proves a
+// logged-in backend user - so both have to be checked here.
 if (!$admin->is_authenticated() || !$admin->isAdmin()) {
     header('Location: ' . ADMIN_URL . '/index.php');
     exit;
@@ -87,10 +86,13 @@ if (!isset($parsed_url['scheme']) || $parsed_url['scheme'] !== 'https') {
 $is_custom_source = !empty($wbce_updater_custom_source_url)
     && hash_equals($wbce_updater_custom_source_url, $download_url);
 
-// Standard path: only allow GitHub domains
+// Standard path: only the official repository (owner/repo taken from WBCE_UPDATER_GITHUB_API).
+// GitHub's own redirects after this request are not affected, only the submitted URL is checked.
 if (!$is_custom_source) {
-    if (!isset($parsed_url['host']) ||
-        !preg_match('/^(api\.)?github\.com$/i', $parsed_url['host'])) {
+    $repo_path = preg_replace('#^/repos/([^/]+/[^/]+)/.*$#', '$1', (string) parse_url(WBCE_UPDATER_GITHUB_API, PHP_URL_PATH));
+    $host_ok   = isset($parsed_url['host']) && preg_match('/^(api\.)?github\.com$/i', $parsed_url['host']);
+    $repo_ok   = preg_match('#^/(repos/)?' . preg_quote($repo_path, '#') . '/#i', $parsed_url['path'] ?? '');
+    if (!$host_ok || !$repo_ok) {
         header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
         exit;
     }
@@ -139,13 +141,13 @@ try {
         throw new Exception($LANG['ERROR_DOWNLOAD_FAILED'] . ': Leere oder fehlgeschlagene Antwort vom Server');
     }
 
-    // ZIP-Signatur prüfen bevor die Datei geschrieben wird
+    // Check the ZIP signature before writing the file
     if (strlen($zip_content) < 4 || substr($zip_content, 0, 2) !== 'PK') {
         throw new Exception($LANG['ERROR_DOWNLOAD_FAILED'] . ': Keine gültige ZIP-Datei empfangen. ' .
             'Serverantwort beginnt mit: ' . htmlspecialchars(substr($zip_content, 0, 200)));
     }
 
-    // Temporäres ZIP speichern
+    // Save the temporary ZIP
     $temp_zip_path = WB_PATH . '/temp_download.zip';
     $bytes_written = file_put_contents($temp_zip_path, $zip_content);
 
@@ -169,17 +171,27 @@ try {
     }
     // Note: No warning when checksum verification is disabled (default)
 
-    // ZIP umpacken (nur wbce/ Ordner extrahieren)
+    // Repack the ZIP (extract only the wbce/ folder)
     require_once __DIR__ . '/repack_helper.php';
 
     $final_zip_path = WB_PATH . '/wbceup.zip';
     $repack_result = repackZip($temp_zip_path, $final_zip_path, null, 'wbce');
 
-    // Temporäre Datei löschen
+    // Delete the temporary file
     @unlink($temp_zip_path);
 
     if (!$repack_result['success']) {
         throw new Exception($LANG['ERROR_REPACK_FAILED'] . ': ' . $repack_result['message']);
+    }
+
+    // Account for a renamed admin directory in the update package
+    $admin_folder_adjust = adjustAdminFolderName($final_zip_path);
+    if ($admin_folder_adjust['renamed'] > 0) {
+        $errors[] = sprintf(
+            $LANG['INFO_ADMIN_DIR_ADJUSTED'],
+            htmlspecialchars($admin_folder_adjust['admin_dir']),
+            $admin_folder_adjust['renamed']
+        );
     }
 
 } catch (Exception $e) {
@@ -203,11 +215,6 @@ if ($success && $enable_maintenance) {
     $maintenance_activated      = $maint['activated'];
     $maintenance_already_active = $maint['already_active'];
 }
-
-// Generate output
-$update_url = WB_URL . '/modules/wbce_updater/execute_update.php?version=' . urlencode($target_version);
-// Carry an FTAN so execute_update.php (a state-changing GET) is CSRF-protected.
-$update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTAN(false);
 
 ?>
 <!DOCTYPE html>
@@ -266,6 +273,12 @@ $update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTA
             border-radius: 4px;
             font-weight: bold;
             margin-top: 20px;
+        }
+        button.button {
+            border: none;
+            cursor: pointer;
+            font-size: inherit;
+            font-family: inherit;
         }
         .button:hover {
             background: #0056b3;
@@ -370,13 +383,14 @@ $update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTA
             <p><strong><?php echo $LANG['READY_TO_UPDATE']; ?></strong></p>
             <p><?php echo $LANG['CLICK_BUTTON_TO_START']; ?></p>
 
-            <a href="<?php echo $update_url; ?>" class="button" id="start-update-btn" onclick="startUpdate(this)">
-                🚀 <?php echo $LANG['START_UPDATE_NOW']; ?>
-            </a>
-
-            <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                <?php echo $LANG['OR_MANUAL']; ?>: <code><?php echo $update_url; ?></code>
-            </p>
+            <!-- execute_update.php unpacks over the core: POST + FTAN only, never a plain link -->
+            <form method="post" action="<?php echo WB_URL; ?>/modules/wbce_updater/execute_update.php" onsubmit="startUpdate(this)">
+                <?php echo $admin->getFTAN(); ?>
+                <input type="hidden" name="version" value="<?php echo htmlspecialchars($target_version); ?>">
+                <button type="submit" class="button" id="start-update-btn">
+                    🚀 <?php echo $LANG['START_UPDATE_NOW']; ?>
+                </button>
+            </form>
 
             <p style="margin-top: 20px;">
                 <a href="<?php echo ADMIN_URL; ?>/admintools/tool.php?tool=wbce_updater" class="button button-secondary">
@@ -407,15 +421,16 @@ $update_url .= (strpos($update_url, '?') !== false ? '&' : '?') . $admin->getFTA
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">
         <div class="spinner"></div>
-        <div class="loading-text">⏳ <?php echo $LANG['LOADING_DOWNLOAD']; ?>...</div>
-        <div class="loading-subtext"><?php echo $LANG['DOWNLOAD_PLEASE_WAIT']; ?></div>
+        <div class="loading-text">⏳ <?php echo $LANG['LOADING_EXTRACT']; ?>...</div>
+        <div class="loading-subtext"><?php echo $LANG['EXTRACT_PLEASE_WAIT']; ?></div>
     </div>
 
     <script>
-    function startUpdate(link) {
+    function startUpdate(form) {
+        var btn = form.querySelector('button[type="submit"]');
         document.getElementById('loading-overlay').classList.add('active');
-        link.style.pointerEvents = 'none';
-        link.style.opacity = '0.6';
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
     }
     </script>
 </body>
