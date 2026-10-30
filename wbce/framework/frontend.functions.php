@@ -206,6 +206,54 @@ if (!function_exists('get_section_array')) {
 }
 
 
+if (!function_exists('section_is_viewable')) {
+    /**
+     * @brief  May the current frontend visitor see this section?
+     *
+     *         Sections of the page being viewed were checked by the frontend
+     *         already. A section of another page (SectionPicker, ShowRandomWysiwyg)
+     *         needs the same checks: page visibility and viewing groups/users,
+     *         and the section's publication period. Unlike WBCE 1.7.0, pages
+     *         with visibility 'none' are allowed (content stores). Outside the frontend
+     *         (backend, CLI) there is no visitor to check, so it is always true.
+     *         (backport from WBCE 1.7.0)
+     *
+     * @param array $aSection row from {TP}sections
+     * @return bool
+     * @global object $database
+     * @global object $wb
+     */
+    function section_is_viewable($aSection)
+    {
+        global $wb, $database;
+
+        if (!($wb instanceof Frontend)) {
+            return true;
+        }
+
+        // the page being viewed passed these checks in Frontend already
+        $iPageID = isset($aSection['page_id']) ? (int)$aSection['page_id'] : 0;
+        if ($iPageID !== (int)$wb->page_id || empty($wb->page) || !empty($wb->page_access_denied)) {
+            $aPage = null;
+            $sSql = 'SELECT `page_id`, `visibility`, `viewing_groups`, `viewing_users` FROM `{TP}pages` WHERE `page_id`=%d';
+            if ($rPage = $database->query(sprintf($sSql, $iPageID))) {
+                $aPage = $rPage->fetchRow(MYSQLI_ASSOC);
+            }
+            // pages with visibility 'none' serve as content stores (e.g. for
+            // SectionPicker), so their sections may still be shown elsewhere
+            if (empty($aPage) || ($aPage['visibility'] !== 'none' && !$wb->page_is_visible($aPage))) {
+                return false;
+            }
+        }
+
+        $iNow   = time();
+        $iStart = isset($aSection['publ_start']) ? (int)$aSection['publ_start'] : 0;
+        $iEnd   = isset($aSection['publ_end']) ? (int)$aSection['publ_end'] : 0;
+        return ($iStart === 0 || $iNow >= $iStart) && ($iEnd === 0 || $iNow <= $iEnd);
+    }
+}
+
+
 if (!function_exists('get_section_content')) {
     /**
      * @brief  Get the actual content of a single section based on its ID.
@@ -229,6 +277,9 @@ if (!function_exists('get_section_content')) {
     {
         $sContent = '';
         $aSection = get_section_array($iSectionID);
+        if (empty($aSection) || empty($aSection['module']) || !section_is_viewable($aSection)) {
+            return $sContent;
+        }
 
         // check if module exists
         $sModuleViewFile = WB_PATH . '/modules/' . $aSection['module'] . '/view.php';

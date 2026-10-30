@@ -14,7 +14,7 @@
 $module_directory = 'droplets';
 $module_name      = 'Droplets';
 $module_function  = 'tool';
-$module_version   = '2.4.2';
+$module_version   = '2.4.3';
 $module_platform  = '1.6.0';
 $module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
 $module_license   = 'GNU General Public License';
@@ -27,6 +27,15 @@ $module_level = 'core';
 /**
  * Version history
  * ===============
+ *
+ * v2.4.3 backport of the droplet fixes from WBCE 1.7.0 (Droplets 2.4.9)
+ *        - fix: example RandomImage read folders outside /media (?dir=../..)
+ *        - fix: example ShowRandomWysiwyg showed sections of pages the visitor
+ *          may not see (visibility, viewing groups/users, publication period)
+ *        - upgrade.php replaces both droplets if their code is still unchanged
+ *        - SectionPicker relies on the core: get_section_content() in
+ *          framework/frontend.functions.php now checks section_is_viewable()
+ *        - fix: upgrade.php never set opf_droplets/opf_droplets_be (code after return)
  *
  * v2.4.2 Rik van Loenhout
  *        - fix: the per-tool right check from 2.4.1 used the name 'droplets_tool',
