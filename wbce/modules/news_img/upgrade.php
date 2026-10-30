@@ -282,7 +282,7 @@ require(WB_PATH."/index.php");
         ) ENGINE=InnoDB"
         , TABLE_PREFIX
     ));
-
+/* removed by florian on 2026/10/30 - unwanted side effects, no longer needed, see NWI issue 106
     // 
     // 2019-10-14 Bianka Martinovic
     //            move post images
@@ -300,7 +300,7 @@ require(WB_PATH."/index.php");
             }
         }
     }
-
+*/
     // find second block setting in config.php and delete that file then
     if(file_exists(__DIR__.'/config.php')) {
         // 'grep' define('NWI_USE_SECOND_BLOCK',true);
@@ -315,6 +315,7 @@ require(WB_PATH."/index.php");
     }
 
 
+/*	removed by florian on 2026/10/30 - droplet is probably there, customizations would be overwritten, so remove this from updating
     // install the droplet(s)
     if(!defined('CAT_PATH')) {
         try {
@@ -330,5 +331,5 @@ require(WB_PATH."/index.php");
     } else {
         CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_fetchNewsItems.zip');
     }
-
+*/
 }

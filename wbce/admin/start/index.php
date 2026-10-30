@@ -127,7 +127,7 @@ if (function_exists('curl_version') && (!defined('SHOW_UPDATE_INFO') || SHOW_UPD
     $response = $gitHubApiClient->get('/repos/WBCE/WBCE_CMS/releases/latest');
     if ($response['header']['http_code'] === 200) {
         $wbce_latest_release = $response['content']['tag_name'];
-        if ($wbce_latest_release > NEW_WBCE_VERSION) {
+        if (version_compare(ltrim($wbce_latest_release, 'vV'), NEW_WBCE_VERSION, '>')) {
             echo $TEXT['OLDWBCE'];
             echo '<b style="color:red">' . $wbce_latest_release . '</b><br>';
         }
