@@ -19,8 +19,13 @@ require_once(WB_PATH.'/framework/class.admin.php');
 $bAdminHeader = FALSE; // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Pages', 'pages_settings', $bAdminHeader);
 // check if user can change things to avoid any submission from a logged in not admin user
-if($admin->get_permission('pages_modify') == false ) { 
-	exit; 
+if($admin->get_permission('pages_modify') == false ) {
+	exit;
+}
+// CSRF protection: the token is passed from tool.php via jEditable submitdata
+if(!$admin->checkFTAN()) {
+	header('HTTP/1.1 403 Forbidden');
+	exit;
 }
 
 // Create the Fields from Submission

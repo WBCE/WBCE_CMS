@@ -60,6 +60,29 @@ class Login extends Admin
 	public  $nocookie;
 	public  $nocaptcha;
 
+    /**
+     * true if $sUrl is an absolute URL inside this installation (WB_URL itself
+     * or WB_URL followed by '/', '?' or '#'); rejects other hosts, look-alike
+     * hosts such as WB_URL.example.org, backslashes and control characters
+     * @param string $sUrl
+     * @return bool
+     */
+    public static function isLocalUrl($sUrl)
+    {
+        $sUrl = (string) $sUrl;
+        if ($sUrl === '' || preg_match('/[\x00-\x20\x7F\\\\]/', $sUrl)) {
+            return false;
+        }
+        $sBase = rtrim(WB_URL, '/');
+        if (strcasecmp($sUrl, $sBase) === 0) {
+            return true;
+        }
+        if (strncasecmp($sUrl, $sBase, strlen($sBase)) !== 0) {
+            return false;
+        }
+        return in_array(substr($sUrl, strlen($sBase), 1), array('/', '?', '#'), true);
+    }
+
     public function __construct($aConfig)
     {
         global $MESSAGE;
@@ -162,7 +185,8 @@ class Login extends Admin
         if ($this->redirect_url != '') {
             $this->url = $this->redirect_url;
         }
-        if (empty($this->url)) {
+        // only redirect within this installation (no open redirect)
+        if (empty($this->url) || !self::isLocalUrl($this->url)) {
             $this->url = $aConfig['DEFAULT_URL'];
         }
         if ($this->is_authenticated() == true) {

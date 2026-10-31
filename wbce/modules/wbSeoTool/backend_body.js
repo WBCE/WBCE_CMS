@@ -69,6 +69,7 @@ $(document).ready(function() {
 			tooltip     : CLICK2EDIT,
 			submit      : 'OK',
 			onblur		: 'ignore',
+			submitdata  : SEO_FTAN,
 			placeholder : "",
 			charcounter : aTitleCounter
 		}).showCounter(aTitleCounter);
@@ -79,6 +80,7 @@ $(document).ready(function() {
 			tooltip     : CLICK2EDIT,
 			submit      : 'OK',
 			onblur		: 'ignore',
+			submitdata  : SEO_FTAN,
 			placeholder : ""
 		});	
 	}
@@ -97,6 +99,7 @@ $(document).ready(function() {
 			submit      : 'OK',
 			onblur		: 'ignore',
 			tooltip     : CLICK2EDIT,
+			submitdata  : SEO_FTAN,
 			placeholder : "",
 			charcounter : aDescriptionCounter
 		}).showCounter(aDescriptionCounter);
@@ -107,6 +110,7 @@ $(document).ready(function() {
 			submit      : 'OK',
 			onblur		: 'ignore',
 			tooltip     : CLICK2EDIT,
+			submitdata  : SEO_FTAN,
 			placeholder : ""
 		});
 	}	
@@ -117,6 +121,7 @@ $(document).ready(function() {
 		submit      : 'OK',
 		onblur		: 'ignore',
 		tooltip     : CLICK2EDIT,
+		submitdata  : SEO_FTAN,
 		placeholder : ""
 	});
 	
