@@ -100,10 +100,7 @@ if (!function_exists('search_highlight')) {
         if ($string_ul_umlaut === false || $string_ul_regex === false) {
             require WB_PATH . '/search/search_convert.php';
         }
-        // entities_to_umlauts() only protects the named entities &amp; &lt; &gt; &quot; &#039; &nbsp;,
-        // numeric/hex forms (e.g. &#60; &#x5B;) would be decoded to raw characters. Normalize the
-        // HTML-relevant ones (< > & " ' [ ]) beforehand and prefix them with "&#38;", so that decoding
-        // turns them back into the canonical entity instead of the raw character.
+        // normalize HTML-relevant chars to entities before entities_to_umlauts() runs
         $foo = preg_replace_callback(
             '~&(?:#0*(60|62|38|34|39|91|93)|#[xX]0*(3[cCeE]|26|22|27|5[bBdD])|(lsqb|rsqb|lbrack|rbrack|apos));~',
             function ($m) {
@@ -134,13 +131,9 @@ if (!function_exists('search_highlight')) {
             $foo = "";
             foreach ($matches as $match) {
                 if ($match[0] != "<" && !preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i', $match) && !preg_match('~\[\[.*\]\]~', $match)) {
-                    // Decode the remaining entities only for matching and re-encode the text afterwards,
-                    // so encoded special chars stay encoded. strtr() works in a single pass (no
-                    // double-decoding of e.g. "&amp;lt;"). Unknown entities are shielded with "\x1A"
-                    // to avoid double-encoding them. The highlight placeholders contain none of these chars.
+                    // decode entities only for matching, then re-encode (avoids double-encoding)
                     $match = str_replace("\x1A", '', $match);
-                    // Encoded brackets (&#91; &#93;) are shielded as well, so they stay encoded; raw brackets
-                    // are left alone, they may belong to later page filters (e.g. [wblink123]).
+                    // encoded brackets (&#91; &#93;) stay encoded; raw brackets left for later filters
                     $match = preg_replace('~&(?!(?:lt|gt|amp|quot|nbsp|#0*39);)([a-zA-Z][a-zA-Z0-9]*|#[0-9]+|#[xX][0-9a-fA-F]+);~', "\x1A$1;", $match);
                     $match = strtr($match, array('&lt;' => '<', '&gt;' => '>', '&amp;' => '&', '&quot;' => '"', '&#039;' => '\'', '&#39;' => '\'', '&nbsp;' => "\xC2\xA0"));
                     $match = preg_replace('~(' . $string . ')~ui', '_span class=_highlight__$1_/span_', $match);
