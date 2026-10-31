@@ -119,7 +119,7 @@ Settings::Set('opf_sys_rel',0, false);
 Settings::Set("opf_remove_system_ph", 1, false)  ;
 
 //backend
-Settings::Set('opf_droplets_be',1, false);
+Settings::Set('opf_droplets_be',0, false); // backend droplets ship disabled (security)
 Settings::Set('opf_auto_placeholder_be',1, false);
 Settings::Set('opf_move_stuff_be',1, false);
 Settings::Set('opf_replace_stuff_be',1, false);
