@@ -77,9 +77,7 @@ if ( isset($_GET['copy']) )
     }
 } elseif (isset($_GET['recover'])){
     // ----- recover from backup -----
-    // droplets_backup_path() only accepts a .zip that really exists in the
-    // backup dir (DROPLETS_BACKUP_DIR), which blocks path traversal and also
-    // fixes the old bug of looking in modules/droplets/export/.
+    // droplets_backup_path() only accepts existing .zip files from the backup dir
     if (false !== ($sRecoverFile = droplets_backup_path($_GET['recover']))){
         $_GET['do'] = 'recover';
     }

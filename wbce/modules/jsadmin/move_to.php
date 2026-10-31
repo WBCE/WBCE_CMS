@@ -14,12 +14,7 @@
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/jsadmin/move_to.php $
  * @lastmodified    $Date: 2011-04-10 01:04:22 +0200 (So, 10. Apr 2011) $
  *
- * 1.4.5 security hardening (see _docs/wbce-jsadmin/security-fixes-1.4.5.md):
- *   - requires a valid FTAN (this is a state-changing request; dragdrop.js now
- *     sends the token) -> closes the GET/CSRF hole;
- *   - enforces that the section actually belongs to the authorised page, so
- *     rights on page A can no longer reorder the sections of page B;
- *   - bounds the target position to the valid range of the sibling group.
+ * 1.4.5 security hardening: FTAN required, section/page check, position bounds
 */
 
 require('../../config.php');
@@ -35,8 +30,7 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND is_numeric(@$_GE
 	// Tells script to update when this page was last updated
 	require(WB_PATH.'/modules/admin.php');
 
-	// CSRF: this is a state-changing request. Since 1.4.5 dragdrop.js sends an
-	// FTAN token; reject anything without a valid one.
+	// state-changing request: require a valid FTAN
 	if (!$admin->checkFTAN('GET')) {
 		header('HTTP/1.1 403 Forbidden');
 		die('Security offense! Access denied!');
