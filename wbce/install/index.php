@@ -115,6 +115,19 @@ if (
 }
 
 /*****************************
+ * Rename default favicon
+ *****************************/
+
+// favicon is shipped as favicon_default.ico, so updates don't overwrite a custom favicon.ico
+if (file_exists($wb_path . '/favicon_default.ico')) {
+    if (!file_exists($wb_path . '/favicon.ico')) {
+        rename($wb_path . '/favicon_default.ico', $wb_path . '/favicon.ico');
+    } else {
+        unlink($wb_path . '/favicon_default.ico');
+    }
+}
+
+/*****************************
  * Check config.php
  *****************************/
 

@@ -222,6 +222,7 @@ $dirRemove = array(
 // files removed
 $filesRemove['0'] = array(
     '[ROOT]/config.php.new',
+    '[ROOT]/favicon_default.ico',
     '[ROOT]/htaccess.txt',
     '[ACCOUNT]/Accounts.cfg.php',
     '[ACCOUNT]/check_details.php',
