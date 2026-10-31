@@ -138,6 +138,10 @@ if ($query_parent->numRows() > 0) {
 }
 
 
+// Encode droplet brackets in the stored titles (the link above is built
+// from the unencoded title, page_filename() removes '[' and ']' itself)
+$title = escape_droplet_syntax($title);
+
 // Insert page into pages table
 $aInsert = array(
     'parent' => $parent,

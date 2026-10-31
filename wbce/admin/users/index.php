@@ -75,7 +75,7 @@ if ($results->numRows() > 0) {
         }
         $oTemplate->set_var('VALUE', $admin->getIDKEY($user['user_id']));
         $oTemplate->set_var('STATUS', ($user['active'] == false ? 'class="user-inactive"' : 'class="user-active"'));
-        $oTemplate->set_var('NAME', $user['display_name'] . ' (' . $user['username'] . ')&nbsp;&nbsp;&nbsp;' . $lastlogin . '&nbsp;&nbsp;&nbsp;' . $lastip);
+        $oTemplate->set_var('NAME', escape_droplet_syntax(htmlspecialchars($user['display_name'])) . ' (' . escape_droplet_syntax(htmlspecialchars($user['username'])) . ')&nbsp;&nbsp;&nbsp;' . $lastlogin . '&nbsp;&nbsp;&nbsp;' . $lastip);
         $oTemplate->parse('list', 'list_block', true);
     }
 } else {

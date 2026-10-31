@@ -38,6 +38,8 @@ if (is_array($sEncPassword)){
 
     // Get entered values
     $sDisplayName  = remove_special_characters($oAccounts->add_slashes(strip_tags($oAccounts->get_post('display_name'))));
+    // no square brackets in display names (droplet syntax)
+    $sDisplayName  = str_replace(array('[', ']'), '', $sDisplayName);
     $sLC           = $oAccounts->get_post('language');
     $sLanguage     = preg_match('/^[A-Z]{2}$/', $sLC) ? $sLC : 'EN';
     $sTimezone     = is_numeric($oAccounts->get_post('timezone')) ? $oAccounts->get_post('timezone')*60*60 : 0;

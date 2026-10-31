@@ -20,7 +20,7 @@ if (defined('WB_PATH') == false) {
 $module_directory   = 'errorlogger';
 $module_name        = 'Errorlog viewer';
 $module_function 	= 'snippet';
-$module_version     = '1.1.4.3';
+$module_version     = '1.1.4.4';
 $module_platform 	= '2.8';
 if(defined('WBCE_VERSION')) {
 	$module_function    = 'tool,preinit,initialize';
@@ -40,6 +40,9 @@ $module_icon        = 'fa fa-bug';
 
 /**
  * DEVELOPMENT HISTORY (Change Log):
+ *
+ * v.1.1.4.4 2026-10-31 WBCE Community
+ *		[!] security: encode droplet brackets in log output
  *
  * v.1.1.4.3 2026-10-11 Rik van Loenhout
  *		[!] security

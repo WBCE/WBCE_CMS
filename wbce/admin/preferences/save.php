@@ -30,6 +30,8 @@ function save_preferences(&$admin, &$database)
     // Get entered values and validate all
     // remove any dangerouse chars from display_name
     $display_name = $admin->add_slashes(strip_tags(trim($admin->get_post('display_name'))));
+    // no square brackets in display names (droplet syntax)
+    $display_name = trim(str_replace(array('[', ']'), '', $display_name));
     $display_name = ($display_name == '' ? $admin->get_display_name() : $display_name);
 
     // check that display_name is unique in whoole system (prevents from User-faking)

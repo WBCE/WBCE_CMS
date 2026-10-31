@@ -16,6 +16,15 @@
 
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 
+// Encode droplet brackets ([ ]) in output of stored visitor data so that
+// the droplet filter can't interpret it (fallback for older WBCE cores)
+if (!function_exists('wbstats_escape_droplets')) {
+	function wbstats_escape_droplets($s) {
+		if (function_exists('escape_droplet_syntax')) return escape_droplet_syntax($s);
+		return str_replace(array('[', ']'), array('&#91;', '&#93;'), (string)$s);
+	}
+}
+
 $table_day   = TABLE_PREFIX .'mod_wbstats_day';
 $table_ips   = TABLE_PREFIX .'mod_wbstats_ips';
 $table_pages = TABLE_PREFIX .'mod_wbstats_pages';
@@ -91,7 +100,7 @@ class stats {
 					$result['online_title']  .= '<tr><td>'.date(DATE_FORMAT,$res['online']+TIMEZONE).'</td><td>'.date(TIME_FORMAT,$res['online']+TIMEZONE).'</td><td>'.htmlspecialchars($res['last_page']).'</td></tr>';
 				}
 				$result['online_title']  .= '</table>';
-				$result['online_title'] = htmlspecialchars($result['online_title']);
+				$result['online_title'] = wbstats_escape_droplets(htmlspecialchars($result['online_title']));
 			}
 		}		
 		$result['total']   = $database->get_one("SELECT count(id) from ".$table_ips." WHERE `session`!='ignore'");
@@ -537,13 +546,13 @@ class stats {
 				$tmp['vis'] = $res['online'] >= $this->online ? 'online':'old';
 				$tmp['date'] = date(DATE_FORMAT,$res['online']+TIMEZONE);
 				$tmp['time'] = date(TIME_FORMAT,$res['online']+TIMEZONE);
-				$tmp['page'] = '<a href="'.htmlspecialchars($res['last_page']).'" target="_blank">'.substr($res['last_page_b'],0,70).'</a>';
+				$tmp['page'] = wbstats_escape_droplets('<a href="'.htmlspecialchars($res['last_page']).'" target="_blank">'.substr($res['last_page_b'],0,70).'</a>');
 				if($res['last_status'] && $res['last_status'] != 200) $tmp['page'] .= ' <span style="float:right;font-size:80%;color:red">&nbsp; ['.$res['last_status'].']</span>';
 
 				$tmp['count'] = $res['pages'];
 				$tmp['last'] = $this->seconds2human(time()-$res['online']);
 				$tmp['duration'] = $this->seconds2human($res['online']-$res['time']);
-				$tmp['loc'] = stripslashes($res['location']);
+				$tmp['loc'] = wbstats_escape_droplets(htmlspecialchars(stripslashes($res['location'])));
 				$result[] = $tmp;
 			}
 		}
@@ -566,15 +575,15 @@ class stats {
 				$tmp['vis'] = $res['online'] >= $this->online ? 'online':'old';
 				$tmp['date'] = date(DATE_FORMAT,$res['online']+TIMEZONE);
 				$tmp['time'] = date(TIME_FORMAT,$res['online']+TIMEZONE);
-				$tmp['page'] = '<a href="'.htmlspecialchars($res['last_page']).'" target="_blank">'.substr(htmlspecialchars($res['last_page']),0,70).'</a>';
+				$tmp['page'] = wbstats_escape_droplets('<a href="'.htmlspecialchars($res['last_page']).'" target="_blank">'.substr(htmlspecialchars($res['last_page']),0,70).'</a>');
 				$tmp['count'] = $res['pages'];
 				$tmp['last'] = $this->seconds2human(time()-$res['online']);
 				$tmp['duration'] = $this->seconds2human($res['online']-$res['time']);
-				$tmp['loc'] = stripslashes($res['location']);
+				$tmp['loc'] = wbstats_escape_droplets(htmlspecialchars(stripslashes($res['location'])));
 				$tmp['browser'] = $res['browser'];
 				$tmp['language'] = $res['language'];
 				$tmp['os'] = $res['os'];
-				$tmp['referer'] = htmlspecialchars($res['referer']);
+				$tmp['referer'] = wbstats_escape_droplets(htmlspecialchars($res['referer']));
 				$tmp['history'] = $this->getLogSession($res['ip'],$res['session']);
 				$tmp['ua'] = $res['ua'];
 				$result[] = $tmp;
@@ -593,7 +602,7 @@ class stats {
 				$tmp = array();
 				$tmp['date'] = date(DATE_FORMAT,$res['timestamp']+TIMEZONE);
 				$tmp['time'] = date(TIME_FORMAT,$res['timestamp']+TIMEZONE);
-				$tmp['page'] = '<a href="'.htmlspecialchars($res['page']).'" target="_blank">'.substr(htmlspecialchars($res['page']),0,70).'</a>';
+				$tmp['page'] = wbstats_escape_droplets('<a href="'.htmlspecialchars($res['page']).'" target="_blank">'.substr(htmlspecialchars($res['page']),0,70).'</a>');
 				if($res['status'] && $res['status'] != 200) $tmp['page'] .= ' <span style="float:right; font-size:80%;color:red">&nbsp; ['.$res['status'].']</span>';
 				if ($sess != $res['session']) {
 					$sess = $res['session'];

@@ -262,9 +262,12 @@ if (isset($_REQUEST['string'])) {
     $string = preg_replace('/\s+/', ' ', $string);
     $string = trim($string);
     // remove some bad chars
+    // (removing '[[' / ']]' is kept for the search itself; the displayed
+    // string is additionally encoded below, as a single pass of
+    // str_replace() can re-create '[[', e.g. '[]][' becomes '[[')
     $string = str_replace(array('[[', ']]'), '', $string);
     $string = preg_replace('/(^|\s+)[|.]+(?=\s+|$)/', '', $string);
-    $search_display_string = htmlspecialchars($string);
+    $search_display_string = escape_droplet_syntax(htmlspecialchars($string));
     // convert string to utf-8
     $string = entities_to_umlauts($string, 'UTF-8');
     $search_url_string = $string;
@@ -767,7 +770,7 @@ if ($search_normal_string != '') {
                         if ($cfg_show_description == 0) {
                             $page['description'] = "";
                         }
-                        $values = array($link, $page['page_title'], $page['description'], $users[$page['modified_by']]['username'], $users[$page['modified_by']]['display_name'], $date, $time, $TEXT['LAST_UPDATED_BY'], strtolower($TEXT['ON']), $excerpt);
+                        $values = array($link, $page['page_title'], $page['description'], escape_droplet_syntax($users[$page['modified_by']]['username']), escape_droplet_syntax($users[$page['modified_by']]['display_name']), $date, $time, $TEXT['LAST_UPDATED_BY'], strtolower($TEXT['ON']), $excerpt);
                         // Show loop code with vars replaced by values
                         echo str_replace($vars, $values, ($fetch_results_loop['value']));
                         // Say that this page has been listed
