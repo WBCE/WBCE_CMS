@@ -231,10 +231,7 @@ function log_to_array($aLines)
         if ($sType == 'Warning') {
             $sColor = 'red';
         }
-        // htmlspecialchars every field (and encode droplet brackets [ ]): these come straight from the log file,
-        // which stores raw PHP error strings that may contain attacker-influenced
-        // markup. 'type' is escaped too; the equality checks below compare against
-        // plain words ('Exception'/'Visitor Request') so escaping is a no-op there.
+        // escape every field incl. droplet brackets (log content is untrusted)
         $aRetVal[] = array(
             'color'     => $sColor, // fixed set (inherit/red/#355ff9), not user data
             'date'      => errorlogger_escape_droplets(htmlspecialchars($aDateTime[0])),
