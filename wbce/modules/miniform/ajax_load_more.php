@@ -17,8 +17,7 @@ if(!empty($_POST["message_id"])){
     }
 
        // Get records from the database
-	// All three values are cast to int: they are concatenated straight into the
-	// SQL below, so without this they were a trivial SQL injection.
+	// cast to int (used directly in the SQL below)
 	$section_id  = (int) $_POST['section_id'];
 
 	// Authorisation: only read submissions of a section on a page the user may
