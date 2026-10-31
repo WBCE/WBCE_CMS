@@ -65,6 +65,11 @@ if(isset($_POST['signup_form_sent'])){
     //     Check user inputs
     // //////////////////////////////
 
+    // CSRF protection: the form template contains the FTAN
+    if (!$oAccounts->checkFTAN()) {
+        $errors['GENERIC_SECURITY_ACCESS'] = $MESSAGE['GENERIC_SECURITY_ACCESS'];
+    }
+
     // Check username
     if (!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)){ 
         $username_error = true;
