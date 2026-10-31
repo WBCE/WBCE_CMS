@@ -45,6 +45,9 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
     // collect all droplets from document
     $droplet_tags = array();
     $droplet_replacements = array();
+    // tags already handled in this run (assoc: tag => true); $droplet_tags is a
+    // numeric list, so array_key_exists() on it never detected a duplicate
+    $processed_tags = array();
     // Special matches for FE and BE
     $match = ($position == 'backend') ? '/\[\[\[(.*?)\]\]\]/' : '/\[\[(.*?)\]\]/';
 	$openTag = ($position == 'backend') ? '[[[' : '[[';
@@ -53,8 +56,9 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
 	if( preg_match_all( $match, $wb_page_data, $found_droplets ) ) {
         // loop over all matches
 		foreach( $found_droplets[1] as $droplet ){
-			if(array_key_exists( $openTag.$droplet.$closeTag, $droplet_tags) == false) {
+			if(array_key_exists( $openTag.$droplet.$closeTag, $processed_tags) == false) {
                 // go in if same droplet with same arguments is not processed already
+                $processed_tags[$openTag.$droplet.$closeTag] = true;
                 $varlist = array();
                 
                 // split each droplet command into droplet_name and request_string
@@ -64,16 +68,20 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                 if( $request_string != '' ){
 
                     // make sure we can parse the arguments correctly
-                    $request_string = html_entity_decode($request_string, ENT_COMPAT,DEFAULT_CHARSET);
-                    
+                    $request_string = html_entity_decode($request_string, ENT_QUOTES,DEFAULT_CHARSET);
+
                     // create array of arguments from query_string
                     $argv = preg_split( '/&(?!amp;)/', $request_string );
                     foreach ($argv as $argument){
                         // split argument in pair of varname, value
-                        list( $variable, $value ) = explode('=', $argument,2);
+                        list( $variable, $value ) = array_pad(explode('=', $argument,2), 2, '');
+                        // only valid PHP variable names (they are extract()ed in do_eval)
+                        if( !preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $variable) ){
+                            continue;
+                        }
                         if( !empty($value) ){
                             // re-encode the value and push the var into varlist
-                            $varlist[$variable] = htmlentities($value, ENT_COMPAT,DEFAULT_CHARSET);
+                            $varlist[$variable] = htmlentities($value, ENT_QUOTES,DEFAULT_CHARSET);
                         }
                     }
                 } else {
@@ -81,12 +89,20 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                     $droplet_name = $droplet;
                 }
 
+                // only names a droplet can actually have (same rule as
+                // droplets_valid_name() in functions.inc.php); anything else
+                // in [[...]] is no droplet call and is skipped without a query
+                if (!preg_match('/^[A-Za-z0-9_\-]{1,32}$/', $droplet_name)) {
+                    continue;
+                }
+
                 // request the droplet code from database
                 // $droplet_name comes from page content ([[Name]]); escape it so
-                // it cannot break out of the LIKE "..." literal (SQL injection,
-                // whose result would then be eval()'d).
+                // it cannot break out of the "..." literal (SQL injection,
+                // whose result would then be eval()'d). '=' instead of LIKE, so
+                // '_' is no wildcard; the column collation stays case-insensitive.
                 $sNameEsc = $GLOBALS['database']->escapeString($droplet_name);
-                $sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` LIKE "'.$sNameEsc.'" AND `active` = 1';
+                $sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` = "'.$sNameEsc.'" AND `active` = 1';
                 $codedata = $GLOBALS['database']->get_one($sql);
                 if (!is_null($codedata))
                 {
@@ -128,8 +144,10 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
     Multiple runns so you get droplets created by droplets  up to 3 levels 
 */
 	function evalDroplets( &$wb_page_data, $position = 'frontend', $max_loops = 3 ) {
-		$max_loops = ((int)$max_loops = 0 ? 3 : (int)$max_loops);
-		while( (processDroplets($wb_page_data, $position) == true) && ($max_loops > 0)){ 
+		$max_loops = (int)$max_loops;
+		if ($max_loops <= 0) { $max_loops = 3; }
+		// check the counter first, so processDroplets() runs at most $max_loops times
+		while( ($max_loops > 0) && (processDroplets($wb_page_data, $position) == true) ){
 			$max_loops--;
 		}
 		return $wb_page_data;

@@ -14,7 +14,7 @@
 $module_directory = 'droplets';
 $module_name      = 'Droplets';
 $module_function  = 'tool';
-$module_version   = '2.4.3';
+$module_version   = '2.4.4';
 $module_platform  = '1.6.0';
 $module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
 $module_license   = 'GNU General Public License';
@@ -27,6 +27,15 @@ $module_level = 'core';
 /**
  * Version history
  * ===============
+ *
+ * v2.4.4 hardening of the droplet core (droplets.php)
+ *        - droplet names are validated ([A-Za-z0-9_-], max. 32 chars) before the
+ *          DB query, invalid [[...]] are skipped; `name` = instead of LIKE
+ *        - argument names must be valid PHP variable names, values are
+ *          encoded with ENT_QUOTES
+ *        - fix: evalDroplets() default for max_loops and at most max_loops runs
+ *        - fix: identical droplet calls on a page are executed only once
+ *        - fix: install.php never set opf_droplets/opf_droplets_be (code after return)
  *
  * v2.4.3 backport of the droplet fixes from WBCE 1.7.0 (Droplets 2.4.9)
  *        - fix: example RandomImage read folders outside /media (?dir=../..)
