@@ -262,9 +262,6 @@ if (isset($_REQUEST['string'])) {
     $string = preg_replace('/\s+/', ' ', $string);
     $string = trim($string);
     // remove some bad chars
-    // (removing '[[' / ']]' is kept for the search itself; the displayed
-    // string is additionally encoded below, as a single pass of
-    // str_replace() can re-create '[[', e.g. '[]][' becomes '[[')
     $string = str_replace(array('[[', ']]'), '', $string);
     $string = preg_replace('/(^|\s+)[|.]+(?=\s+|$)/', '', $string);
     $search_display_string = escape_droplet_syntax(htmlspecialchars($string));

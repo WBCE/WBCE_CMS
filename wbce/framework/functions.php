@@ -1915,12 +1915,7 @@ function remove_special_characters(string|array|null $str="") {
 
 if (!function_exists('escape_droplet_syntax')) {
     /**
-     * @brief   Encode square brackets as HTML entities so that the droplet
-     *          output filter does not interpret foreign data as a droplet
-     *          call ([[droplet]]). The entities render invisibly in the
-     *          browser ([ and ] are shown as usual).
-     *          Should be applied AFTER htmlspecialchars(), as '&' of the
-     *          entities would otherwise be encoded again.
+     * @brief   Encode [ and ] as HTML entities so foreign data is not read as a droplet call (apply AFTER htmlspecialchars())
      *
      * @param mixed $mStr  string, number, null or (nested) array of those
      * @return  mixed  encoded string (empty string for null) or array

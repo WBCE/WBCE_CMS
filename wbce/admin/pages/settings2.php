@@ -293,8 +293,6 @@ function fix_page_trail($parent, $root_parent)
 }
 
 // function to neutralize droplet brackets in inputs
-// (encoding instead of removing '[[' / ']]' once, as a single str_replace()
-// could be bypassed, e.g. '[]][' becomes '[[')
 function remove_droplet_brackets($sStr)
 {
     return escape_droplet_syntax(htmlspecialchars((string)$sStr));
