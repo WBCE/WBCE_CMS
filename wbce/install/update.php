@@ -705,6 +705,29 @@ echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />'
 $database->field_add($table, "signup_confirmcode", "varchar(64) collate utf8_unicode_ci NOT NULL DEFAULT ''");
 echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
+// remove square brackets (droplet syntax) from display names stored by older versions,
+// the input filters do the same for new names; originals are kept in users_display_name_backup
+$backupTable = TABLE_PREFIX . "users_display_name_backup";
+$oCreate = $database->query("CREATE TABLE IF NOT EXISTS `$backupTable` ("
+    . " `user_id` INT NOT NULL DEFAULT '0',"
+    . " `display_name` VARCHAR(255) NOT NULL DEFAULT '',"
+    . " `cleaned_when` INT NOT NULL DEFAULT '0',"
+    . " PRIMARY KEY (`user_id`))");
+$sWhere = "`display_name` LIKE '%[%' OR `display_name` LIKE '%]%'";
+if (!$oCreate->error()) {
+    $oBackup = $database->query("INSERT IGNORE INTO `$backupTable` (`user_id`, `display_name`, `cleaned_when`) "
+        . "SELECT `user_id`, `display_name`, " . time() . " FROM `$table` WHERE $sWhere");
+    // never change display names without backup
+    if (!$oBackup->error()) {
+        // a name that would end up empty falls back to the login name
+        $sStripped = "TRIM(REPLACE(REPLACE(`display_name`, '[', ''), ']', ''))";
+        $oUpdate = $database->query("UPDATE `$table` SET `display_name` = IF($sStripped = '', `username`, $sStripped) WHERE $sWhere");
+        echo($oUpdate->error() ? __LINE__ . ': ' . $oUpdate->error() . '<br />' : '');
+    } else {
+        echo __LINE__ . ': ' . $oBackup->error() . '<br />';
+    }
+}
+
 /**********************************************************
  * Update search no results database filed to create
  * valid XHTML if search is empty
