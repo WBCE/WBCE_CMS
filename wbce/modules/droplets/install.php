@@ -104,10 +104,7 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     // Settings::Set() must run BEFORE the return below -- statements after
     // `return $a && $b;` are unreachable (same fix as in upgrade.php).
     Settings::Set('opf_droplets', 1, false);
-    // backend droplets ship DISABLED (see security note): expanding droplets in
-    // the backend would let stored visitor data (form entries, display names,
-    // stats) run as droplet code for an admin. Admins can still opt in via the
-    // Output Filter Dashboard.
+    // off by default; can be enabled in the OPF Dashboard
     Settings::Set('opf_droplets_be', 0, false);
 
     return opf_register_filter(array(

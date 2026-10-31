@@ -74,9 +74,7 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     // upgraded install with a stale falsy opf_droplets/_be row kept droplet
     // processing switched off ([[droplet]] calls stayed literal text).
     Settings::Set('opf_droplets', 1, false);
-    // backend droplets ship DISABLED (security): only create the row as 0 when
-    // missing, never override an admin who deliberately enabled it in the OPF
-    // dashboard. Backend droplet expansion would run stored visitor data as code.
+    // off by default; can be enabled in the OPF Dashboard
     Settings::Set('opf_droplets_be', 0, false);
 
     return opf_register_filter(array(
