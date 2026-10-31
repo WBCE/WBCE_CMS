@@ -142,6 +142,34 @@ function status_msg($message, $class = 'grey', $element = 'span')
     echo $msg;
 }
 
+/**
+ * check that a path below WB_PATH exists with exactly this upper/lower case;
+ * on case-insensitive file systems (Windows, macOS) file_exists()/is_dir() also
+ * match e.g. include/PHPMailer/ for the deprecated include/phpmailer/
+ * @param string $path: absolute path starting with WB_PATH
+ * @return bool
+ */
+function path_exists_exact_case($path)
+{
+    $base = rtrim(str_replace('\\', '/', WB_PATH), '/');
+    $path = str_replace('\\', '/', $path);
+    if (strpos($path, $base) !== 0) {
+        return false;
+    }
+    $current = $base;
+    foreach (explode('/', substr($path, strlen($base))) as $segment) {
+        if ($segment === '' || $segment === '.') {
+            continue;
+        }
+        $entries = @scandir($current);
+        if ($segment === '..' || $entries === false || !in_array($segment, $entries, true)) {
+            return false;
+        }
+        $current .= '/' . $segment;
+    }
+    return true;
+}
+
 /*****************************
  * Functions Section END
  *****************************/
@@ -806,7 +834,7 @@ foreach ($filesRemove as $filesId) {
     foreach ($filesId as $file) {
         $file = str_replace($searches, $replacements, $file);
         $file = WB_PATH . '/' . $file;
-        if (file_exists($file)) {
+        if (file_exists($file) && path_exists_exact_case($file)) {
             // try to unlink file
             if (!is_writable($file) || !unlink($file)) {
                 // save in err-list, if failed
@@ -865,7 +893,7 @@ if (sizeof($dirRemove)) {
     foreach ($dirRemove as $dir) {
         $dir = str_replace($searches, $replacements, $dir);
         $dir = WB_PATH . '/' . $dir;
-        if (is_dir($dir)) {
+        if (is_dir($dir) && path_exists_exact_case($dir)) {
             // try to delete dir
             if (!rm_full_dir($dir)) {
                 // save in err-list, if failed
