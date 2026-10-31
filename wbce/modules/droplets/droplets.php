@@ -97,10 +97,7 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                 }
 
                 // request the droplet code from database
-                // $droplet_name comes from page content ([[Name]]); escape it so
-                // it cannot break out of the "..." literal (SQL injection,
-                // whose result would then be eval()'d). '=' instead of LIKE, so
-                // '_' is no wildcard; the column collation stays case-insensitive.
+                // '=' instead of LIKE, so '_' is no wildcard
                 $sNameEsc = $GLOBALS['database']->escapeString($droplet_name);
                 $sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` = "'.$sNameEsc.'" AND `active` = 1';
                 $codedata = $GLOBALS['database']->get_one($sql);
