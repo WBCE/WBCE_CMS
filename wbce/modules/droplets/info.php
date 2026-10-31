@@ -14,7 +14,7 @@
 $module_directory = 'droplets';
 $module_name      = 'Droplets';
 $module_function  = 'tool';
-$module_version   = '2.4.4';
+$module_version   = '2.4.5';
 $module_platform  = '1.6.0';
 $module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
 $module_license   = 'GNU General Public License';
@@ -28,6 +28,8 @@ $module_level = 'core';
  * Version history
  * ===============
  *
+ * v2.4.5 SearchBox encodes its message for the HTML and JavaScript context;
+ *        upgrade replaces unchanged shipped versions of SearchBox
  * v2.4.4 hardening of the droplet core (droplets.php)
  *        - droplet names are validated ([A-Za-z0-9_-], max. 32 chars) before the
  *          DB query, invalid [[...]] are skipped; `name` = instead of LIKE
