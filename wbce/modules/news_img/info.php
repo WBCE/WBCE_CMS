@@ -16,13 +16,16 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.32';
+$module_version     = '5.0.33';
 $module_platform    = '1.6.8';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page module is designed for making a news page with images and lightbox effect.';
 
 /**
+ * v5.0.33 - 2026/10/31
+ *         - update script fix
+ *
  * v5.0.32 - 2026/10/11
  *         - security hardening (Rik van Loenhout)
  *
