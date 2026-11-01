@@ -112,11 +112,15 @@ if ($use_captcha && $mf->dataPosted && $mf->myPost) {
 			$all_required = false;
 		}
 	} elseif(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-		// Security fix (GHSA-633w-gvrj-7p4r): NEVER fall back to time(); an unset
-		// session captcha must fail, not match a guessable value like the timestamp.
-		$ccheck  = $_SESSION['captcha']               ?? null;
-		$ccheck1 = $_SESSION['captcha'.$section_id]   ?? null;
-		if(($ccheck === null && $ccheck1 === null) || ($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1)) {
+		// only a non-empty captcha stored in the session can match
+		$sCaptcha = is_string($_POST['captcha']) ? $_POST['captcha'] : '';
+		$bCaptchaOk = false;
+		foreach (array('captcha', 'captcha'.$section_id) as $sCaptchaKey) {
+			if ($sCaptcha !== '' && isset($_SESSION[$sCaptchaKey]) && (string)$_SESSION[$sCaptchaKey] !== '' && $sCaptcha == $_SESSION[$sCaptchaKey]) {
+				$bCaptchaOk = true;
+			}
+		}
+		if (!$bCaptchaOk) {
 			$var[] = "{CAPTCHA_ERROR}"; $value[] = " missing";
 			$all_required = false;
 		}

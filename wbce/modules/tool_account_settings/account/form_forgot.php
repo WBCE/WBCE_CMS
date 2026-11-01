@@ -23,11 +23,15 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
     $sEmail = strip_tags($oAccounts->get_post('email'));
     
     if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-        // Security fix (GHSA-633w-gvrj-7p4r): NEVER fall back to time(); an unset
-        // session captcha must fail, not match a guessable value like the timestamp.
-        $ccheck  = $_SESSION['captcha']               ?? null;
-        $ccheck1 = $_SESSION['captchaaccountforgot']  ?? null;
-        if(($ccheck === null && $ccheck1 === null) || ($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1)) {
+        // only a non-empty captcha stored in the session can match
+        $sCaptcha = is_string($_POST['captcha']) ? $_POST['captcha'] : '';
+        $bCaptchaOk = false;
+        foreach (array('captcha', 'captchaaccountforgot') as $sCaptchaKey) {
+            if ($sCaptcha !== '' && isset($_SESSION[$sCaptchaKey]) && (string)$_SESSION[$sCaptchaKey] !== '' && $sCaptcha == $_SESSION[$sCaptchaKey]) {
+                $bCaptchaOk = true;
+            }
+        }
+        if (!$bCaptchaOk) {
             $oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
             $sEmail = '';
         }

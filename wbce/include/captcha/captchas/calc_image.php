@@ -30,9 +30,7 @@ if (!isset($_SESSION['captcha_time'])) {
     exit;
 }
 
-// Security fix (GHSA-633w-gvrj-7p4r): only the admin-configured captcha type may
-// generate a challenge. Otherwise an attacker requests the weakest generator
-// directly -- ignoring the type the form rendered -- and downgrades the captcha.
+// only the configured captcha type
 if (!defined('CAPTCHA_TYPE') || CAPTCHA_TYPE !== 'calc_image') {
     exit;
 }
@@ -42,7 +40,7 @@ if (!defined('CAPTCHA_TYPE') || CAPTCHA_TYPE !== 'calc_image') {
 // Captcha
 $sec_id = '';
 if (isset($_GET['s'])) {
-    $sec_id = preg_replace('/[^A-Za-z0-9]/', '', (string) $_GET['s']); // keep it a safe session-key suffix
+    $sec_id = preg_replace('/[^A-Za-z0-9]/', '', (string) $_GET['s']);
 }
 
 $_SESSION['captcha' . $sec_id] = '';
