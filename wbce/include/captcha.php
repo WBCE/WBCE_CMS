@@ -32,6 +32,12 @@ Credits to http://php.webmaster-kit.com/ for the original code.
 
  */
 
+// unused legacy captcha, no direct access
+if (!defined('WB_PATH')) {
+    header('Location: ../index.php');
+    exit;
+}
+
 require_once "../config.php";
 
 if (extension_loaded('gd') and function_exists('imageCreateFromJpeg') and isset($_SESSION['captcha'])) {
