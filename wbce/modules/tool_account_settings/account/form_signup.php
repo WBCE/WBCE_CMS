@@ -168,9 +168,10 @@ if(isset($_POST['signup_form_sent'])){
         $sEmailSubject     = '';
         $sErrorMessage     = $TEXT['ERROR']; //$MESSAGE['GENERIC_ISSUE_MESSAGE'];	
         $sConfirmTimeout   = (string)(time() + 86400); // now + 24hours
-        $sConfirmCode      = md5(md5($sUsername.$sConfirmTimeout).$sConfirmTimeout);
+        // random tokens; the approval checksum is independent of the code
+        $sConfirmCode      = bin2hex(random_bytes(16));
         $sConfirmationUrl  = ACCOUNT_URL.'/confirm.php?id='.$sConfirmCode.'&lc='.$sLC;
-        $sCheckSum         = substr(md5($sConfirmCode), 0, 10);
+        $sCheckSum         = bin2hex(random_bytes(5));
 
         // Template token replacement array (will be added to down the code)
         $aTokenReplace = array( 
@@ -183,7 +184,8 @@ if(isset($_POST['signup_form_sent'])){
             'LOGIN_EMAIL'          => $email,
             'SUPPORT_EMAIL'        => $oAccounts->cfg['support_email'],
             'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum),
-            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.$sCheckSum),
+            // the user's link must not carry the approval checksum
+            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0'),
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout), 
             'LOGIN_URL'            => ACCOUNT_URL . '/login.php'
         );	

@@ -424,8 +424,7 @@ class Accounts extends Frontend
         global $database;
         $bRetVal = false;
         $sDbCheckSum = $database->get_one("SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = " . intval($iUserID));
-        // Security fix (GHSA-633w-gvrj-7p4r): constant-time, strict compare so a
-        // supplied checksum cannot win via type juggling.
+        // strict, constant-time compare
         if (is_string($sCheckSum) && is_string($sDbCheckSum) && hash_equals($sDbCheckSum, $sCheckSum)) {
             $bRetVal = true;
         }

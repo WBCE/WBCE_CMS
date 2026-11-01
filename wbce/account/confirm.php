@@ -14,12 +14,11 @@ require_once dirname(__DIR__) . '/config.php';
 
 $oAccounts = new Accounts();
 
-// Security fix (GHSA-633w-gvrj-7p4r): validate the language code before it
-// becomes the LANGUAGE constant and is echoed into redirect URLs.
+// language code: two capital letters only
 $sAutoLanguage = (isset($_GET['lc']) && preg_match('/^[A-Z]{2}$/', $_GET['lc'])) ? $_GET['lc'] : 'EN';
 defined('LANGUAGE') or define('LANGUAGE', $sAutoLanguage);
 
-// Default language code for redirects issued before the user's own is known.
+// language for redirects before the user is known
 $sLC = $sAutoLanguage;
 
 if (isset($_GET['mng']) && $_GET['mng'] > intval(1)) {
@@ -88,13 +87,10 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
         $sErrorMessage = $MESSAGE['GENERIC_ISSUE_MESSAGE'];
 
         $sConfirmTimeout = (string)(time() + 86400); // now + 24hours
-        // Security fix (GHSA-633w-gvrj-7p4r): $sUsername is undefined in this file,
-        // so md5(md5($sUsername.$timeout).$timeout) collapsed to a timestamp-only,
-        // guessable token (and so did the approval checksum derived from it below).
-        // Use a cryptographically random 32-hex code instead.
+        // random tokens; the approval checksum is independent of the code
         $sConfirmCode = bin2hex(random_bytes(16));
         $sConfirmationUrl = ACCOUNT_URL . '/confirm.php?id=' . $sConfirmCode . '&lc=' . $sLC;
-        $sCheckSum = substr(md5($sConfirmCode), 0, 10);
+        $sCheckSum = bin2hex(random_bytes(5));
 
         $aTokenReplace = array(
             'USER_ID' => $iUserID,
