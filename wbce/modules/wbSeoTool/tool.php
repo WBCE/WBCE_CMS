@@ -64,6 +64,8 @@ if(file_exists($sFunctionsFile)){
 	var iDescriptionCount_minimum = <?php echo $aSettings['iDescriptionCount']['minimum']; ?>;
 	var iDescriptionCount_use = <?php echo $aSettings['iDescriptionCount']['use']; ?>;
 	var iTitleCount_use = <?php echo $aSettings['iTitleCount']['use']; ?>;
+	<?php $aFtan = explode('=', $admin->getFTAN(false), 2); ?>
+	var SEO_FTAN = {}; SEO_FTAN[<?php echo json_encode($aFtan[0]); ?>] = <?php echo json_encode($aFtan[1]); ?>;
 </script>
 <?php
 

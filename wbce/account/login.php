@@ -24,9 +24,11 @@ foreach ($oAccounts->getLanguageFiles() as $sLangFile) {
 }
 
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
+require_once WB_PATH . '/framework/class.login.php';
 $sRedirect = strip_tags(isset(${$requestMethod}['redirect']) ? ${$requestMethod}['redirect'] : '');
-if (!empty($sRedirect) && strpos($sRedirect, WB_URL) !== 0) {$sRedirect = '';}
-$sRedirect = ((isset($_SERVER['HTTP_REFERER']) && empty($sRedirect)) ? $_SERVER['HTTP_REFERER'] : $sRedirect);
+// redirect target (parameter or referer) must be inside this installation
+if (!Login::isLocalUrl($sRedirect)) {$sRedirect = '';}
+$sRedirect = ((isset($_SERVER['HTTP_REFERER']) && empty($sRedirect) && Login::isLocalUrl($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : $sRedirect);
 $sRedirect = ($sRedirect != '') ? $sRedirect : WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php';
 $_SESSION['HTTP_REFERER'] = str_replace(WB_URL, '', $sRedirect);
 

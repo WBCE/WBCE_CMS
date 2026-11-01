@@ -150,9 +150,25 @@ class IniEditor {
         return $str;
     }
 
+    // admin object of the calling backend page (provides getFTAN/checkFTAN)
+    private function getAdmin() {
+        if (isset($GLOBALS['admin']) && is_object($GLOBALS['admin']) && method_exists($GLOBALS['admin'], 'checkFTAN')) {
+            return $GLOBALS['admin'];
+        }
+        return null;
+    }
+
     // save the new file from form request
     public function saveForm() {
         if (!$this->bEnableFill) {
+            return;
+        }
+        // CSRF protection: never save without a valid FTAN of the admin object
+        $oAdmin = $this->getAdmin();
+        if (!$oAdmin || !$oAdmin->checkFTAN()) {
+            $oMsgBox = new MessageBox();
+            $oMsgBox->error('MESSAGE:GENERIC_SECURITY_ACCESS');
+            $oMsgBox->redirect(basename($_SERVER['REQUEST_URI']));
             return;
         }
         $backup = true;
@@ -237,6 +253,8 @@ class IniEditor {
             $sToHtml .= '<form method="post">
             <input type="hidden" name="save_ini_form" value="1"/>
             <input type="hidden" name="ini_file" value="'.str_replace(WB_PATH, 'BASE_PATH', $this->sIniFile).'"/>'; //prevent PATH from being seen
+            $oAdmin = $this->getAdmin();
+            $sToHtml .= $oAdmin ? $oAdmin->getFTAN() : '';
 
             $additional = array();
             foreach ($conf as $c => $cv) {

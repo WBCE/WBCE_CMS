@@ -15,7 +15,7 @@
 $module_directory   = 'wbSeoTool';
 $module_name        = 'SEO Tool';
 $module_function    = 'tool';
-$module_version     = '0.7.2';
+$module_version     = '0.7.3';
 $module_status      = 'Stable';
 $module_platform    = '2.8.3';
 $module_author      = 'Christian M. Stefan <stefek@designthings.de>';
@@ -25,6 +25,9 @@ $module_icon        = 'fa fa-tasks';
 
 /**
  * Version history
+ *
+ * 0.7.3 - WBCE Community
+ *       - CSRF protection (FTAN) for the inline editor (ajax/save.php)
  *
  * 0.7.2 - WBCE Community
  *       - encode droplet brackets ([ ]) instead of removing '[[' / ']]' once
