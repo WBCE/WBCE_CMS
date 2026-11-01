@@ -14,7 +14,7 @@
 $module_directory = 'droplets';
 $module_name      = 'Droplets';
 $module_function  = 'tool';
-$module_version   = '2.4.4';
+$module_version   = '2.4.5';
 $module_platform  = '1.6.0';
 $module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
 $module_license   = 'GNU General Public License';
@@ -28,6 +28,7 @@ $module_level = 'core';
  * Version history
  * ===============
  *
+ * v2.4.5 SearchBox: context-aware output encoding
  * v2.4.4 droplet core hardening (name/argument validation, loop limit)
  *
  * v2.4.3 backport of the droplet fixes from WBCE 1.7.0 (Droplets 2.4.9)
