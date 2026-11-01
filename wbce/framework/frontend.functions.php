@@ -100,6 +100,20 @@ if (!function_exists('search_highlight')) {
         if ($string_ul_umlaut === false || $string_ul_regex === false) {
             require WB_PATH . '/search/search_convert.php';
         }
+        // normalize HTML-relevant chars to entities before entities_to_umlauts() runs
+        $foo = preg_replace_callback(
+            '~&(?:#0*(60|62|38|34|39|91|93)|#[xX]0*(3[cCeE]|26|22|27|5[bBdD])|(lsqb|rsqb|lbrack|rbrack|apos));~',
+            function ($m) {
+                $aMap = array(
+                    '60' => 'lt;', '62' => 'gt;', '38' => 'amp;', '34' => 'quot;', '39' => '#039;', '91' => '#91;', '93' => '#93;',
+                    '3c' => 'lt;', '3e' => 'gt;', '26' => 'amp;', '22' => 'quot;', '27' => '#039;', '5b' => '#91;', '5d' => '#93;',
+                    'lsqb' => '#91;', 'lbrack' => '#91;', 'rsqb' => '#93;', 'rbrack' => '#93;', 'apos' => '#039;'
+                );
+                $sKey = strtolower(isset($m[3]) && $m[3] !== '' ? $m[3] : (isset($m[2]) && $m[2] !== '' ? $m[2] : $m[1]));
+                return '&#38;' . $aMap[$sKey];
+            },
+            $foo
+        );
         $foo = entities_to_umlauts($foo, 'UTF-8');
         array_walk($arr_string, function (&$v, $k) {
             $v = preg_quote($v, '\'~\'');
@@ -117,9 +131,14 @@ if (!function_exists('search_highlight')) {
             $foo = "";
             foreach ($matches as $match) {
                 if ($match[0] != "<" && !preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i', $match) && !preg_match('~\[\[.*\]\]~', $match)) {
-                    $match = str_replace(array('&lt;', '&gt;', '&amp;', '&quot;', '&#039;', '&nbsp;'), array('<', '>', '&', '"', '\'', "\xC2\xA0"), $match);
+                    // decode entities only for matching, then re-encode (avoids double-encoding)
+                    $match = str_replace("\x1A", '', $match);
+                    // encoded brackets (&#91; &#93;) stay encoded; raw brackets left for later filters
+                    $match = preg_replace('~&(?!(?:lt|gt|amp|quot|nbsp|#0*39);)([a-zA-Z][a-zA-Z0-9]*|#[0-9]+|#[xX][0-9a-fA-F]+);~', "\x1A$1;", $match);
+                    $match = strtr($match, array('&lt;' => '<', '&gt;' => '>', '&amp;' => '&', '&quot;' => '"', '&#039;' => '\'', '&#39;' => '\'', '&nbsp;' => "\xC2\xA0"));
                     $match = preg_replace('~(' . $string . ')~ui', '_span class=_highlight__$1_/span_', $match);
-                    //$match = str_replace(array('&', '<', '>', '"', '\'', "\xC2\xA0"), array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '&nbsp;'), $match);
+                    $match = strtr($match, array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;', '"' => '&quot;', '\'' => '&#039;', "\xC2\xA0" => '&nbsp;'));
+                    $match = str_replace("\x1A", '&', $match);
                     $match = str_replace(array('_span class=_highlight__', '_/span_'), array('<span class="highlight">', '</span>'), $match);
                 }
                 $foo .= $match;
