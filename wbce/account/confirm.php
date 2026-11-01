@@ -14,11 +14,13 @@ require_once dirname(__DIR__) . '/config.php';
 
 $oAccounts = new Accounts();
 
-$sAutoLanguage = (isset($_GET['lc']) ? $_GET['lc'] : 'EN');
+// Security fix (GHSA-633w-gvrj-7p4r): validate the language code before it
+// becomes the LANGUAGE constant and is echoed into redirect URLs.
+$sAutoLanguage = (isset($_GET['lc']) && preg_match('/^[A-Z]{2}$/', $_GET['lc'])) ? $_GET['lc'] : 'EN';
 defined('LANGUAGE') or define('LANGUAGE', $sAutoLanguage);
 
-$sConfirmTimeout = (string)(time() + 86400); // now + 24hours
-$sConfirmCode = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
+// Default language code for redirects issued before the user's own is known.
+$sLC = $sAutoLanguage;
 
 if (isset($_GET['mng']) && $_GET['mng'] > intval(1)) {
     header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=" . $sLC . "&switch=wrong_inputs&excessive_manager_use");
@@ -86,7 +88,11 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
         $sErrorMessage = $MESSAGE['GENERIC_ISSUE_MESSAGE'];
 
         $sConfirmTimeout = (string)(time() + 86400); // now + 24hours
-        $sConfirmCode = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
+        // Security fix (GHSA-633w-gvrj-7p4r): $sUsername is undefined in this file,
+        // so md5(md5($sUsername.$timeout).$timeout) collapsed to a timestamp-only,
+        // guessable token (and so did the approval checksum derived from it below).
+        // Use a cryptographically random 32-hex code instead.
+        $sConfirmCode = bin2hex(random_bytes(16));
         $sConfirmationUrl = ACCOUNT_URL . '/confirm.php?id=' . $sConfirmCode . '&lc=' . $sLC;
         $sCheckSum = substr(md5($sConfirmCode), 0, 10);
 

@@ -408,7 +408,7 @@ class Accounts extends Frontend
     {
         global $database;
         $retVal = false;
-        if (preg_match('/[0-9a-f]{32}/i', $sConfirmCode)) {
+        if (preg_match('/^[0-9a-f]{32}$/i', $sConfirmCode)) {
 			$sConfirmCode = addslashes($sConfirmCode);
             $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `signup_confirmcode` = '" . $sConfirmCode . "'";
             $retVal = $database->get_one($sSql);
@@ -423,8 +423,10 @@ class Accounts extends Frontend
     {
         global $database;
         $bRetVal = false;
-        $sDbCheckSum = $database->get_one("SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = " . $iUserID);
-        if ($sDbCheckSum == $sCheckSum) {
+        $sDbCheckSum = $database->get_one("SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = " . intval($iUserID));
+        // Security fix (GHSA-633w-gvrj-7p4r): constant-time, strict compare so a
+        // supplied checksum cannot win via type juggling.
+        if (is_string($sCheckSum) && is_string($sDbCheckSum) && hash_equals($sDbCheckSum, $sCheckSum)) {
             $bRetVal = true;
         }
         return $bRetVal;
