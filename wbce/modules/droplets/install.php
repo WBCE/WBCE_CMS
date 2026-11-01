@@ -104,7 +104,8 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     // Settings::Set() must run BEFORE the return below -- statements after
     // `return $a && $b;` are unreachable (same fix as in upgrade.php).
     Settings::Set('opf_droplets', 1, false);
-    Settings::Set('opf_droplets_be', 1, false);
+    // off by default; can be enabled in the OPF Dashboard
+    Settings::Set('opf_droplets_be', 0, false);
 
     return opf_register_filter(array(
         'name'      => 'Droplets Injector',

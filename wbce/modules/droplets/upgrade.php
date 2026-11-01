@@ -74,7 +74,8 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     // upgraded install with a stale falsy opf_droplets/_be row kept droplet
     // processing switched off ([[droplet]] calls stayed literal text).
     Settings::Set('opf_droplets', 1, false);
-    Settings::Set('opf_droplets_be', 1, false);
+    // off by default; can be enabled in the OPF Dashboard
+    Settings::Set('opf_droplets_be', 0, false);
 
     return opf_register_filter(array(
         'name'     => 'Droplets',
