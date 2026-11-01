@@ -39,7 +39,13 @@ if (is_array($sEncPassword)){
     // Get entered values
     $sDisplayName  = remove_special_characters($oAccounts->add_slashes(strip_tags($oAccounts->get_post('display_name'))));
     // no square brackets in display names (droplet syntax)
-    $sDisplayName  = str_replace(array('[', ']'), '', $sDisplayName);
+    $sDisplayName  = trim(str_replace(array('[', ']'), '', $sDisplayName));
+    $sDisplayName  = ($sDisplayName == '' ? $oAccounts->get_display_name() : $sDisplayName);
+    // display names must be unique (same check as admin/preferences/save.php)
+    $sql = "SELECT COUNT(*) FROM `{TP}users` WHERE `user_id` <> %d AND `display_name` = '%s'";
+    if ($database->get_one(sprintf($sql, (int)$oAccounts->get_user_id(), $database->escapeString($sDisplayName))) > 0) {
+        $aMsg['error'][] = 'MESSAGE:USERS_USERNAME_TAKEN';
+    }
     $sLC           = $oAccounts->get_post('language');
     $sLanguage     = preg_match('/^[A-Z]{2}$/', $sLC) ? $sLC : 'EN';
     $sTimezone     = is_numeric($oAccounts->get_post('timezone')) ? $oAccounts->get_post('timezone')*60*60 : 0;
