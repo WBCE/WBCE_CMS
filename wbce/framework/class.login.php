@@ -139,10 +139,11 @@ class Login extends Admin
 			}
 			
 			if(isset($_POST['captcha'])){
-				$ccheck = time(); $ccheck1 = time();
-				if(isset($_SESSION['captchalogin'])) $ccheck1 = $_SESSION['captchalogin'];
-				if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-				if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+				// Security fix (GHSA-633w-gvrj-7p4r): NEVER fall back to time(); an unset
+				// session captcha must fail, not match a guessable value like the timestamp.
+				$ccheck  = $_SESSION['captcha']      ?? null;
+				$ccheck1 = $_SESSION['captchalogin'] ?? null;
+				if (($ccheck === null && $ccheck1 === null) || ($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1)) {
 					$captchaFailure = true;
 				}
 			} 

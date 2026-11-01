@@ -33,10 +33,11 @@ if (isset($_POST['email']) && $_POST['email'] != "" ) {
     $email = strip_tags($wb->get_post('email'));
 	if ($nocookie == false) {			
 		if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-			$ccheck = time(); $ccheck1 = time();
-			if(isset($_SESSION['captchaloginforgot'])) $ccheck1 = $_SESSION['captchaloginforgot'];
-			if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-			if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+			// Security fix (GHSA-633w-gvrj-7p4r): NEVER fall back to time(); an unset
+			// session captcha must fail, not match a guessable value like the timestamp.
+			$ccheck  = $_SESSION['captcha']            ?? null;
+			$ccheck1 = $_SESSION['captchaloginforgot'] ?? null;
+			if (($ccheck === null && $ccheck1 === null) || ($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1)) {
 				$oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
 				$email = '';
 			}
