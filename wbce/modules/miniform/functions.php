@@ -43,9 +43,38 @@ if(!function_exists('miniform_may_manage_section')) {
 	}
 }
 
+/**
+ * Encode droplet syntax so that user supplied text can never be executed as a
+ * droplet by the frontend output filter: every '[' becomes '&#91;' and every
+ * ']' becomes '&#93;'. Visually transparent in HTML output.
+ * Uses the core function escape_droplet_syntax() when available (newer WBCE
+ * cores), otherwise the local implementation, so the module keeps working on
+ * older cores. Must be applied AFTER all other transformations of a value.
+ */
+if(!function_exists('miniform_escape_droplet_syntax')) {
+	function miniform_escape_droplet_syntax($s) {
+		$s = (string) $s;
+		if(function_exists('escape_droplet_syntax')) {
+			return escape_droplet_syntax($s);
+		}
+		return str_replace(array('[', ']'), array('&#91;', '&#93;'), $s);
+	}
+}
+
+/**
+ * Escape a plain (not yet escaped) string for HTML output: htmlspecialchars
+ * plus droplet syntax encoding.
+ */
+if(!function_exists('miniform_escape_html')) {
+	function miniform_escape_html($s) {
+		return miniform_escape_droplet_syntax(htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE));
+	}
+}
+
 class mform {
 
 	public $templates = array();
+	public $allFieldNames = null;
 	public $attachements = array();
 	public $isArray = false;
 	public $fieldGetSeen = false;
@@ -86,10 +115,14 @@ class mform {
 
 	function get_template($name) {
 		global $wb;
+		// template names may come from $_POST (__next/__previous/__current): no paths
+		$name = (string) $name;
+		if($name === '' || strpbrk($name, "/\\\0") !== false || strpos($name, '..') !== false) return '';
 		if(!file_exists(dirname(__FILE__).'/templates/'.$name.'.htt')) return '';
 		$this->current = substr($name,5);
 		$tmp = file_get_contents(dirname(__FILE__).'/templates/'.$name.'.htt');
-		$var[] = "{REFERER}";			$value[] = @$_SESSION["REF"];
+		// referer comes from the client (HTTP_REFERER): escape + encode droplet syntax
+		$var[] = "{REFERER}";			$value[] = isset($_SESSION["REF"]) ? miniform_escape_html($_SESSION["REF"]) : '';
 		$var[] = "{URL}";				$value[] = ''; // $this->page(PAGE_ID);
 		$var[] = "{WB_URL}";			$value[] = WB_URL;
 		$var[] = "{WEBSITE_TITLE}";		$value[] = WEBSITE_TITLE;
@@ -120,6 +153,47 @@ class mform {
 		$file_ext=strtolower(end($file_tmp));
 		return(in_array($file_ext,explode(',',$this->upload_whitelist)));
 	}
+	function escapeDropletSyntax($s) {
+		return miniform_escape_droplet_syntax($s);
+	}
+
+	// Names of all input/select/textarea fields used in any form template.
+	// Needed for multi-step forms: fields of earlier steps come back as hidden
+	// {PREVIOUS} inputs and are neither in the current nor in the next template.
+	function getAllFieldNames() {
+		if(is_array($this->allFieldNames)) return $this->allFieldNames;
+		$this->allFieldNames = array();
+		$files = glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'form_*.htt');
+		if(!$files) return $this->allFieldNames;
+		foreach($files as $file) {
+			$tpl = @file_get_contents($file);
+			if(!$tpl) continue;
+			preg_match_all('/<input [^>]*>|<select [^>]*>|<textarea [^>]*>/',$tpl,$matches);
+			foreach($matches[0] as $match){
+				if(preg_match('/name="([^"]*)"/i',$match,$name)) {
+					$fname = str_replace("[]","",$name[1]);
+					$this->allFieldNames[$fname] = true;
+					// PHP turns '.' and ' ' in posted names into '_'
+					$this->allFieldNames[str_replace(array('.',' '),'_',$fname)] = true;
+				}
+			}
+		}
+		return $this->allFieldNames;
+	}
+
+	// Whitelist for posted field names that are not part of the current or next
+	// template: only fields known from any form template or internal fields
+	// (step control, section id, captcha, ASP honeypot, reCaptcha) are accepted.
+	function isAllowedPostedField($key) {
+		$key = (string) $key;
+		if(in_array($key, array('__next','__previous','__current','miniform','g-recaptcha-response','my_company','my_name','my_email'), true)) return true;
+		if(preg_match('/^captcha[0-9]*$/', $key)) return true;
+		// field names defined by the admin in a template are trusted
+		// (they are still escaped on output)
+		$all = $this->getAllFieldNames();
+		return isset($all[$key]);
+	}
+
 	function add_template($template, $var, $value) {
 		$tmp = str_ireplace($var,$value,$template);
 		return $tmp;
@@ -144,11 +218,11 @@ class mform {
 						$this->attachements[$_FILES[$postfield]['tmp_name']] = $_FILES[$postfield]['name']; 
 						$val = strval($z).$_FILES[$postfield]['name'];
 					} else {
-						$this->error = $_FILES[$postfield]['name'].' - '.$MF['INVALID'];
+						$this->error = miniform_escape_html($_FILES[$postfield]['name']).' - '.$MF['INVALID'];
 					}
 				}
 			} else {
-				$this->error = $_FILES[$postfield]['name'].' - '.$MF['INVALID'];
+				$this->error = miniform_escape_html($_FILES[$postfield]['name']).' - '.$MF['INVALID'];
 			}
 		}elseif(isset($_POST[$postfield])) {
 			$val =  $_POST[$postfield];
@@ -165,9 +239,11 @@ class mform {
 			$this->isArray = true;
 		}
 		if (isset($val)) {
-			$val = htmlspecialchars($val);
-			$val = str_replace(array('[[', ']]', '[[[', ']]]'), '', $val);
+			$val = htmlspecialchars((string) $val, ENT_QUOTES | ENT_SUBSTITUTE);
 			$val = preg_replace("/(\n)/","",$val);
+			// encode droplet syntax LAST, after all other transformations:
+			// '[' -> '&#91;', ']' -> '&#93;' (no brackets can be recombined)
+			$val = miniform_escape_droplet_syntax($val);
 			return $val;
 		} else {
 			return '';
