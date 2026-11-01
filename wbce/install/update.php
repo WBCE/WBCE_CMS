@@ -719,10 +719,25 @@ if (!$oCreate->error()) {
         . "SELECT `user_id`, `display_name`, " . time() . " FROM `$table` WHERE $sWhere");
     // never change display names without backup
     if (!$oBackup->error()) {
-        // a name that would end up empty falls back to the login name
-        $sStripped = "TRIM(REPLACE(REPLACE(`display_name`, '[', ''), ']', ''))";
-        $oUpdate = $database->query("UPDATE `$table` SET `display_name` = IF($sStripped = '', `username`, $sStripped) WHERE $sWhere");
-        echo($oUpdate->error() ? __LINE__ . ': ' . $oUpdate->error() . '<br />' : '');
+        // display names must stay unique: an empty or already used name
+        // falls back to the login name (with user_id if that is taken too)
+        $oUsers = $database->query("SELECT `user_id`, `username`, `display_name` FROM `$table` WHERE $sWhere");
+        while ($oUsers && ($aUser = $oUsers->fetchRow(MYSQLI_ASSOC))) {
+            $iUid = (int)$aUser['user_id'];
+            $sTaken = "SELECT COUNT(*) FROM `$table` WHERE `user_id` <> $iUid AND `display_name` = '%s'";
+            $sName = trim(str_replace(array('[', ']'), '', $aUser['display_name']));
+            if ($sName == '' || $database->get_one(sprintf($sTaken, $database->escapeString($sName))) > 0) {
+                if ($sName != '') {
+                    echo 'Display name of user ' . $iUid . ' already in use, set to login name<br />';
+                }
+                $sName = $aUser['username'];
+                if ($database->get_one(sprintf($sTaken, $database->escapeString($sName))) > 0) {
+                    $sName .= '_' . $iUid;
+                }
+            }
+            $database->query("UPDATE `$table` SET `display_name` = '" . $database->escapeString($sName) . "' WHERE `user_id` = $iUid");
+            echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
+        }
     } else {
         echo __LINE__ . ': ' . $oBackup->error() . '<br />';
     }
