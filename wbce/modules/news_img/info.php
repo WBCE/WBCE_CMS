@@ -16,13 +16,19 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.33';
+$module_version     = '5.0.34';
 $module_platform    = '1.6.8';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page module is designed for making a news page with images and lightbox effect.';
 
 /**
+ * v5.0.34 - 2026/11/01
+ *         - security hardening rss.php: section must belong to page_id and be a
+ *           news_img section, page visibility/viewing permissions and section
+ *           publication period are checked, group_id only for active groups of
+ *           the section, no GROUP_ID constant from GET, ']]>' split in CDATA
+ *
  * v5.0.33 - 2026/10/31
  *         - update script fix
  *
