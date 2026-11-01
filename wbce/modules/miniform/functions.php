@@ -71,6 +71,120 @@ if(!function_exists('miniform_escape_html')) {
 	}
 }
 
+/**
+ * Tags and attributes a stored message may contain. Stored messages are built
+ * from the mail templates (email.htt, email_field_value.htt), so plain table
+ * and text markup is enough. Used to clean messages stored by older versions.
+ */
+if(!function_exists('miniform_stored_message_rules')) {
+	function miniform_stored_message_rules() {
+		return array(
+			'tags' => array('div','span','p','br','hr','b','strong','i','em','u','small','sub','sup',
+				'h1','h2','h3','h4','h5','h6','table','thead','tbody','tfoot','tr','td','th','caption',
+				'colgroup','col','ul','ol','li','a','blockquote','pre','code','font','center'),
+			// removed together with their content
+			'drop' => array('script','style','iframe','frame','frameset','object','embed','applet','svg',
+				'math','template','noscript','textarea','select','option','button','form','input',
+				'link','meta','base','title','head'),
+			'attrs' => array('style','align','valign','width','height','border','cellspacing','cellpadding',
+				'bgcolor','nowrap','colspan','rowspan','class','title','color','face','size','href'),
+		);
+	}
+}
+
+/**
+ * true if a stored message contains droplet syntax, unknown tags, event
+ * handlers or script URLs and has to be cleaned.
+ */
+if(!function_exists('miniform_stored_message_needs_cleaning')) {
+	function miniform_stored_message_needs_cleaning($html) {
+		$html = (string) $html;
+		if(strpos($html, '[') !== false || strpos($html, ']') !== false) return true;
+		if(preg_match('/<[^>]*\son[a-z]+\s*=/i', $html)) return true;
+		if(preg_match('/<[^>]*(javascript|vbscript|data)\s*:/i', $html)) return true;
+		if(preg_match('/<[^>]*\sstyle\s*=[^>]*(expression|url\s*\(|@import|behavior)/i', $html)) return true;
+		if(preg_match('/<!--|<\?|<!\[CDATA\[/i', $html)) return true;
+		$rules = miniform_stored_message_rules();
+		$known = array_merge($rules['tags'], array('body'));
+		preg_match_all('/<\/?\s*([a-z][a-z0-9]*)/i', $html, $m);
+		foreach($m[1] as $tag) {
+			if(!in_array(strtolower($tag), $known, true)) return true;
+		}
+		return false;
+	}
+}
+
+/**
+ * Clean a stored message for legacy data: keep only the tags and attributes
+ * of miniform_stored_message_rules(), drop event handlers and script URLs,
+ * encode droplet syntax. Messages without findings are returned unchanged.
+ */
+if(!function_exists('miniform_clean_stored_message')) {
+	function miniform_clean_stored_message($html) {
+		$html = (string) $html;
+		if(!miniform_stored_message_needs_cleaning($html)) return $html;
+		$rules = miniform_stored_message_rules();
+		if(class_exists('DOMDocument')) {
+			$doc = new DOMDocument();
+			$prev = libxml_use_internal_errors(true);
+			$doc->loadHTML('<?xml encoding="UTF-8"><div id="miniform-clean-root">'.$html.'</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+			libxml_clear_errors();
+			libxml_use_internal_errors($prev);
+			$root = $doc->getElementById('miniform-clean-root');
+			if($root) {
+				miniform_clean_stored_node($root, $rules);
+				$out = '';
+				foreach($root->childNodes as $child) $out .= $doc->saveHTML($child);
+				return miniform_escape_droplet_syntax($out);
+			}
+		}
+		// fallback without DOM: strip unknown tags, then attributes that may run script
+		$allowed = '<'.implode('><', $rules['tags']).'>';
+		$out = preg_replace('#<(script|style|iframe|object|embed|svg|template|noscript|textarea)\b.*?</\1\s*>#is', '', $html);
+		$out = strip_tags($out, $allowed);
+		$out = preg_replace('/\son[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $out);
+		$out = preg_replace('/\s(href|style)\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $out);
+		return miniform_escape_droplet_syntax($out);
+	}
+}
+
+if(!function_exists('miniform_clean_stored_node')) {
+	function miniform_clean_stored_node($node, $rules) {
+		for($i = $node->childNodes->length - 1; $i >= 0; $i--) {
+			$child = $node->childNodes->item($i);
+			if($child->nodeType === XML_TEXT_NODE) continue;
+			if($child->nodeType !== XML_ELEMENT_NODE) { // comments, CDATA, processing instructions
+				$node->removeChild($child);
+				continue;
+			}
+			$tag = strtolower($child->nodeName);
+			if(in_array($tag, $rules['drop'], true)) {
+				$node->removeChild($child);
+				continue;
+			}
+			miniform_clean_stored_node($child, $rules);
+			if(!in_array($tag, $rules['tags'], true)) { // unknown tag (e.g. body): keep its content only
+				while($child->firstChild) $node->insertBefore($child->firstChild, $child);
+				$node->removeChild($child);
+				continue;
+			}
+			for($a = $child->attributes->length - 1; $a >= 0; $a--) {
+				$attr = $child->attributes->item($a);
+				$name = strtolower($attr->nodeName);
+				$value = preg_replace('/[\x00-\x20]+/', '', html_entity_decode($attr->nodeValue, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+				$keep = in_array($name, $rules['attrs'], true);
+				if($keep && $name == 'href') {
+					$keep = ($tag == 'a') && (preg_match('#^(https?:|mailto:)#i', $value) || !preg_match('#^[a-z][a-z0-9+.\-]*:#i', $value));
+				}
+				if($keep && $name == 'style') {
+					$keep = !preg_match('/expression|javascript|vbscript|url\(|@import|behavior/i', $value);
+				}
+				if(!$keep) $child->removeAttribute($attr->nodeName);
+			}
+		}
+	}
+}
+
 class mform {
 
 	public $templates = array();
