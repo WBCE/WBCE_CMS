@@ -35,7 +35,7 @@ function save_preferences(&$admin, &$database)
     $display_name = ($display_name == '' ? $admin->get_display_name() : $display_name);
 
     // check that display_name is unique in whoole system (prevents from User-faking)
-    $sql = "SELECT COUNT(*) FROM `{TP}users` WHERE `user_id` <> %d AND `display_name` LIKE '%s'";
+    $sql = "SELECT COUNT(*) FROM `{TP}users` WHERE `user_id` <> %d AND `display_name` = '%s'";
     if ($database->get_one(sprintf($sql, $admin->get_user_id(), $display_name)) > 0) {
         $aErrMsg[] = $MESSAGE['USERS_USERNAME_TAKEN'];
     }
@@ -75,7 +75,7 @@ function save_preferences(&$admin, &$database)
         if ($email != '') {
             // check that email is unique in whoole system
             $email = $admin->add_slashes($email);
-            $sql = "SELECT COUNT(*) FROM `{TP}users` WHERE `user_id` <> %d AND `email` LIKE '%s'";
+            $sql = "SELECT COUNT(*) FROM `{TP}users` WHERE `user_id` <> %d AND `email` = '%s'";
             if ($database->get_one(sprintf($sql, (int)$admin->get_user_id(), $email)) > 0) {
                 $aErrMsg[] = $MESSAGE['USERS_EMAIL_TAKEN'];
             }
