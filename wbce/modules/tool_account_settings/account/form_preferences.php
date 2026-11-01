@@ -22,7 +22,8 @@ if(isset($_POST['action']) && $oAccounts->get_post('action') == 'profile'){
 
 // Get user's data array
 $aUser = $database->get_array("SELECT * FROM `{TP}users` WHERE `user_id` = ".$oAccounts->get_user_id())[0];
-$sDisplayName = $aUser['display_name'];
+// no square brackets in output (droplet syntax from data stored before the input filter)
+$sDisplayName = str_replace(array('[', ']'), '', $aUser['display_name']);
 $sEmail       = $aUser['email'];
 
 // UserBase AdminTool Connector

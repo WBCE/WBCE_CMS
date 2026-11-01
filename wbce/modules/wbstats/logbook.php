@@ -40,9 +40,9 @@ foreach($r as $v) {
 		echo '<td style="width:200px;white-space:nowrap;">';
 		echo '<b>'.$WS['LIVE_DATE'].'</b>: '.$v['date'].' '.$v['time'].'<br>';
 		echo '<b>'.$WS['LOCATION'].'</b>: '.$v['loc'].'<br>';
-		echo '<b>'.$WS['BROWSER'].'</b>: <span class="expandright" title="'.htmlspecialchars($v['ua']).'">'.$v['browser'].' - ';
-		echo $v['os'].'</span><br>';
-		echo '<b>'.$WS['LANGUAGES'].'</b>: '.$language.'<br>';
+		echo '<b>'.$WS['BROWSER'].'</b>: <span class="expandright" title="'.wbstats_escape_droplets(htmlspecialchars($v['ua'])).'">'.wbstats_escape_droplets(htmlspecialchars($v['browser'])).' - ';
+		echo wbstats_escape_droplets(htmlspecialchars($v['os'])).'</span><br>';
+		echo '<b>'.$WS['LANGUAGES'].'</b>: '.wbstats_escape_droplets(htmlspecialchars($language)).'<br>';
 		echo '<b>'.$WS['REFERER'].'</b>: '.$v['referer'].'<br>';
 		echo '</td>';
 		echo '<td>';

@@ -8,15 +8,15 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.12
- * @lastmodified    October 17, 2026
+ * @version         0.2.5.13
+ * @lastmodified    October 31, 2026
  *
  */
 
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.12';
+$module_version = '0.2.5.13';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -30,6 +30,8 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.13 - security fix: encode droplet brackets in output of visitor data
  *
  * 0.2.5.12 - compatibility fix
  *

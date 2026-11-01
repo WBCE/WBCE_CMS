@@ -137,7 +137,7 @@ if ($view == '0' or $view == '1') {
 		if (strpos($line, "Visitor Request]")!== false) {
             $type = " usedurl";
         }
-        echo '<div class="logline '.$row.$type.'">'.htmlspecialchars($line).'</div>';
+        echo '<div class="logline '.$row.$type.'">'.errorlogger_escape_droplets(htmlspecialchars($line)).'</div>';
     }
 } else {
     $aLines = log_to_array($res);
@@ -192,6 +192,18 @@ if ($view == '0' or $view == '1') {
 ?>
 </div>
 <?php
+/**
+ * Encode square brackets so that log content can't be interpreted as droplet
+ * call by the droplet filter (fallback for older WBCE cores).
+ */
+function errorlogger_escape_droplets($s)
+{
+    if (function_exists('escape_droplet_syntax')) {
+        return escape_droplet_syntax($s);
+    }
+    return str_replace(array('[', ']'), array('&#91;', '&#93;'), (string)$s);
+}
+
 function log_to_array($aLines)
 {
     $aRetVal = [];
@@ -219,20 +231,17 @@ function log_to_array($aLines)
         if ($sType == 'Warning') {
             $sColor = 'red';
         }
-        // htmlspecialchars every field: these come straight from the log file,
-        // which stores raw PHP error strings that may contain attacker-influenced
-        // markup. 'type' is escaped too; the equality checks below compare against
-        // plain words ('Exception'/'Visitor Request') so escaping is a no-op there.
+        // escape every field incl. droplet brackets (log content is untrusted)
         $aRetVal[] = array(
             'color'     => $sColor, // fixed set (inherit/red/#355ff9), not user data
-            'date'      => htmlspecialchars($aDateTime[0]),
-            'time'      => htmlspecialchars(trim(str_replace('+00:00', '', $aDateTime[1]))),
-            'type'      => htmlspecialchars($sType),
-            'primary'   => htmlspecialchars(isset($arr2[1][1]) ? $arr2[1][1]:''),
-            'p_line'    => htmlspecialchars(isset($arr2[2][0]) ? $arr2[2][0] : '?'),
-            'secondary' => htmlspecialchars(isset($arr2[2][1]) ? trim(str_replace(['from', ':'], '', $arr2[2][1])):''),
-            's_line'    => htmlspecialchars(isset($arr2[3][0]) ? $arr2[3][0] :'?'),
-            'msg'       => htmlspecialchars(isset($arr2[3][1]) ? trim($arr2[3][1]) : '??'),
+            'date'      => errorlogger_escape_droplets(htmlspecialchars($aDateTime[0])),
+            'time'      => errorlogger_escape_droplets(htmlspecialchars(trim(str_replace('+00:00', '', $aDateTime[1])))),
+            'type'      => errorlogger_escape_droplets(htmlspecialchars($sType)),
+            'primary'   => errorlogger_escape_droplets(htmlspecialchars(isset($arr2[1][1]) ? $arr2[1][1]:'')),
+            'p_line'    => errorlogger_escape_droplets(htmlspecialchars(isset($arr2[2][0]) ? $arr2[2][0] : '?')),
+            'secondary' => errorlogger_escape_droplets(htmlspecialchars(isset($arr2[2][1]) ? trim(str_replace(['from', ':'], '', $arr2[2][1])):'')),
+            's_line'    => errorlogger_escape_droplets(htmlspecialchars(isset($arr2[3][0]) ? $arr2[3][0] :'?')),
+            'msg'       => errorlogger_escape_droplets(htmlspecialchars(isset($arr2[3][1]) ? trim($arr2[3][1]) : '??')),
         );
     }
     return $aRetVal;

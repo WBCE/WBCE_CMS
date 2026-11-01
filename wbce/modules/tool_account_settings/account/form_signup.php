@@ -47,6 +47,8 @@ if(isset($_POST['signup_form_sent'])){
     // Get raw user inputs
     $username     = remove_special_characters(strtolower(strip_tags($oAccounts->get_post('username'))));
     $display_name = remove_special_characters(strip_tags($oAccounts->get_post('display_name')));
+    // no square brackets in display names (droplet syntax)
+    $display_name = str_replace(array('[', ']'), '', $display_name);
     $email        = $oAccounts->get_post('email');
     $gdpr_check   = $oAccounts->get_post('gdpr_check');
     $groups_id    = FRONTEND_SIGNUP;
@@ -241,10 +243,11 @@ $show_captcha = '';
 if(ENABLED_CAPTCHA) {
     ob_start(); call_captcha(); $show_captcha = ob_get_clean();
 }
+// no square brackets in reflected user input (droplet syntax)
 $aToTwig = array(
-    'USER_NAME'        => $username, 
-    'DISPLAY_NAME'     => $display_name, 
-    'EMAIL'            => $email, 
+    'USER_NAME'        => str_replace(array('[', ']'), '', $username),
+    'DISPLAY_NAME'     => str_replace(array('[', ']'), '', $display_name),
+    'EMAIL'            => str_replace(array('[', ']'), '', (string)$email),
     'GDPR_VALUE'       => $gdpr_check, 
     'SHOW_CAPTCHA'     => $show_captcha, 
     'ASP_HONEYPOTS'    => $oAccounts->renderAspHoneypots(), 

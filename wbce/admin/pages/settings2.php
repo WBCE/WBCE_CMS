@@ -41,7 +41,9 @@ $admin->print_header();
 // Get POST values from submitted form
 $page_title = remove_droplet_brackets($admin->get_post_escaped('page_title'));
 $menu_title = remove_droplet_brackets($admin->get_post_escaped('menu_title'));
-$the_link = remove_droplet_brackets($admin->get_post_escaped('link'));
+// the link is only used to build the filename, page_filename() removes
+// '[' and ']' anyway - don't encode it (would end up as '5b'/'5d' in the URL)
+$the_link = str_replace(array('[', ']'), '', htmlspecialchars((string)$admin->get_post_escaped('link')));
 $description = remove_droplet_brackets($admin->add_slashes($admin->get_post('description')));
 $keywords = remove_droplet_brackets($admin->add_slashes($admin->get_post('keywords')));
 $page_code = intval($admin->get_post('page_code'));
@@ -290,8 +292,8 @@ function fix_page_trail($parent, $root_parent)
     }
 }
 
-// function to remove_droplet_brackets from inputs
+// function to neutralize droplet brackets in inputs
 function remove_droplet_brackets($sStr)
 {
-    return str_replace(array("[[", "]]"), '', htmlspecialchars($sStr));
+    return escape_droplet_syntax(htmlspecialchars((string)$sStr));
 }

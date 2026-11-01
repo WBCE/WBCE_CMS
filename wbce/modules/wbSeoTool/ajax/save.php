@@ -28,7 +28,7 @@ $aFromString = explode ( "-",$_POST['id']);
 $sDbField    = $aFromString[0];
 $iPageId     = intval($aFromString[1]);
 //sanitize new value to update
-$sNewValue = str_replace(array("[[", "]]", "\n", "\t"), '', htmlspecialchars($admin->add_slashes($admin->get_post('value'))));
+$sNewValue = str_replace(array("\n", "\t"), '', htmlspecialchars($admin->add_slashes($admin->get_post('value'))));
 $aCheckPagesFields = array('page_title', 'description', 'keywords');
 
 //	GET TOOL SETTINGS FROM DB (Json Array)
@@ -38,6 +38,16 @@ $aSettings = json_decode($jsonSettings, TRUE);
 if(!defined('REWRITE_URL') && $aSettings['rewriteUrl']['use'] == TRUE ){
 	define('REWRITE_URL', $aSettings['rewriteUrl']['dbString']);
 	array_push($aCheckPagesFields, REWRITE_URL);
+}
+
+// neutralize droplet brackets: encode them as entities (the value is shown
+// as HTML again), only for the rewrite url field remove them completely
+if(defined('REWRITE_URL') && $sDbField == REWRITE_URL){
+	$sNewValue = str_replace(array('[', ']'), '', $sNewValue);
+} else {
+	$sNewValue = function_exists('escape_droplet_syntax')
+		? escape_droplet_syntax($sNewValue)
+		: str_replace(array('[', ']'), array('&#91;', '&#93;'), $sNewValue);
 }
 
 // UPDATE the DB Field

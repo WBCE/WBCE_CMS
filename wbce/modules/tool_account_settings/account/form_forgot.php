@@ -135,7 +135,7 @@ ob_end_clean();
 
 // Get the template file for forgot_login_details
 $aToTwig = array(
-    'EMAIL'         => $email,
+    'EMAIL'         => str_replace(array('[', ']'), '', (string)$email), // no droplet syntax in reflected input
     'CAPTCHA'       => $captcha,
     'MESSAGE_BOX'   => $oMsgBox->fetchDisplay(),
 );
