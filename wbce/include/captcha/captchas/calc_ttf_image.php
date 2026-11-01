@@ -30,6 +30,13 @@ if (!isset($_SESSION['captcha_time'])) {
     exit;
 }
 
+// Security fix (GHSA-633w-gvrj-7p4r): only the admin-configured captcha type may
+// generate a challenge. Otherwise an attacker requests the weakest generator
+// directly -- ignoring the type the form rendered -- and downgrades the captcha.
+if (!defined('CAPTCHA_TYPE') || CAPTCHA_TYPE !== 'calc_ttf_image') {
+    exit;
+}
+
 //unset($_SESSION['captcha_time']);        // otherwise there can't be 2 captchas on one page!
 
 // get lists of fonts and backgrounds
@@ -52,7 +59,7 @@ foreach ($t_bgs as $file) {
 // Captcha
 $sec_id = '';
 if (isset($_GET['s'])) {
-    $sec_id = $_GET['s'];
+    $sec_id = preg_replace('/[^A-Za-z0-9]/', '', (string) $_GET['s']); // keep it a safe session-key suffix
 }
 
 $_SESSION['captcha' . $sec_id] = '';
