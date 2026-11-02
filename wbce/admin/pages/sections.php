@@ -98,6 +98,11 @@ switch ($action) {
         }
         $action = 'show';
         $module = preg_replace('/\W/', '', $module); // fix secunia 2010-91-4
+        // check the target page and the module before anything is written
+        if (!$admin->get_page_permission($page_id, 'admin') || !$admin->get_permission($module, 'module')) {
+            $admin->print_header();
+            $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], $backlink);
+        }
         require_once WB_PATH . '/framework/class.order.php';
         // Get new order
         $order = new order('{TP}sections', 'position', 'section_id', 'page_id');
