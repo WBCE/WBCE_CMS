@@ -214,6 +214,10 @@ class Login extends Admin
             $this->_oMsgBox->error($MESSAGE['LOGIN_PASSWORD_BLANK']);
             $this->increase_attempts();
         } else {
+            // an active lockout applies to every session of this IP
+            if ($this->isBlocked()) {
+                $this->warn();
+            }
             // Check if the user exists (authenticate them)
 			//sleep(1);
             if ($this->authenticate()) {
@@ -490,6 +494,23 @@ class Login extends Admin
     // ********************************************************************* //
 
     // Function to set a "remembering" cookie for the user
+
+    // true while the stored attempts of this IP exceed the limit
+    // (same release condition as increase_attempts())
+    private function isBlocked()
+    {
+        $client_ip = md5($this->get_client_ip());
+        $sql = "SELECT `attempts`, `timestamp` FROM `" . TABLE_PREFIX . "blocking` WHERE `source_ip` = '" . $client_ip . "' LIMIT 1";
+        $query = $this->_oDb->query($sql);
+        if ($query == null || $query->numRows() == 0) {
+            return false;
+        }
+        $row = $query->fetchRow();
+        $attempts = (int)$row['attempts'];
+        $interval = time() - (int)$row['timestamp'];
+        return $attempts > $this->max_attempts
+            && $interval <= $this->timeframe + pow(2, ($attempts - $this->max_attempts)) * $this->login_delay;
+    }
 
     /**
      * @brief    Warn user that they have had too many login attempts
