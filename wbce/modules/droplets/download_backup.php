@@ -18,8 +18,7 @@ if (!droplets_may_use_tool($admin) || !$admin->checkFTAN('GET')) {
     exit('Access denied');
 }
 
-// droplets_backup_path() only accepts a .zip that really exists in the backup
-// dir, so $_GET['file'] cannot traverse out of it.
+// only existing .zip files from the backup dir
 $sFile = isset($_GET['file']) ? droplets_backup_path($_GET['file']) : false;
 if ($sFile === false || !is_file($sFile)) {
     header('HTTP/1.1 404 Not Found');

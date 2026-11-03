@@ -41,7 +41,9 @@ foreach ($sub as $msg) {
 		'{{SHOW_DATE}}'      => date(DATE_FORMAT.' - '.TIME_FORMAT,$msg['submitted_when']+TIMEZONE),
 		'{{TEXT_MESSAGE}}'   => $TEXT['MESSAGE'],
 		'{{TEXT_SUBMITTED}}' => $TEXT['SUBMITTED'],
-		'{{MSG_DATA}}'       => $msg['data'],
+		// stored message is HTML (mail template); values are escaped on input since
+		// v0.23.6, legacy records are not: at least neutralise droplet syntax
+		'{{MSG_DATA}}'       => miniform_escape_droplet_syntax($msg['data']),
 		'{{DELETE_URL}}'     => $delete_url
 	);
 	echo strtr($tpl_msg_row, $arr_row_replace);

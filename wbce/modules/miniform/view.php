@@ -30,7 +30,7 @@ if(isset($_SESSION['lastform'])) {
 	unset($_SESSION['form']);
 	$_SESSION['no'.$section_id] = true;
 } 
-if(!isset($_SESSION["REF"])) $_SESSION["REF"] = defined('ORG_REFERER') ? ORG_REFERER : $_SERVER['HTTP_REFERER'];
+if(!isset($_SESSION["REF"])) $_SESSION["REF"] = defined('ORG_REFERER') ? ORG_REFERER : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 
 mb_internal_encoding(DEFAULT_CHARSET);
 
@@ -112,10 +112,15 @@ if ($use_captcha && $mf->dataPosted && $mf->myPost) {
 			$all_required = false;
 		}
 	} elseif(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-		$ccheck = time(); $ccheck1 = time();
-		if(isset($_SESSION['captcha'.$section_id])) $ccheck1 = $_SESSION['captcha'.$section_id];
-		if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-		if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+		// only a non-empty captcha stored in the session can match
+		$sCaptcha = is_string($_POST['captcha']) ? $_POST['captcha'] : '';
+		$bCaptchaOk = false;
+		foreach (array('captcha', 'captcha'.$section_id) as $sCaptchaKey) {
+			if ($sCaptcha !== '' && isset($_SESSION[$sCaptchaKey]) && (string)$_SESSION[$sCaptchaKey] !== '' && $sCaptcha == $_SESSION[$sCaptchaKey]) {
+				$bCaptchaOk = true;
+			}
+		}
+		if (!$bCaptchaOk) {
 			$var[] = "{CAPTCHA_ERROR}"; $value[] = " missing";
 			$all_required = false;
 		}
@@ -157,11 +162,15 @@ if($mf->myPost) {
 	}
 	//Read all fields
 	foreach($fields as $key => $type) {
+		// fields that were only posted (not in current/next template) must be
+		// known template fields or internal fields - drop everything else
+		if($type=='!' && !$mf->isAllowedPostedField($key)) continue;
 		$fullkey = $key;
+		$safekey = miniform_escape_html($key);
 		$post = $mf->safe_get_post($key);
 		//if($type!='-' && substr($key,0,2)!='__' && $post) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
-		if($type!='-' && substr($key,0,2)!='__' && $post) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
-		elseif($type!='-' && substr($key,0,3)=='mf_' ) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
+		if($type!='-' && substr($key,0,2)!='__' && $post) $prevdata .= '<input type="hidden" name="'.$safekey.'" value="'.$post.'" />'."\n\t";
+		elseif($type!='-' && substr($key,0,3)=='mf_' ) $prevdata .= '<input type="hidden" name="'.$safekey.'" value="'.$post.'" />'."\n\t";
 		if($mf->error) {
 			$message .= $mf->error.'<br/>';
 			$message_class = "error alert alert-danger";
@@ -208,6 +217,7 @@ if($mf->myPost) {
 			
 			$key = ucwords($key);
 			$key = str_replace("_"," ",$key);
+			$key = miniform_escape_html($key); // field label goes into the stored HTML message
 			$post = nl2br($post);
 			$email_field_data .= $mf->add_template($email_field_val, array('{FIELD}','{VALUE}'), array($key,$post));
 		} elseif(substr($key,0,3)=="my_" && $post !== '') {
@@ -217,7 +227,7 @@ if($mf->myPost) {
 
 	// If parameters were given through _GET, reload the page without parameters
 	if($mf->fieldGetSeen) {
-		$_SESSION["REF"] = defined('ORG_REFERER') ? ORG_REFERER : $_SERVER['HTTP_REFERER'];
+		$_SESSION["REF"] = defined('ORG_REFERER') ? ORG_REFERER : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 		$page_link = $mf->page(PAGE_ID);
 		if(headers_sent()) {
 			echo '<script type="text/javascript">window.location = "'.$page_link.'"</script>';
@@ -279,12 +289,12 @@ if($mf->myPost) {
 				}
 			} else {
 				$template = $next_template;
-				$prevdata .= '<input type="hidden" name="__current" value="'.$mf->next.'" />'."\n\t";
+				$prevdata .= '<input type="hidden" name="__current" value="'.miniform_escape_html($mf->next).'" />'."\n\t";
 			}
 		} elseif ($mf->dataPosted)  {
 				$message .= $MF['NOTALL'];
 				$message_class = "error alert alert-danger";
-				$prevdata .= '<input type="hidden" name="__current" value="'.$mf->current.'" />'."\n\t";
+				$prevdata .= '<input type="hidden" name="__current" value="'.miniform_escape_html($mf->current).'" />'."\n\t";
 		}
 	}
 }

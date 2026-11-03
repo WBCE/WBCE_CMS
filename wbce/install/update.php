@@ -142,6 +142,34 @@ function status_msg($message, $class = 'grey', $element = 'span')
     echo $msg;
 }
 
+/**
+ * check that a path below WB_PATH exists with exactly this upper/lower case;
+ * on case-insensitive file systems (Windows, macOS) file_exists()/is_dir() also
+ * match e.g. include/PHPMailer/ for the deprecated include/phpmailer/
+ * @param string $path: absolute path starting with WB_PATH
+ * @return bool
+ */
+function path_exists_exact_case($path)
+{
+    $base = rtrim(str_replace('\\', '/', WB_PATH), '/');
+    $path = str_replace('\\', '/', $path);
+    if (strpos($path, $base) !== 0) {
+        return false;
+    }
+    $current = $base;
+    foreach (explode('/', substr($path, strlen($base))) as $segment) {
+        if ($segment === '' || $segment === '.') {
+            continue;
+        }
+        $entries = @scandir($current);
+        if ($segment === '..' || $entries === false || !in_array($segment, $entries, true)) {
+            return false;
+        }
+        $current .= '/' . $segment;
+    }
+    return true;
+}
+
 /*****************************
  * Functions Section END
  *****************************/
@@ -705,6 +733,44 @@ echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />'
 $database->field_add($table, "signup_confirmcode", "varchar(64) collate utf8_unicode_ci NOT NULL DEFAULT ''");
 echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
+// remove square brackets (droplet syntax) from display names stored by older versions,
+// the input filters do the same for new names; originals are kept in users_display_name_backup
+$backupTable = TABLE_PREFIX . "users_display_name_backup";
+$oCreate = $database->query("CREATE TABLE IF NOT EXISTS `$backupTable` ("
+    . " `user_id` INT NOT NULL DEFAULT '0',"
+    . " `display_name` VARCHAR(255) NOT NULL DEFAULT '',"
+    . " `cleaned_when` INT NOT NULL DEFAULT '0',"
+    . " PRIMARY KEY (`user_id`))");
+$sWhere = "`display_name` LIKE '%[%' OR `display_name` LIKE '%]%'";
+if (!$oCreate->error()) {
+    $oBackup = $database->query("INSERT IGNORE INTO `$backupTable` (`user_id`, `display_name`, `cleaned_when`) "
+        . "SELECT `user_id`, `display_name`, " . time() . " FROM `$table` WHERE $sWhere");
+    // never change display names without backup
+    if (!$oBackup->error()) {
+        // display names must stay unique: an empty or already used name
+        // falls back to the login name (with user_id if that is taken too)
+        $oUsers = $database->query("SELECT `user_id`, `username`, `display_name` FROM `$table` WHERE $sWhere");
+        while ($oUsers && ($aUser = $oUsers->fetchRow(MYSQLI_ASSOC))) {
+            $iUid = (int)$aUser['user_id'];
+            $sTaken = "SELECT COUNT(*) FROM `$table` WHERE `user_id` <> $iUid AND `display_name` = '%s'";
+            $sName = trim(str_replace(array('[', ']'), '', $aUser['display_name']));
+            if ($sName == '' || $database->get_one(sprintf($sTaken, $database->escapeString($sName))) > 0) {
+                if ($sName != '') {
+                    echo 'Display name of user ' . $iUid . ' already in use, set to login name<br />';
+                }
+                $sName = $aUser['username'];
+                if ($database->get_one(sprintf($sTaken, $database->escapeString($sName))) > 0) {
+                    $sName .= '_' . $iUid;
+                }
+            }
+            $database->query("UPDATE `$table` SET `display_name` = '" . $database->escapeString($sName) . "' WHERE `user_id` = $iUid");
+            echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
+        }
+    } else {
+        echo __LINE__ . ': ' . $oBackup->error() . '<br />';
+    }
+}
+
 /**********************************************************
  * Update search no results database filed to create
  * valid XHTML if search is empty
@@ -806,7 +872,7 @@ foreach ($filesRemove as $filesId) {
     foreach ($filesId as $file) {
         $file = str_replace($searches, $replacements, $file);
         $file = WB_PATH . '/' . $file;
-        if (file_exists($file)) {
+        if (file_exists($file) && path_exists_exact_case($file)) {
             // try to unlink file
             if (!is_writable($file) || !unlink($file)) {
                 // save in err-list, if failed
@@ -865,7 +931,7 @@ if (sizeof($dirRemove)) {
     foreach ($dirRemove as $dir) {
         $dir = str_replace($searches, $replacements, $dir);
         $dir = WB_PATH . '/' . $dir;
-        if (is_dir($dir)) {
+        if (is_dir($dir) && path_exists_exact_case($dir)) {
             // try to delete dir
             if (!rm_full_dir($dir)) {
                 // save in err-list, if failed

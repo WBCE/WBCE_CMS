@@ -1912,3 +1912,25 @@ function remove_special_characters(string|array|null $str="") {
     // Returning the result
     return $res;
 }
+
+if (!function_exists('escape_droplet_syntax')) {
+    /**
+     * @brief   Encode [ and ] as HTML entities so foreign data is not read as a droplet call (apply AFTER htmlspecialchars())
+     *
+     * @param mixed $mStr  string, number, null or (nested) array of those
+     * @return  mixed  encoded string (empty string for null) or array
+     */
+    function escape_droplet_syntax($mStr)
+    {
+        if (is_null($mStr)) {
+            return '';
+        }
+        if (is_array($mStr)) {
+            return array_map('escape_droplet_syntax', $mStr);
+        }
+        if (!is_scalar($mStr)) {
+            return $mStr;
+        }
+        return str_replace(array('[', ']'), array('&#91;', '&#93;'), (string)$mStr);
+    }
+}

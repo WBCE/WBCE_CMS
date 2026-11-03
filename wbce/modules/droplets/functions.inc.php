@@ -71,7 +71,6 @@ if (!function_exists('droplets_valid_name')) {
 }
 if (!function_exists('droplets_backup_path')) {
     // Full path of a backup file that really exists in the backup dir, or false.
-    // Blocks path traversal via $_GET['del'] / $_GET['recover'].
     function droplets_backup_path($name) {
         $name = basename((string) $name);
         if (!in_array($name, wbce_find_backups(DROPLETS_BACKUP_DIR), true)) {
@@ -797,8 +796,7 @@ function importDropletFromFile($sFilename = '', $sDirPath = '')
     if (preg_match('/^(.*)\.php$/i', $sFilename, $name_match)) {
         // Name of the Droplet = Filename
         $name = $name_match[1];
-        // Reject names that aren't plain droplet names (also stops SQL injection
-        // via a crafted filename inside the zip).
+        // reject names that aren't plain droplet names
         if (!droplets_valid_name($name)) {
             $aReturn['imported'] = $name;
             $aReturn['error']    = isset($GLOBALS['DR_TEXT']['INVALID_NAME'])

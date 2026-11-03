@@ -27,8 +27,8 @@ if(isset($_GET['page_id']) && is_numeric($_GET['page_id'])) {
 }
 
 if(isset($_GET['group_id']) && is_numeric($_GET['group_id'])) {
+	// plain variable only: GROUP_ID must not be defined as a constant from GET
 	$group_id = intval($_GET['group_id']);
-	define('GROUP_ID', $group_id);
 }
 
 // Include WB files
@@ -36,6 +36,52 @@ require_once '../../config.php';
 require_once WB_PATH.'/framework/class.frontend.php';
 $database = new database();
 $wb = new frontend();
+
+// The section must belong to the given page and be a news_img section
+$sql = "SELECT `section_id`, `page_id`, `publ_start`, `publ_end` FROM `".TABLE_PREFIX."sections` "
+	 . "WHERE `section_id` = ".$section_id." AND `page_id` = ".$page_id." AND `module` = 'news_img'";
+$oSection = $database->query($sql);
+$aSection = ($oSection ? $oSection->fetchRow(MYSQLI_ASSOC) : null);
+if (empty($aSection)) {
+	http_response_code(404);
+	die('section not found');
+}
+
+// The page must be visible for the current visitor (visibility 'none' and
+// 'deleted' never deliver a feed, private/registered need view permissions)
+$sql = "SELECT `page_id`, `visibility`, `viewing_groups`, `viewing_users` FROM `".TABLE_PREFIX."pages` "
+	 . "WHERE `page_id` = ".$page_id;
+$oPage = $database->query($sql);
+$aPage = ($oPage ? $oPage->fetchRow(MYSQLI_ASSOC) : null);
+if (empty($aPage) || !$wb->page_is_visible($aPage)) {
+	http_response_code(404);
+	die('page not found');
+}
+
+// Section publication period (same rules as section_is_viewable())
+$iNow   = time();
+$iStart = (int)$aSection['publ_start'];
+$iEnd   = (int)$aSection['publ_end'];
+if (!(($iStart === 0 || $iNow >= $iStart) && ($iEnd === 0 || $iNow <= $iEnd))) {
+	http_response_code(404);
+	die('section not found');
+}
+
+// A given group must be an active group of this section
+if (isset($group_id)) {
+	$sql = "SELECT `group_id` FROM `".TABLE_PREFIX."mod_news_img_groups` "
+		 . "WHERE `group_id` = ".$group_id." AND `section_id` = ".$section_id." AND `active` = 1";
+	if (!$database->get_one($sql)) {
+		http_response_code(404);
+		die('group not found');
+	}
+}
+
+// Wrap text for a CDATA section; a ']]>' inside the content would end it early
+function news_img_rss_cdata($sText) {
+	return '<![CDATA['.str_replace(']]>', ']]]]><![CDATA[>', (string)$sText).']]>';
+}
+
 $wb->page_id = $page_id;
 $wb->get_page_details();
 $wb->get_website_settings();
@@ -117,8 +163,8 @@ if (preg_match_all($pattern, $item["content_short"], $aMatches, PREG_SET_ORDER))
 
 ?>
 		<item>
-			<title><![CDATA[<?php echo stripslashes($item["title"]); ?>]]></title>
-			<description><![CDATA[<?php echo stripslashes($item["content_short"]); ?>]]></description>
+			<title><?php echo news_img_rss_cdata(stripslashes($item["title"])); ?></title>
+			<description><?php echo news_img_rss_cdata(stripslashes($item["content_short"])); ?></description>
 			<guid><?php echo WB_URL.PAGES_DIRECTORY.$item["link"].PAGE_EXTENSION; ?></guid>
 			<link><?php echo WB_URL.PAGES_DIRECTORY.$item["link"].PAGE_EXTENSION; ?></link>
 		</item>

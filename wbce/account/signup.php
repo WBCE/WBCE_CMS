@@ -32,7 +32,8 @@ $sRedirect = WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php';
 
 // Do not show signup form if no FRONTEND_SIGNUP was defined or user already logged-in
 if ($iSignupGroupID === 0 || $iUserID != 0) {
-    die(header('Location: ' . $sRedirect));
+    header('Location: ' . $sRedirect);
+    exit;
 }
 
 // Check if form honeypot fields were filled out
@@ -41,7 +42,8 @@ if (ENABLED_ASP && isset($_POST['username']) && (
         ($_POST['submitted_when'] != $_SESSION['submitted_when']) or (!isset($_POST['email-address']) or
             $_POST['email-address']) or (!isset($_POST['name']) or $_POST['name']) or (!isset($_POST['full_name']) or $_POST['full_name'])
     )) {
-    die(header('Location: ' . $sRedirect));
+    header('Location: ' . $sRedirect);
+    exit;
 }
 
 // Required page details

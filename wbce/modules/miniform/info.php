@@ -11,6 +11,8 @@
  * @version         0.23.1
  * @lastmodified    July 13, 2024
  *
+ * v0.23.7 – security: upgrade cleans stored messages of older versions (backup in mod_miniform_data_backup)
+ * v0.23.6 – security: escape field names, upload names and referer, whitelist posted fields, encode droplet syntax
  * v0.23.5 – local security fixes (Rik van Loenhout)
  * v0.23.4 – local security fixes (Rik van Loenhout)
  * v0.23.3 - Fix issue with AJAX message delete	(reported by Peter Reporter) (Florian)
@@ -38,7 +40,7 @@
 $module_directory = 'miniform';
 $module_name = 'MiniForm WBCE CMS Edition';
 $module_function = 'page';
-$module_version = '0.23.5';
+$module_version = '0.23.7';
 $module_platform = '1.4.x';
 $module_author = 'Ruud / Dev4me';
 $module_license = 'GNU General Public License';

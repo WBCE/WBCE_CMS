@@ -30,6 +30,8 @@ $database->field_add($table_name, 'admin_edit',   $description.'AFTER `active`',
 $aShippedDroplets = array(
     'RandomImage'       => array('13e123ee3e711149d405c61d891b65b6', 'c1696eabde00fe585ddbedde5c80998d'),
     'ShowRandomWysiwyg' => array('58191cbf5c8a641952d01f074b5a94c2', '4b8c2d252669d54cd1e85f9cf86cd6a2'),
+    // 2.4.5: SearchBox did not encode the message for its HTML/JavaScript context
+    'SearchBox'         => array('69c06f5a9d423d9f8220d3ad2dbd6b27', '51efac173eeb75e03c3d02a706257e22', '829001713f124e6666b353a68e20b259'),
 );
 foreach ($aShippedDroplets as $sDropletName => $aShippedHashes) {
     $sStored = (string) $database->get_one(
@@ -72,7 +74,8 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     // upgraded install with a stale falsy opf_droplets/_be row kept droplet
     // processing switched off ([[droplet]] calls stayed literal text).
     Settings::Set('opf_droplets', 1, false);
-    Settings::Set('opf_droplets_be', 1, false);
+    // off by default; can be enabled in the OPF Dashboard
+    Settings::Set('opf_droplets_be', 0, false);
 
     return opf_register_filter(array(
         'name'     => 'Droplets',

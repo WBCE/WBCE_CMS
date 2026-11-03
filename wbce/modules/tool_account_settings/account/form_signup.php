@@ -47,6 +47,8 @@ if(isset($_POST['signup_form_sent'])){
     // Get raw user inputs
     $username     = remove_special_characters(strtolower(strip_tags($oAccounts->get_post('username'))));
     $display_name = remove_special_characters(strip_tags($oAccounts->get_post('display_name')));
+    // no square brackets in display names (droplet syntax)
+    $display_name = str_replace(array('[', ']'), '', $display_name);
     $email        = $oAccounts->get_post('email');
     $gdpr_check   = $oAccounts->get_post('gdpr_check');
     $groups_id    = FRONTEND_SIGNUP;
@@ -62,6 +64,11 @@ if(isset($_POST['signup_form_sent'])){
     // //////////////////////////////
     //     Check user inputs
     // //////////////////////////////
+
+    // CSRF protection: the form template contains the FTAN
+    if (!$oAccounts->checkFTAN()) {
+        $errors['GENERIC_SECURITY_ACCESS'] = $MESSAGE['GENERIC_SECURITY_ACCESS'];
+    }
 
     // Check username
     if (!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)){ 
@@ -161,9 +168,10 @@ if(isset($_POST['signup_form_sent'])){
         $sEmailSubject     = '';
         $sErrorMessage     = $TEXT['ERROR']; //$MESSAGE['GENERIC_ISSUE_MESSAGE'];	
         $sConfirmTimeout   = (string)(time() + 86400); // now + 24hours
-        $sConfirmCode      = md5(md5($sUsername.$sConfirmTimeout).$sConfirmTimeout);
+        // random tokens; the approval checksum is independent of the code
+        $sConfirmCode      = bin2hex(random_bytes(16));
         $sConfirmationUrl  = ACCOUNT_URL.'/confirm.php?id='.$sConfirmCode.'&lc='.$sLC;
-        $sCheckSum         = substr(md5($sConfirmCode), 0, 10);
+        $sCheckSum         = bin2hex(random_bytes(5));
 
         // Template token replacement array (will be added to down the code)
         $aTokenReplace = array( 
@@ -176,7 +184,8 @@ if(isset($_POST['signup_form_sent'])){
             'LOGIN_EMAIL'          => $email,
             'SUPPORT_EMAIL'        => $oAccounts->cfg['support_email'],
             'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum),
-            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.$sCheckSum),
+            // the user's link must not carry the approval checksum
+            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0'),
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout), 
             'LOGIN_URL'            => ACCOUNT_URL . '/login.php'
         );	
@@ -241,10 +250,11 @@ $show_captcha = '';
 if(ENABLED_CAPTCHA) {
     ob_start(); call_captcha(); $show_captcha = ob_get_clean();
 }
+// no square brackets in reflected user input (droplet syntax)
 $aToTwig = array(
-    'USER_NAME'        => $username, 
-    'DISPLAY_NAME'     => $display_name, 
-    'EMAIL'            => $email, 
+    'USER_NAME'        => str_replace(array('[', ']'), '', $username),
+    'DISPLAY_NAME'     => str_replace(array('[', ']'), '', $display_name),
+    'EMAIL'            => str_replace(array('[', ']'), '', (string)$email),
     'GDPR_VALUE'       => $gdpr_check, 
     'SHOW_CAPTCHA'     => $show_captcha, 
     'ASP_HONEYPOTS'    => $oAccounts->renderAspHoneypots(), 

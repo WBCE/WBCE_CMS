@@ -60,6 +60,29 @@ class Login extends Admin
 	public  $nocookie;
 	public  $nocaptcha;
 
+    /**
+     * true if $sUrl is an absolute URL inside this installation (WB_URL itself
+     * or WB_URL followed by '/', '?' or '#'); rejects other hosts, look-alike
+     * hosts such as WB_URL.example.org, backslashes and control characters
+     * @param string $sUrl
+     * @return bool
+     */
+    public static function isLocalUrl($sUrl)
+    {
+        $sUrl = (string) $sUrl;
+        if ($sUrl === '' || preg_match('/[\x00-\x20\x7F\\\\]/', $sUrl)) {
+            return false;
+        }
+        $sBase = rtrim(WB_URL, '/');
+        if (strcasecmp($sUrl, $sBase) === 0) {
+            return true;
+        }
+        if (strncasecmp($sUrl, $sBase, strlen($sBase)) !== 0) {
+            return false;
+        }
+        return in_array(substr($sUrl, strlen($sBase), 1), array('/', '?', '#'), true);
+    }
+
     public function __construct($aConfig)
     {
         global $MESSAGE;
@@ -116,10 +139,15 @@ class Login extends Admin
 			}
 			
 			if(isset($_POST['captcha'])){
-				$ccheck = time(); $ccheck1 = time();
-				if(isset($_SESSION['captchalogin'])) $ccheck1 = $_SESSION['captchalogin'];
-				if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-				if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+				// only a non-empty captcha stored in the session can match
+				$sCaptcha = is_string($_POST['captcha']) ? $_POST['captcha'] : '';
+				$bCaptchaOk = false;
+				foreach (array('captcha', 'captchalogin') as $sCaptchaKey) {
+					if ($sCaptcha !== '' && isset($_SESSION[$sCaptchaKey]) && (string)$_SESSION[$sCaptchaKey] !== '' && $sCaptcha == $_SESSION[$sCaptchaKey]) {
+						$bCaptchaOk = true;
+					}
+				}
+				if (!$bCaptchaOk) {
 					$captchaFailure = true;
 				}
 			} 
@@ -162,7 +190,8 @@ class Login extends Admin
         if ($this->redirect_url != '') {
             $this->url = $this->redirect_url;
         }
-        if (empty($this->url)) {
+        // only redirect within this installation (no open redirect)
+        if (empty($this->url) || !self::isLocalUrl($this->url)) {
             $this->url = $aConfig['DEFAULT_URL'];
         }
         if ($this->is_authenticated() == true) {
@@ -185,6 +214,10 @@ class Login extends Admin
             $this->_oMsgBox->error($MESSAGE['LOGIN_PASSWORD_BLANK']);
             $this->increase_attempts();
         } else {
+            // an active lockout applies to every session of this IP
+            if ($this->isBlocked()) {
+                $this->warn();
+            }
             // Check if the user exists (authenticate them)
 			//sleep(1);
             if ($this->authenticate()) {
@@ -461,6 +494,23 @@ class Login extends Admin
     // ********************************************************************* //
 
     // Function to set a "remembering" cookie for the user
+
+    // true while the stored attempts of this IP exceed the limit
+    // (same release condition as increase_attempts())
+    private function isBlocked()
+    {
+        $client_ip = md5($this->get_client_ip());
+        $sql = "SELECT `attempts`, `timestamp` FROM `" . TABLE_PREFIX . "blocking` WHERE `source_ip` = '" . $client_ip . "' LIMIT 1";
+        $query = $this->_oDb->query($sql);
+        if ($query == null || $query->numRows() == 0) {
+            return false;
+        }
+        $row = $query->fetchRow();
+        $attempts = (int)$row['attempts'];
+        $interval = time() - (int)$row['timestamp'];
+        return $attempts > $this->max_attempts
+            && $interval <= $this->timeframe + pow(2, ($attempts - $this->max_attempts)) * $this->login_delay;
+    }
 
     /**
      * @brief    Warn user that they have had too many login attempts

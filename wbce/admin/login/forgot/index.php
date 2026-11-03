@@ -33,10 +33,15 @@ if (isset($_POST['email']) && $_POST['email'] != "" ) {
     $email = strip_tags($wb->get_post('email'));
 	if ($nocookie == false) {			
 		if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-			$ccheck = time(); $ccheck1 = time();
-			if(isset($_SESSION['captchaloginforgot'])) $ccheck1 = $_SESSION['captchaloginforgot'];
-			if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-			if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+			// only a non-empty captcha stored in the session can match
+			$sCaptcha = is_string($_POST['captcha']) ? $_POST['captcha'] : '';
+			$bCaptchaOk = false;
+			foreach (array('captcha', 'captchaloginforgot') as $sCaptchaKey) {
+				if ($sCaptcha !== '' && isset($_SESSION[$sCaptchaKey]) && (string)$_SESSION[$sCaptchaKey] !== '' && $sCaptcha == $_SESSION[$sCaptchaKey]) {
+					$bCaptchaOk = true;
+				}
+			}
+			if (!$bCaptchaOk) {
 				$oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
 				$email = '';
 			}

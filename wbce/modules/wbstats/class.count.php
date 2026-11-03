@@ -239,10 +239,7 @@ class counter {
 		
 	function getUTM () {
 		if($ref = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY)) {
-			// $p is embedded (unescaped by the click-id branches) into the UTM
-			// `content` column, so escape it here — the request path is fully
-			// attacker-controlled (SQL injection, CVE-class). The utm_* params
-			// below are escaped individually.
+			// escape the request path; the utm_* params below are escaped individually
 			$p = $this->escapeString(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
 			parse_str( $ref, $parms );

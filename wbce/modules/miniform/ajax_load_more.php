@@ -17,8 +17,7 @@ if(!empty($_POST["message_id"])){
     }
 
        // Get records from the database
-	// All three values are cast to int: they are concatenated straight into the
-	// SQL below, so without this they were a trivial SQL injection.
+	// cast to int (used directly in the SQL below)
 	$section_id  = (int) $_POST['section_id'];
 
 	// Authorisation: only read submissions of a section on a page the user may
@@ -49,7 +48,8 @@ if(!empty($_POST["message_id"])){
 			$msg_id = $msg['message_id'];
 			$aToJson['message'] = $msg_id ;
 			$aToJson['data'][$msg_id]['message_id'] = $msg_id;
-			$aToJson['data'][$msg_id]['data'] = $msg['data'];
+			// see messages_loop.php: neutralise droplet syntax (legacy records)
+			$aToJson['data'][$msg_id]['data'] = miniform_escape_droplet_syntax($msg['data']);
 			$aToJson['data'][$msg_id]['submitted_when'] = date(DATE_FORMAT.' - '.TIME_FORMAT,$msg['submitted_when']+TIMEZONE);
 		}
 		rsort($aToJson['data']);

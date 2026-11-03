@@ -30,12 +30,17 @@ if (!isset($_SESSION['captcha_time'])) {
     exit;
 }
 
+// only the configured captcha type
+if (!defined('CAPTCHA_TYPE') || CAPTCHA_TYPE !== 'calc_image') {
+    exit;
+}
+
 //unset($_SESSION['captcha_time']);
 
 // Captcha
 $sec_id = '';
 if (isset($_GET['s'])) {
-    $sec_id = $_GET['s'];
+    $sec_id = preg_replace('/[^A-Za-z0-9]/', '', (string) $_GET['s']);
 }
 
 $_SESSION['captcha' . $sec_id] = '';

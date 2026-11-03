@@ -73,7 +73,7 @@ if ((!$in_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_u
 // Check whether the section_id belongs to the page_id at all
 if ($section_id != 0) {
     $section = $admin->get_section_details($section_id, ADMIN_URL . '/pages/index.php');
-    if (!$admin->get_permission($section['module'], 'module')) {
+    if ((int)$section['page_id'] !== $page_id || !$admin->get_permission($section['module'], 'module')) {
         $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
     }
 }
