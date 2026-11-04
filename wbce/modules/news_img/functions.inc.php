@@ -1184,7 +1184,9 @@ function mod_nwi_post_show(int $post_id)
 		return false;
 	} else{
 		$filename = WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION;
-        mod_nwi_create_file($filename, '', $post_id, $section_id, $page['page_id']);
+		if (!file_exists($filename)) {
+			mod_nwi_create_file($filename, '', $post_id, $section_id, $page['page_id']);
+		}
 	}
 
     return $post;
